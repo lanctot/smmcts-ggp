@@ -359,15 +359,14 @@
 % use a multiple column layout for up to three different
 % affiliations
 
-\author{Author1 Author2 Author3 Author4}
+%\author{Author1 Author2 Author3 Author4}
 
-%\author{\IEEEauthorblockN{Michael Shell}
-%\IEEEauthorblockA{School of Electrical and\\Computer Engineering\\
-%Georgia Institute of Technology\\
-%Atlanta, Georgia 30332--0250\\
-%Email: http://www.michaelshell.org/contact.html}
-%\and
-%\IEEEauthorblockN{Homer Simpson}
+\author{\IEEEauthorblockN{Mandy J.~W. Tak, Marc Lanctot, and Mark H.~M.~Winands}
+\IEEEauthorblockA{Department of Knowledge Engineering, Maastricht University\\
+%P.O. Box 616, 6200 MD Maastricht, The Netherlands,\\
+\{mandy.tak,marc.lanctot,m.winands\}@maastrichtuniversity.nl\\
+}
+}
 %\IEEEauthorblockA{Twentieth Century Fox\\
 %Springfield, USA\\
 %Email: homer@thesimpsons.com}
@@ -415,7 +414,12 @@
 
 \begin{abstract}
 %\boldmath
-The abstract goes here.
+Monte Carlo Tree Search (MCTS) is a widely-used technique for game tree search in sequential turn-taking games. 
+The extension to simultaneous move games, where all player choose actions simultaneously each round, 
+is non-trivial due to the complexity of this class of games. In this paper, we describe simultaneous move MCTS 
+and analyze its application of in general game playing (GGP). We use several possible selection strategies, 
+including both determinstic and stochastic selection strategies, and characterize the practical performance over 
+eight games used in practice and study of GGP. Our results indicate that ... 
 \end{abstract}
 % IEEEtran.cls defaults to using nonbold math in the Abstract.
 % This preserves the distinction between vectors and scalars. However,
@@ -439,13 +443,54 @@ The abstract goes here.
 % creates the second title. It will be ignored for other modes.
 \IEEEpeerreviewmaketitle
 
-
-
 \section{Introduction}
 
-\subsubsection{Related Work}
+Monte Carlo Tree Search (MCTS)~\cite{Coulom06Efficient,Kocsis06Bandit,Browne12MCTSSurvey} is a popular search technique 
+that has demonstrated initial success in sequential turn-taking games such as Go~\cite{Gelly12}, Hex~\cite{Arneson10Hex},
+and Lines of Action~\cite{Winands10MCTS-LOA}. MCTS has also been applied with practical success in general game playing 
+(GGP)~\cite{Finnsson08,Finnsson10Learning,Finnsson12Generalized} and other complex settings such as real-time 
+games~\cite{Balla09UCT,Pepels14Monte}, imperfect information and popular card 
+games~\cite{Sturtevant08icga,Buro09Improving,Cowling12MTG,Cowling12ISMCTS,Whitehouse13Integrating}. 
 
-\cite{Lanctot13Goofspiel}
+The most popular MCTS algorithm is Upper Confidence Bounds for Trees (UCT)~\cite{Kocsis06Bandit} based on a bandit algorithm 
+Upper Confidence Bounds~\cite{Auer02Finite}. Since UCT was originally 
+designed for strictly sequential turn-taking games, its theoretical guarantees (such as eventual convergence to the optimal 
+strategy) do not apply in simultaneous move games. The standard application of UCT to simultaneous move games, first used in 
+general game-playing~\cite{Finnsson08}, is a variant we call {\it Decoupled UCT} (DUCT), where each player uses UCB to select 
+their own actions independent of how the opponent's (simultaneously chosen) move on the same turn can affect the outcome. 
+This variant has been shown to not converge to an optimal strategy, even in a game with a single state (biased Rock, Paper, 
+Scissors)~\cite{Shafiei09}. 
+
+A popular choice for a simultaneous move game among researchers and enthusiasts has been Tron, a game played on a discrete 
+grid inspired by the 1982 movie.
+In Tron, Samothrakis et al. propose a purely sequential version which we call {\it Sequential UCT}~\cite{Samothrakis10Tron}. 
+Den Teuling et al. improved Sequential UCT in Tron by suggesting several heuristic improvements and handling some of the 
+important simultaneous move situations~\cite{DenTeuling12Tron}. Perick et al.~\cite{Perick12Comparison} proposed several new 
+search variants, including stochastic selection strategies, and compared their success in Tron. Unlike in \cite{Samothrakis10Tron}, 
+they found that {\it UCB1-Tuned} was the most successful in Tron, which was also confirmed by a more recent study~\cite{Lanctot13Tron}.
+
+Several new selection strategies for simultaneous move MCTS were also proposed for Goofspiel~\cite{Lanctot13Goofspiel}. In Goofspiel, 
+as in Rock, Paper, Scissors, there is evidence that playing with a randomized (``mixed'') strategy is important. 
+Several of these new techniques compute a mixed strategy, and appear to perform better against DUCT in Goofspiel. 
+Under appropriate settings, some of these variants were shown to converge to an optimal strategy~\cite{Lisy13Computing}. 
+Nonetheless, in Tron, a variant of DUCT out-performed the stochastic variants that were successful in Goofspiel, even though Tron 
+also has situations that require mixed strategies~\cite{Lanctot13Tron}. 
+In addition, the performance of each method in Tron varied significantly based on the board configuration, as first seen 
+in \cite{DenTeuling12Tron}.
+These results seem to indicate that the success of each simultaneous move MCTS variant may depend largely on the particular game. 
+
+In this paper, we aim to clarify the dependencies and game properties that determine the relative performance of the different 
+simultaenous move MCTS variants. First, we describe a general simultaneous move MCTS framework along with the most popular 
+techniques used to date. Then, we perform an 
+elaborate analysis of these variants over eight different games chosen from previous work and GGP competitions. We measure 
+the effect as a function of time settings and with the presence or lack of enhancements that have proven successful in GGP. 
+Our results show that ...
+
+\section{Background}
+
+\subsection{General Game Playing}
+
+\subsection{Simultaenous Move Games}
 
 \section{Simultaneous Move MCTS}
 
