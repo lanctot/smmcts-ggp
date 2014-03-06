@@ -551,8 +551,9 @@ to player $i$ in state $s \in \cS$. The
 transition function $\cT : \cS \times \cA_1 \times \cA_2 \mapsto \cS$ defines the successor state given a current 
 state and actions for both players. The utility functions 
 $u_i : \cZ \mapsto [v_{\min}, v_{\max}] \subseteq \mathbb{R}$ gives the utility of player $i$, with 
-$v_{min}$ and $v_{\max}$ denoting the minimum and maximum possible utility respectively. We assume constant-sum 
-games: $\forall z \in \cZ, u_1(z) = k - u_2(z)$. The game begins in an initial state $s_0$. 
+$v_{min}$ and $v_{\max}$ denoting the minimum and maximum possible utility respectively. 
+%$\forall z \in \cZ, u_1(z) = k - u_2(z)$. 
+The game begins in an initial state $s_0$. 
 
 \begin{figure}[b!]
 \centering
@@ -561,8 +562,8 @@ games: $\forall z \in \cZ, u_1(z) = k - u_2(z)$. The game begins in an initial s
 \includegraphics[width=6.0cm]{figures/tree}\\
 \end{subfigure}
 \caption{An examples of a two-player simultaneous game which has Matching Pennies as a subgame.
-The dark squares are terminal states. The values shown are optimal values that could be obtained by backward induction.\\
-{\small Note: the left figure is taken from \cite{Bosansky13Using} and provided by Branislav Bosansky.}
+The dark squares are terminal states. The values shown are optimal values that could be obtained by backward induction.
+{\small Note: the figure is taken from \cite{Lanctot13Goofspiel} and provided by Branislav Bosansky.}
 \label{fig:example}}
 \end{figure}
 
@@ -575,34 +576,38 @@ is itself another stacked matrix game.
 
 A {\it behavioral strategy} for player $i$ is a mapping from states $s \in \cS$
 to a probability distribution over the actions $\cA_i(s)$, denoted $\sigma_i(s)$. 
-Given a profile $\sigma = (\sigma_1, \sigma_2)$, define the probability of reaching a terminal state $z$ under $\sigma$ as 
-$\pi^\sigma(z) = \pi_1(z) \pi_2(z) \pi_c(z)$, where each $\pi_i(z)$ is a product of probabilities of the actions taken 
-by player $i$ along the path to $z$ ($c$ being chance's probabilities). Define $\Sigma_i$ to be the set of behavioral 
+%Given a profile $\sigma = (\sigma_1, \sigma_2)$, define the probability of reaching a terminal state $z$ under $\sigma$ as 
+%$\pi^\sigma(z) = \pi_1(z) \pi_2(z) \pi_c(z)$, where each $\pi_i(z)$ is a product of probabilities of the actions taken 
+%by player $i$ along the path to $z$ ($c$ being chance's probabilities). 
+Define $\Sigma_i$ to be the set of behavioral 
 strategies for player $i$. A Nash equilibrium profile in this case is a pair of behavioral strategies optimizing
 \begin{equation}\label{eq:ne}
-V^* = \max_{\sigma_1 \in \Sigma_1} \min_{\sigma_2 \in \Sigma_2} \bE_{z \sim \sigma}[u_1(z)]
-   = \max_{\sigma_1 \in \Sigma_1} \min_{\sigma_2 \in \Sigma_2} \sum_{z \in Z} \pi^\sigma(z) u_1(z).
+V^* = \max_{\sigma_1 \in \Sigma_1} \min_{\sigma_2 \in \Sigma_2} \bE_{z \sim \sigma}[u_1(z)].
+%   = \max_{\sigma_1 \in \Sigma_1} \min_{\sigma_2 \in \Sigma_2} \sum_{z \in Z} \pi^\sigma(z) u_1(z).
 \end{equation}
 In other words, none of the players can improve their utility by deviating unilaterally. 
 For example, the Matching Pennies matrix game has a single state and the only equilibrium strategy is to mix equally between both actions, \ie play with a {\it mixed strategy} (distribution) of $(0.5, 0.5)$ giving an expected payoff of $V^* = 0.5$. 
 If the strategies also optimize Equation \ref{eq:ne} in each subgame starting in an arbitrary state, the equilibrium strategy is termed subgame perfect.
 
-In two-player constant sum games a (subgame perfect) Nash equilibrium strategy is often considered to be optimal. It guarantees the payoff of at least $V^*$ against any opponent. Any non-equilibrium strategy has its nemesis, which will make it win less than $V^*$ in expectation. Moreover, subgame perfect NE strategy can earn more than $V^*$ against weak opponents. After the opponent makes a sub-optimal move, the strategy will never allow it to gain the loss back.
-The value $V^*$ is known as the minimax-optimal value of the game
-and is the same for every equilibrium profile by von Neumann's minimax theorem.
+In two-player constant-sum games a Nash equilibrium strategy is optimal in the minimax sense. It guarantees the payoff of at least $V^*$ against any opponent. Any 
+non-equilibrium strategy has a best response, which will make it win less than $V^*$ in expectation. Moreover, subgame perfect NE strategy can earn more 
+than $V^*$ against weak opponents. After the opponent makes a sub-optimal move, the strategy will never allow it to gain the loss back. 
+The value $V^*$ is known as the minimax-optimal value of the game and is the same for every equilibrium profile by von Neumann's minimax theorem.
 
 A two-player simultaneous move game is a specific type of two-player imperfect information extensive-form 
-game. 
-In imperfect information games, states are grouped into {\it information sets}: two states $s, s' \in I$ if the player 
+game. In imperfect information games, states are grouped into {\it information sets}: two states $s, s' \in I$ if the player 
 to act at $I$ cannot distinguish which of these states the game is currently in. Any simultaneous move game can be modeled 
 using an information set to represent a half-completed transition, \ie $\cT(s, a_1, ?)$ or $\cT(s, ?, a_2)$. 
 
-The model described above is similar to a two-player finite horizon Markov Game~\cite{Littman94markovgames}
 An example of a simultaneous move game is depicted in Figure~\ref{fig:example}. 
-
+The model described above is similar to a two-player finite horizon Markov Game~\cite{Littman94markovgames}.
+The model can be easily extended to include chance events~\cite{Lanctot13Goofspiel}. 
 
 \section{Simultaneous Move MCTS}
 \label{sec:smmcts}
+
+In this section, we present a generalized description of Monte Carlo Tree Search for simultaneous move games. This 
+description is based on the one used in Tron~\cite{Perick12Comparison}.
 
 \section{Application to General Game-Playing}
 \label{sec:appggp}
@@ -610,7 +615,9 @@ An example of a simultaneous move game is depicted in Figure~\ref{fig:example}.
 \section{Empirical Evaluation}
 \label{sec:exp}
 
-\subsection{Conclusion and Future Work}
+\subsection{Game Descriptions}
+
+\section{Conclusion and Future Work}
 \label{sec:conc}
 
 
