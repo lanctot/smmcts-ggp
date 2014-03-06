@@ -70,8 +70,50 @@
 % manually specify the path to it like:
 % \documentclass[conference]{../sty/IEEEtran}
 
+\usepackage{pdfsync}
+\usepackage{comment}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{calc}
+\usepackage{color}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{xspace}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{caption}
+\usepackage{subcaption}
+
+%\usepackage{subfig}
 
 
+% the note center!
+%\newcommand{\marcl}[1]{\textbf{\color{red} #1 -- ML}}
+%\newcommand{\rgg}[1]{\textbf{\color{red} #1 -- RG}}
+\definecolor{darkgreen}{RGB}{0,125,0}
+\newcounter{mwNoteCounter}
+\newcounter{mlNoteCounter}
+\newcounter{mtNoteCounter}
+\newcommand{\mwinands}[1]{{\small \color{blue} $\blacksquare$ \refstepcounter{mwNoteCounter}\textsf{[RGG]$_{\arabic{mwNoteCounter}}$:{#1}}}}
+\newcommand{\mlanctot}[1]{{\small \color{darkgreen} $\blacksquare$ \refstepcounter{mlNoteCounter}\textsf{[ML]$_{\arabic{mlNoteCounter}}$:{#1}}}}
+\newcommand{\mtak}[1]{{\small \color{red} $\blacktriangle$ \refstepcounter{ntNoteCounter}\textsf{[MJ]$_{\arabic{mtNoteCounter}}$:{#1}}}}
+%\newcounter{NoteCounter}
+%\newcommand{\vlnote}[1]{{\scriptsize \color{blue} \refstepcounter{vlNoteCounter}\textsf{[VL]$_{\arabic{vlNoteCounter}}$:{#1}}}}
+%\renewcommand{\vlnote}[1]{}
+
+\newcommand{\bE}{\mathbb{E}}
+\newcommand{\cA}{\mathcal{A}}
+\newcommand{\cC}{\mathcal{C}}
+\newcommand{\cD}{\mathcal{D}}
+\newcommand{\cI}{\mathcal{I}}
+\newcommand{\cN}{\mathcal{N}}
+\newcommand{\cO}{\mathcal{O}}
+\newcommand{\cS}{\mathcal{S}}
+\newcommand{\cT}{\mathcal{T}}
+\newcommand{\cZ}{\mathcal{Z}}
+\newcommand{\eg}{{\it e.g.,}~}
+\newcommand{\ie}{{\it i.e.,}~}
 
 
 % Some very useful LaTeX packages include:
@@ -479,6 +521,8 @@ In addition, the performance of each method in Tron varied significantly based o
 in \cite{DenTeuling12Tron}.
 These results seem to indicate that the success of each simultaneous move MCTS variant may depend largely on the particular game. 
 
+\mlanctot{I think we need some more motivation from the GGP perspective. Maybe import some text from one of Mandy's previous papers...?}
+
 In this paper, we aim to clarify the dependencies and game properties that determine the relative performance of the different 
 simultaenous move MCTS variants. First, we describe a general simultaneous move MCTS framework along with the most popular 
 techniques used to date. Then, we perform an 
@@ -486,19 +530,88 @@ elaborate analysis of these variants over eight different games chosen from prev
 the effect as a function of time settings and with the presence or lack of enhancements that have proven successful in GGP. 
 Our results show that ...
 
+The layout for the rest the paper is as follows. ...
+
 \section{Background}
+\label{sec:background}
+
+In this section, we describe the foundation of our algorithms and the terminology required to formalize the techniques. 
+We start by describing background information on general game playing (GGP). 
 
 \subsection{General Game Playing}
 
 \subsection{Simultaenous Move Games}
 
+A finite game with simultaneous moves can be described by a tuple 
+$(\cN, \cS = \cD \cup \cZ, \cA, \cT, u_i, s_0)$. The player set $\cN = \{ 1, 2 \}$ contains player 
+labels, and by convention a player is denoted $i \in \cN$.
+$\cS$ is a set of states, with $\cZ$ denoting the terminal states, and $\cD$ the states where players make decisions.
+$\cA = \cA_1 \times \cA_2$ is the set of joint actions of individual players. We denote $\cA_i(s)$ the actions available 
+to player $i$ in state $s \in \cS$. The 
+transition function $\cT : \cS \times \cA_1 \times \cA_2 \mapsto \cS$ defines the successor state given a current 
+state and actions for both players. The utility functions 
+$u_i : \cZ \mapsto [v_{\min}, v_{\max}] \subseteq \mathbb{R}$ gives the utility of player $i$, with 
+$v_{min}$ and $v_{\max}$ denoting the minimum and maximum possible utility respectively. We assume constant-sum 
+games: $\forall z \in \cZ, u_1(z) = k - u_2(z)$. The game begins in an initial state $s_0$. 
+
+\begin{figure}[b!]
+\centering
+\begin{subfigure}{6cm}
+\centering
+\includegraphics[width=6.0cm]{figures/tree}\\
+\end{subfigure}
+\caption{An examples of a two-player simultaneous game which has Matching Pennies as a subgame.
+The dark squares are terminal states. The values shown are optimal values that could be obtained by backward induction.\\
+{\small Note: the left figure is taken from \cite{Bosansky13Using} and provided by Branislav Bosansky.}
+\label{fig:example}}
+\end{figure}
+
+A {\it matrix game} is a single step simultaneous move game with action sets $\cA_1$ and $\cA_2$. 
+Each entry in the matrix $A_{rc}$ where $(r,c) \in A_1 \times A_2$ corresponds to a payoff (to player 1) if row $r$ is chosen by player 1 and column $c$ by player 2. 
+For example, in Matching Pennies, each player has two actions (heads or tails). The row player receives a payoff of 1 if both players choose the same action and 0 if they do not match. 
+Two-player simultaneous move games are sometimes called {\it stacked matrix games} because at every state 
+$s$ there is a joint action set $\cA_1(s) \times \cA_2(s)$ that either leads to a terminal state or to a subgame which 
+is itself another stacked matrix game. 
+
+A {\it behavioral strategy} for player $i$ is a mapping from states $s \in \cS$
+to a probability distribution over the actions $\cA_i(s)$, denoted $\sigma_i(s)$. 
+Given a profile $\sigma = (\sigma_1, \sigma_2)$, define the probability of reaching a terminal state $z$ under $\sigma$ as 
+$\pi^\sigma(z) = \pi_1(z) \pi_2(z) \pi_c(z)$, where each $\pi_i(z)$ is a product of probabilities of the actions taken 
+by player $i$ along the path to $z$ ($c$ being chance's probabilities). Define $\Sigma_i$ to be the set of behavioral 
+strategies for player $i$. A Nash equilibrium profile in this case is a pair of behavioral strategies optimizing
+\begin{equation}\label{eq:ne}
+V^* = \max_{\sigma_1 \in \Sigma_1} \min_{\sigma_2 \in \Sigma_2} \bE_{z \sim \sigma}[u_1(z)]
+   = \max_{\sigma_1 \in \Sigma_1} \min_{\sigma_2 \in \Sigma_2} \sum_{z \in Z} \pi^\sigma(z) u_1(z).
+\end{equation}
+In other words, none of the players can improve their utility by deviating unilaterally. 
+For example, the Matching Pennies matrix game has a single state and the only equilibrium strategy is to mix equally between both actions, \ie play with a {\it mixed strategy} (distribution) of $(0.5, 0.5)$ giving an expected payoff of $V^* = 0.5$. 
+If the strategies also optimize Equation \ref{eq:ne} in each subgame starting in an arbitrary state, the equilibrium strategy is termed subgame perfect.
+
+In two-player constant sum games a (subgame perfect) Nash equilibrium strategy is often considered to be optimal. It guarantees the payoff of at least $V^*$ against any opponent. Any non-equilibrium strategy has its nemesis, which will make it win less than $V^*$ in expectation. Moreover, subgame perfect NE strategy can earn more than $V^*$ against weak opponents. After the opponent makes a sub-optimal move, the strategy will never allow it to gain the loss back.
+The value $V^*$ is known as the minimax-optimal value of the game
+and is the same for every equilibrium profile by von Neumann's minimax theorem.
+
+A two-player simultaneous move game is a specific type of two-player imperfect information extensive-form 
+game. 
+In imperfect information games, states are grouped into {\it information sets}: two states $s, s' \in I$ if the player 
+to act at $I$ cannot distinguish which of these states the game is currently in. Any simultaneous move game can be modeled 
+using an information set to represent a half-completed transition, \ie $\cT(s, a_1, ?)$ or $\cT(s, ?, a_2)$. 
+
+The model described above is similar to a two-player finite horizon Markov Game~\cite{Littman94markovgames}
+An example of a simultaneous move game is depicted in Figure~\ref{fig:example}. 
+
+
 \section{Simultaneous Move MCTS}
+\label{sec:smmcts}
 
 \section{Application to General Game-Playing}
+\label{sec:appggp}
 
 \section{Empirical Evaluation}
+\label{sec:exp}
 
-\subsection{Conclusion}
+\subsection{Conclusion and Future Work}
+\label{sec:conc}
 
 
 % An example of a floating figure using the graphicx package.
