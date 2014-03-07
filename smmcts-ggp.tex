@@ -85,6 +85,20 @@
 \usepackage{caption}
 \usepackage{subcaption}
 
+\usepackage[algo2e, noend, noline, linesnumbered]{algorithm2e}
+\DontPrintSemicolon
+
+\makeatletter
+\newcommand{\pushline}{\Indp}% Indent
+\newcommand{\popline}{\Indm}
+\makeatother
+\DeclareMathOperator{\pess}{pess}
+\DeclareMathOperator{\opti}{opti}
+\newcommand{\argmax}{\operatornamewithlimits{argmax}}
+
+\captionsetup{compatibility=false}
+
+
 %\usepackage{subfig}
 
 
@@ -535,8 +549,23 @@ The layout for the rest the paper is as follows. ...
 \section{Background}
 \label{sec:background}
 
-In this section, we describe the foundation of our algorithms and the terminology required to formalize the techniques. 
-We start by describing background information on general game playing (GGP). 
+In this section, we describe foundation upon which our algorithms are based. 
+We also describe the terminology required to formalize the techniques. 
+
+\subsection{Monte Carlo Tree Search}
+
+Monte Carlo Tree Search (MCTS)~\cite{Coulom06Efficient,Kocsis06Bandit} is a simulation-based search algorithm often 
+used in game trees. The main idea is to iteratively run simulations to a terminal state, incrementally 
+growing a tree rooted at the current state. 
+In its simplest form, the tree is initially empty and a single leaf is added each iteration. 
+The nodes in the tree represent game states (decision nodes) or chance events (chance nodes). 
+Each simulation starts by visiting nodes in the tree, selecting (or sampling) which actions to take based on 
+information maintained in the node, and then consequently transitioning to the successor states. 
+When a node is visited whose immediate children are not all in the tree, the node is expanded by adding a new 
+leaf to the tree. Then, a rollout policy is applied from the new leaf to a terminal state.
+The outcome of the simulation is then back-propagated to all the nodes that were visited during the simulation.
+
+Several examples for standard MCTS, including diagrams and pseudo-code, can be found in~\cite{Browne12MCTSSurvey}.
 
 \subsection{General Game Playing}
 
@@ -594,10 +623,10 @@ non-equilibrium strategy has a best response, which will make it win less than $
 than $V^*$ against weak opponents. After the opponent makes a sub-optimal move, the strategy will never allow it to gain the loss back. 
 The value $V^*$ is known as the minimax-optimal value of the game and is the same for every equilibrium profile by von Neumann's minimax theorem.
 
-A two-player simultaneous move game is a specific type of two-player imperfect information extensive-form 
-game. In imperfect information games, states are grouped into {\it information sets}: two states $s, s' \in I$ if the player 
-to act at $I$ cannot distinguish which of these states the game is currently in. Any simultaneous move game can be modeled 
-using an information set to represent a half-completed transition, \ie $\cT(s, a_1, ?)$ or $\cT(s, ?, a_2)$. 
+%A two-player simultaneous move game is a specific type of two-player imperfect information extensive-form 
+%game. In imperfect information games, states are grouped into {\it information sets}: two states $s, s' \in I$ if the player 
+%to act at $I$ cannot distinguish which of these states the game is currently in. Any simultaneous move game can be modeled 
+%using an information set to represent a half-completed transition, \ie $\cT(s, a_1, ?)$ or $\cT(s, ?, a_2)$. 
 
 An example of a simultaneous move game is depicted in Figure~\ref{fig:example}. 
 The model described above is similar to a two-player finite horizon Markov Game~\cite{Littman94markovgames}.
@@ -608,6 +637,62 @@ The model can be easily extended to include chance events~\cite{Lanctot13Goofspi
 
 In this section, we present a generalized description of Monte Carlo Tree Search for simultaneous move games. This 
 description is based on the one used in Tron~\cite{Perick12Comparison}.
+
+\newcommand{\SMMCTS}{{\sc SM-MCTS}}
+\newcommand{\ExpReq}{{\sc ExpansionRequired}}
+\newcommand{\Update}{{\sc Update}}
+\newcommand{\Select}{{\sc Select}}
+\newcommand{\Playout}{{\sc Playout}}
+
+\begin{algorithm2e}[t!]
+  \SMMCTS$($node $s$)\\                         \label{alg:function}
+  \pushline
+    \lIf{$s$ is a terminal state ($s \in \cZ$)}{\Return{$u_1(s)$}}
+    \ElseIf{$s \in T$ {\bf and} \ExpReq$(s)$}{  \label{alg:expand}
+      Choose a previously unselected $(a_1,a_2)$ \\
+      $s' \gets \cT(s,a_1,a_2)$ \label{alg:choose-expand} \\
+      Add $s'$ to $T$\\
+      $u_1 \gets$ \Playout($s'$)\\
+      $X_{s'} \gets X_{s'} + u_1$ \\
+      $n_{s'} \gets n_{s'} + 1$  \\     \label{alg:increment2}
+      \Update$(s, a_1, a_2, u_1)$\\                     \label{alg:update1}
+      {\bf return} $u_1$\\
+    }                                       
+    $(a_1, a_2) \gets $  \Select$(s)$\\        \label{alg:select}
+    $s' \gets \cT(s, a_1, a_2)$\\
+    $u_1 \gets $ \SMMCTS($s'$)\\                \label{alg:reccall}
+    \Update$(s, a_1, a_2, u_1)$ \\                      \label{alg:update2}
+    {\bf return} $u_1$\\
+  \popline
+  \vspace{0.1cm}
+  \caption{Simultaneous Move Monte Carlo Tree Search \label{alg:sm-mcts}}
+\end{algorithm2e}
+
+
+In Simultaneous Move MCTS (SM-MCTS), the main difference is that a joint action is selected. The convergence to an optimal strategy 
+depends critically on the selection and update policies applied, which are not as straightforward as in purely 
+sequential games. 
+Algorithm~\ref{alg:sm-mcts} describes a single simulation of SM-MCTS. 
+$T$ represents the MCTS tree in which each state is represented by one node. Every node $s$ maintains a 
+cumulative reward sum over all simulations through it, $X_s$, and a visit count $n_s$, both initially set to 0. 
+As with standard MCTS, when a state is visited these values are incremented on line \ref{alg:increment2}, and in the node 
+updates on lines \ref{alg:update1} and \ref{alg:update2}. 
+As seen in Figure~\ref{fig:example}, a matrix of references to the children is maintained at each decision node. 
+
+At node $s$, the estimated values $\bar{X}_{s'}$ of the children nodes $s' = \cT(s,a_1,a_2)$ over all 
+joint actions form an estimated payoff matrix for node $s$. 
+The critical parts of the algorithm are the updates on lines \ref{alg:update1} and \ref{alg:update2}, and the selection 
+on line \ref{alg:select}. Each variant below will describe a different way to select a joint action and update a decision node. 
+
+In practice, there are several optimizations to the base algorithm that might be desirable. 
+For example, if a game has a large branching factor, it may take many iterations for 
+the expansion condition and consequence in lines \ref{alg:expand} to \ref{alg:choose-expand} to fill up the matrix before 
+switching to a selection policy. 
+The matrix can instead be filled such that at least one action has been taken from each row and one from each column before switching to the selection policy. 
+Since DUCT and Exp3 do not require values for each entry in the matrix, this could reduce the number of simulations before switching 
+to $|\cA_1(s)| + |\cA_2(s)|$ from $|\cA_1(s)||\cA_2(s)|$. The use of progressive widening~\cite{Chaslot08Progressive,Coutoux11b} may also lead to deeper searches. 
+In this paper, the implementation for experiments is based on the pseudo-code presented in Algorithm~\ref{alg:sm-mcts}.
+
 
 \section{Application to General Game-Playing}
 \label{sec:appggp}
