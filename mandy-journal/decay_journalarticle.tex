@@ -1,0 +1,1385 @@
+
+%% bare_jrnl.tex
+%% V1.4
+%% 2012/12/27
+%% by Michael Shell
+%% see http://www.michaelshell.org/
+%% for current contact information.
+%%
+%% This is a skeleton file demonstrating the use of IEEEtran.cls
+%% (requires IEEEtran.cls version 1.8 or later) with an IEEE journal paper.
+%%
+%% Support sites:
+%% http://www.michaelshell.org/tex/ieeetran/
+%% http://www.ctan.org/tex-archive/macros/latex/contrib/IEEEtran/
+%% and
+%% http://www.ieee.org/
+
+
+
+% *** Authors should verify (and, if needed, correct) their LaTeX system  ***
+% *** with the testflow diagnostic prior to trusting their LaTeX platform ***
+% *** with production work. IEEE's font choices can trigger bugs that do  ***
+% *** not appear when using other class files.                            ***
+% The testflow support page is at:
+% http://www.michaelshell.org/tex/testflow/
+
+
+%%*************************************************************************
+%% Legal Notice:
+%% This code is offered as-is without any warranty either expressed or
+%% implied; without even the implied warranty of MERCHANTABILITY or
+%% FITNESS FOR A PARTICULAR PURPOSE! 
+%% User assumes all risk.
+%% In no event shall IEEE or any contributor to this code be liable for
+%% any damages or losses, including, but not limited to, incidental,
+%% consequential, or any other damages, resulting from the use or misuse
+%% of any information contained here.
+%%
+%% All comments are the opinions of their respective authors and are not
+%% necessarily endorsed by the IEEE.
+%%
+%% This work is distributed under the LaTeX Project Public License (LPPL)
+%% ( http://www.latex-project.org/ ) version 1.3, and may be freely used,
+%% distributed and modified. A copy of the LPPL, version 1.3, is included
+%% in the base LaTeX documentation of all distributions of LaTeX released
+%% 2003/12/01 or later.
+%% Retain all contribution notices and credits.
+%% ** Modified files should be clearly indicated as such, including  **
+%% ** renaming them and changing author support contact information. **
+%%
+%% File list of work: IEEEtran.cls, IEEEtran_HOWTO.pdf, bare_adv.tex,
+%%                    bare_conf.tex, bare_jrnl.tex, bare_jrnl_compsoc.tex,
+%%                    bare_jrnl_transmag.tex
+%%*************************************************************************
+
+% Note that the a4paper option is mainly intended so that authors in
+% countries using A4 can easily print to A4 and see how their papers will
+% look in print - the typesetting of the document will not typically be
+% affected with changes in paper size (but the bottom and side margins will).
+% Use the testflow package mentioned above to verify correct handling of
+% both paper sizes by the user's LaTeX system.
+%
+% Also note that the "draftcls" or "draftclsnofoot", not "draft", option
+% should be used if it is desired that the figures are to be displayed in
+% draft mode.
+%
+\documentclass[journal]{IEEEtran}
+
+% If IEEEtran.cls has not been installed into the LaTeX system files,
+% manually specify the path to it like:
+% \documentclass[journal]{../sty/IEEEtran}
+
+
+
+
+
+% Some very useful LaTeX packages include:
+% (uncomment the ones you want to load)
+
+
+% *** MISC UTILITY PACKAGES ***
+%
+%\usepackage{ifpdf}
+% Heiko Oberdiek's ifpdf.sty is very useful if you need conditional
+% compilation based on whether the output is pdf or dvi.
+% usage:
+% \ifpdf
+%   % pdf code
+% \else
+%   % dvi code
+% \fi
+% The latest version of ifpdf.sty can be obtained from:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/oberdiek/
+% Also, note that IEEEtran.cls V1.7 and later provides a builtin
+% \ifCLASSINFOpdf conditional that works the same way.
+% When switching from latex to pdflatex and vice-versa, the compiler may
+% have to be run twice to clear warning/error messages.
+
+
+
+
+
+
+% *** CITATION PACKAGES ***
+%
+\usepackage{cite,epsfig}
+% cite.sty was written by Donald Arseneau
+% V1.6 and later of IEEEtran pre-defines the format of the cite.sty package
+% \cite{} output to follow that of IEEE. Loading the cite package will
+% result in citation numbers being automatically sorted and properly
+% "compressed/ranged". e.g., [1], [9], [2], [7], [5], [6] without using
+% cite.sty will become [1], [2], [5]--[7], [9] using cite.sty. cite.sty's
+% \cite will automatically add leading space, if needed. Use cite.sty's
+% noadjust option (cite.sty V3.8 and later) if you want to turn this off
+% such as if a citation ever needs to be enclosed in parenthesis.
+% cite.sty is already installed on most LaTeX systems. Be sure and use
+% version 4.0 (2003-05-27) and later if using hyperref.sty. cite.sty does
+% not currently provide for hyperlinked citations.
+% The latest version can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/cite/
+% The documentation is contained in the cite.sty file itself.
+
+
+
+
+
+
+% *** GRAPHICS RELATED PACKAGES ***
+%
+\ifCLASSINFOpdf
+  \usepackage[pdftex]{graphicx}
+  % declare the path(s) where your graphic files are
+  % \graphicspath{{../pdf/}{../jpeg/}}
+  % and their extensions so you won't have to specify these with
+  % every instance of \includegraphics
+  % \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
+%the\else
+  % or other class option (dvipsone, dvipdf, if not using dvips). graphicx
+  % will default to the driver specified in the system graphics.cfg if no
+  % driver is specified.
+  % \usepackage[dvips]{graphicx}
+  % declare the path(s) where your graphic files are
+  % \graphicspath{{../eps/}}
+  % and their extensions so you won't have to specify these with
+  % every instance of \includegraphics
+  % \DeclareGraphicsExtensions{.eps}
+\fi
+% graphicx was written by David Carlisle and Sebastian Rahtz. It is
+% required if you want graphics, photos, etc. graphicx.sty is already
+% installed on most LaTeX systems. The latest version and documentation
+% can be obtained at: 
+% http://www.ctan.org/tex-archive/macros/latex/required/graphics/
+% Another good source of documentation is "Using Imported Graphics in
+% LaTeX2e" by Keith Reckdahl which can be found at:
+% http://www.ctan.org/tex-archive/info/epslatex/
+%
+% latex, and pdflatex in dvi mode, support graphics in encapsulated
+% postscript (.eps) format. pdflatex in pdf mode supports graphics
+% in .pdf, .jpeg, .png and .mps (metapost) formats. Users should ensure
+% that all non-photo figures use a vector format (.eps, .pdf, .mps) and
+% not a bitmapped formats (.jpeg, .png). IEEE frowns on bitmapped formats
+% which can result in "jaggedy"/blurry rendering of lines and letters as
+% well as large increases in file sizes.
+%
+% You can find documentation about the pdfTeX application at:
+% http://www.tug.org/applications/pdftex
+
+
+
+
+
+% *** MATH PACKAGES ***
+%
+\usepackage[cmex10]{amsmath}
+\usepackage{multirow}
+% A popular package from the American Mathematical Society that provides
+% many useful and powerful commands for dealing with mathematics. If using
+% it, be sure to load this package with the cmex10 option to ensure that
+% only type 1 fonts will utilized at all point sizes. Without this option,
+% it is possible that some math symbols, particularly those within
+% footnotes, will be rendered in bitmap form which will result in a
+% document that can not be IEEE Xplore compliant!
+%
+% Also, note that the amsmath package sets \interdisplaylinepenalty to 10000
+% thus preventing page breaks from occurring within multiline equations. Use:
+%\interdisplaylinepenalty=2500
+% after loading amsmath to restore such page breaks as IEEEtran.cls normally
+% does. amsmath.sty is already installed on most LaTeX systems. The latest
+% version and documentation can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/required/amslatex/math/
+
+
+
+
+
+% *** SPECIALIZED LIST PACKAGES ***
+%
+\usepackage{algorithmic}
+% algorithmic.sty was written by Peter Williams and Rogerio Brito.
+% This package provides an algorithmic environment fo describing algorithms.
+% You can use the algorithmic environment in-text or within a figure
+% environment to provide for a floating algorithm. Do NOT use the algorithm
+% floating environment provided by algorithm.sty (by the same authors) or
+% algorithm2e.sty (by Christophe Fiorio) as IEEE does not use dedicated
+% algorithm float types and packages that provide these will not provide
+% correct IEEE style captions. The latest version and documentation of
+% algorithmic.sty can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/algorithms/
+% There is also a support site at:
+% http://algorithms.berlios.de/index.html
+% Also of interest may be the (relatively newer and more customizable)
+% algorithmicx.sty package by Szasz Janos:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/algorithmicx/
+
+
+
+
+% *** ALIGNMENT PACKAGES ***
+%
+%\usepackage{array}
+% Frank Mittelbach's and David Carlisle's array.sty patches and improves
+% the standard LaTeX2e array and tabular environments to provide better
+% appearance and additional user controls. As the default LaTeX2e table
+% generation code is lacking to the point of almost being broken with
+% respect to the quality of the end results, all users are strongly
+% advised to use an enhanced (at the very least that provided by array.sty)
+% set of table tools. array.sty is already installed on most systems. The
+% latest version and documentation can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/required/tools/
+
+
+% IEEEtran contains the IEEEeqnarray family of commands that can be used to
+% generate multiline equations as well as matrices, tables, etc., of high
+% quality.
+
+
+
+
+% *** SUBFIGURE PACKAGES ***
+%\ifCLASSOPTIONcompsoc
+%  \usepackage[caption=false,font=normalsize,labelfont=sf,textfont=sf]{subfig}
+%\else
+%  \usepackage[caption=false,font=footnotesize]{subfig}
+%\fi
+% subfig.sty, written by Steven Douglas Cochran, is the modern replacement
+% for subfigure.sty, the latter of which is no longer maintained and is
+% incompatible with some LaTeX packages including fixltx2e. However,
+% subfig.sty requires and automatically loads Axel Sommerfeldt's caption.sty
+% which will override IEEEtran.cls' handling of captions and this will result
+% in non-IEEE style figure/table captions. To prevent this problem, be sure
+% and invoke subfig.sty's "caption=false" package option (available since
+% subfig.sty version 1.3, 2005/06/28) as this is will preserve IEEEtran.cls
+% handling of captions.
+% Note that the Computer Society format requires a larger sans serif font
+% than the serif footnote size font used in traditional IEEE formatting
+% and thus the need to invoke different subfig.sty package options depending
+% on whether compsoc mode has been enabled.
+%
+% The latest version and documentation of subfig.sty can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/subfig/
+
+
+
+
+% *** FLOAT PACKAGES ***
+%
+%\usepackage{fixltx2e}
+% fixltx2e, the successor to the earlier fix2col.sty, was written by
+% Frank Mittelbach and David Carlisle. This package corrects a few problems
+% in the LaTeX2e kernel, the most notable of which is that in current
+% LaTeX2e releases, the ordering of single and double column floats is not
+% guaranteed to be preserved. Thus, an unpatched LaTeX2e can allow a
+% single column figure to be placed prior to an earlier double column
+% figure. The latest version and documentation can be found at:
+% http://www.ctan.org/tex-archive/macros/latex/base/
+
+
+%\usepackage{stfloats}
+% stfloats.sty was written by Sigitas Tolusis. This package gives LaTeX2e
+% the ability to do double column floats at the bottom of the page as well
+% as the top. (e.g., "\begin{figure*}[!b]" is not normally possible in
+% LaTeX2e). It also provides a command:
+%\fnbelowfloat
+% to enable the placement of footnotes below bottom floats (the standard
+% LaTeX2e kernel puts them above bottom floats). This is an invasive package
+% which rewrites many portions of the LaTeX2e float routines. It may not work
+% with other packages that modify the LaTeX2e float routines. The latest
+% version and documentation can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/sttools/
+% Do not use the stfloats baselinefloat ability as IEEE does not allow
+% \baselineskip to stretch. Authors submitting work to the IEEE should note
+% that IEEE rarely uses double column equations and that authors should try
+% to avoid such use. Do not be tempted to use the cuted.sty or midfloat.sty
+% packages (also by Sigitas Tolusis) as IEEE does not format its papers in
+% such ways.
+% Do not attempt to use stfloats with fixltx2e as they are incompatible.
+% Instead, use Morten Hogholm'a dblfloatfix which combines the features
+% of both fixltx2e and stfloats:
+%
+% \usepackage{dblfloatfix}
+% The latest version can be found at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/dblfloatfix/
+
+
+
+
+%\ifCLASSOPTIONcaptionsoff
+%  \usepackage[nomarkers]{endfloat}
+% \let\MYoriglatexcaption\caption
+% \renewcommand{\caption}[2][\relax]{\MYoriglatexcaption[#2]{#2}}
+%\fi
+% endfloat.sty was written by James Darrell McCauley, Jeff Goldberg and 
+% Axel Sommerfeldt. This package may be useful when used in conjunction with 
+% IEEEtran.cls'  captionsoff option. Some IEEE journals/societies require that
+% submissions have lists of figures/tables at the end of the paper and that
+% figures/tables without any captions are placed on a page by themselves at
+% the end of the document. If needed, the draftcls IEEEtran class option or
+% \CLASSINPUTbaselinestretch interface can be used to increase the line
+% spacing as well. Be sure and use the nomarkers option of endfloat to
+% prevent endfloat from "marking" where the figures would have been placed
+% in the text. The two hack lines of code above are a slight modification of
+% that suggested by in the endfloat docs (section 8.4.1) to ensure that
+% the full captions always appear in the list of figures/tables - even if
+% the user used the short optional argument of \caption[]{}.
+% IEEE papers do not typically make use of \caption[]'s optional argument,
+% so this should not be an issue. A similar trick can be used to disable
+% captions of packages such as subfig.sty that lack options to turn off
+% the subcaptions:
+% For subfig.sty:
+% \let\MYorigsubfloat\subfloat
+% \renewcommand{\subfloat}[2][\relax]{\MYorigsubfloat[]{#2}}
+% However, the above trick will not work if both optional arguments of
+% the \subfloat command are used. Furthermore, there needs to be a
+% description of each subfigure *somewhere* and endfloat does not add
+% subfigure captions to its list of figures. Thus, the best approach is to
+% avoid the use of subfigure captions (many IEEE journals avoid them anyway)
+% and instead reference/explain all the subfigures within the main caption.
+% The latest version of endfloat.sty and its documentation can obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/endfloat/
+%
+% The IEEEtran \ifCLASSOPTIONcaptionsoff conditional can also be used
+% later in the document, say, to conditionally put the References on a 
+% page by themselves.
+
+
+
+
+% *** PDF, URL AND HYPERLINK PACKAGES ***
+%
+\usepackage{url}
+% url.sty was written by Donald Arseneau. It provides better support for
+% handling and breaking URLs. url.sty is already installed on most LaTeX
+% systems. The latest version and documentation can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/url/
+% Basically, \url{my_url_here}.
+
+
+
+
+% *** Do not adjust lengths that control margins, column widths, etc. ***
+% *** Do not use packages that alter fonts (such as pslatex).         ***
+% There should be no need to do such things with IEEEtran.cls V1.6 and later.
+% (Unless specifically asked to do so by the journal or conference you plan
+% to submit to, of course. )
+%I added this to get an argmax
+\newcommand{\argmax}{\operatornamewithlimits{argmax}}
+
+% correct bad hyphenation here
+\hyphenation{op-tical net-works semi-conduc-tor}
+
+
+\begin{document}
+%
+% paper title
+% can use linebreaks \\ within to get better formatting as desired
+% Do not put math or special symbols in the title.
+\title{Decaying Simulation Strategies}
+%
+%
+% author names and IEEE memberships
+% note positions of commas and nonbreaking spaces ( ~ ) LaTeX will not break
+% a structure at a ~ so this keeps an author's name from being broken across
+% two lines.
+% use \thanks{} to gain access to the first footnote area
+% a separate \thanks must be used for each paragraph as LaTeX2e's \thanks
+% was not built to handle multiple paragraphs
+%
+\author{Mandy J.W. Tak, Mark H.M. Winands, \IEEEmembership{Member, IEEE}, and Yngvi Bj{\"o}rnsson
+\thanks{Mandy Tak and Mark Winands are members of the Games and
+AI Group, Department of Knowledge Engineering, Faculty of Humanities
+and Sciences, Maastricht University, Maastricht, The Netherlands; E-mail:
+$\{$mandy.tak, m.winands$\}$@maastrichtuniversity.nl} \thanks{Yngvi Bj{\"o}rnsson is with the School of Computer Science, Reykjav{\'i}k
+University, Reykjav{\'i}k, Iceland; E-mail: yngvi@ru.is}%
+}
+
+% note the % following the last \IEEEmembership and also \thanks - 
+% these prevent an unwanted space from occurring between the last author name
+% and the end of the author line. i.e., if you had this:
+% 
+% \author{....lastname \thanks{...} \thanks{...} }
+%                     ^------------^------------^----Do not want these spaces!
+%
+% a space would be appended to the last name and could cause every name on that
+% line to be shifted left slightly. This is one of those "LaTeX things". For
+% instance, "\textbf{A} \textbf{B}" will typeset as "A B" not "AB". To get
+% "AB" then you have to do: "\textbf{A}\textbf{B}"
+% \thanks is no different in this regard, so shield the last } of each \thanks
+% that ends a line with a % and do not let a space in before the next \thanks.
+% Spaces after \IEEEmembership other than the last one are OK (and needed) as
+% you are supposed to have spaces between the names. For what it is worth,
+% this is a minor point as most people would not even notice if the said evil
+% space somehow managed to creep in.
+
+
+
+% The paper headers
+\markboth{IEEE Transactions on Computational Intelligence and AI in Games}%
+{Tak \MakeLowercase{\textit{et al.}}: Decaying Simulation Strategies}
+% The only time the second header will appear is for the odd numbered pages
+% after the title page when using the twoside option.
+% 
+% *** Note that you probably will NOT want to include the author's ***
+% *** name in the headers of peer review papers.                   ***
+% You can use \ifCLASSOPTIONpeerreview for conditional compilation here if
+% you desire.
+
+
+
+
+% If you want to put a publisher's ID mark on the page you can do it like
+% this:
+%\IEEEpubid{0000--0000/00\$00.00~\copyright~2012 IEEE}
+% Remember, if you use this you must call \IEEEpubidadjcol in the second
+% column for its text to clear the IEEEpubid mark.
+
+
+
+% use for special paper notices
+%\IEEEspecialpapernotice{(Invited Paper)}
+
+
+
+
+% make the title area
+\maketitle
+
+% As a general rule, do not put math, special symbols or citations
+% in the abstract or keywords.
+\begin{abstract}
+The aim of General Game Playing (GGP) is to create programs capable of playing a wide range of different games at an expert level, given only the rules of the game. The most successful GGP programs currently employ simulation-based Monte Carlo Tree Search (MCTS). The performance of MCTS depends heavily on the simulation strategy used. 
+In this article, we investigate the application of a decay factor for two domain-independent simulation strategies: N-Gram Selection Technique (NST) and Move-Average Sampling Technique (MAST). Three decay factor methods, called Move Decay, Batch Decay and Simulation Decay are applied. Furthermore, a combination of Move Decay and Simulation Decay is also tested. The decay variants are implemented in the GGP program \textsc{CadiaPlayer}. Four types of games are used: turn-taking, simultaneous-move, one-player and multi-player. Except for one-player games, experiments show that decaying can significantly improve the performance of both NST and MAST simulation strategies.
+\end{abstract}
+
+% Note that keywords are not normally used for peerreview papers.
+\begin{IEEEkeywords}
+General Game Playing, Monte Carlo Tree Search (MCTS), N-Grams, Decay.
+\end{IEEEkeywords}
+
+
+
+
+
+
+% For peer review papers, you can put extra information on the cover
+% page as needed:
+% \ifCLASSOPTIONpeerreview
+% \begin{center} \bfseries EDICS Category: 3-BBND \end{center}
+% \fi
+%
+% For peerreview papers, this IEEEtran command inserts a page break and
+% creates the second title. It will be ignored for other modes.
+\IEEEpeerreviewmaketitle
+
+
+\section{Introduction}
+Past research in Artificial Intelligence (AI) has focused on developing programs that can play one game at a high level. These programs generally rely on human-expert knowledge embedded into the programs by the software developers. In General Game Playing (GGP) the aim is to create programs that can learn to play a wide variety of games at an expert level. As there is no human intervention allowed, one of the main challenges in GGP is to construct programs capable of discovering and applying relevant game knowledge during play.
+Furthermore, it is no longer possible to determine beforehand which search techniques and enhancements are best suited for the game at hand. To address these challenges most successful GGP programs incorporate a wide range of AI techniques, such as knowledge representation, knowledge discovery, machine learning, heuristic search and online optimization.
+
+The first successful GGP programs, such as \textsc{ClunePlayer} \cite{Cluneplayer} and \textsc{Fluxplayer} \cite{fluxplayer2,fluxplayer1}, were based on minimax search with an automatically learned evaluation function. \textsc{ClunePlayer} and \textsc{Fluxplayer} won the International GGP competition in 2005 and 2006, respectively. However, ever since, GGP programs incorporating MCTS-based approaches have proved more successful in the competition.  In 2007, 2008, and 2012 \textsc{CadiaPlayer} \cite{BjornssonF09,finnsonphdthesis} won;  in 2009 and 2010 \textsc{Ary} \cite{ary}; and in 2011 and 2013 \textsc{Turbo Turtle} developed by Sam Schreiber. All three programs are based on MCTS, an approach particularly well suited for GGP because no game-specific knowledge is required besides the basic rules of the game.
+
+The performance of MCTS depends heavily on the simulation strategy employed in the play-out phase \cite{Gelly:2007}. As there is no game dependent knowledge available in GGP, generic simulation strategies need to be developed. Tak \emph{et al.}~\cite{ngramArticle} proposed a simulation strategy based on N-Grams, called the N-Gram Selection Technique (NST).  The new NST strategy was shown to  outperform on average the more established Move-Average Sampling Technique (MAST) \cite{FinnssonB08a}, which was employed by \textsc{CadiaPlayer} when winning the 2008 International GGP competition.
+
+The information gathered by NST and MAST is kept between successive searches. On the one hand, this reuse of information may bolster the simulation strategy as it is immediately known what the strong moves are in the play-out. On the other hand, this information can become outdated as  moves that  are strong in one phase of the game become weak in a later phase. In this article we investigate the application of a decay factor for NST and MAST statistics. The idea of decaying statistics was already applied in Discounted UCT \cite{acceleratedUCT}. In that study, decaying proved of limited use, mainly because the UCT statistics were associated with single game positions that do not get outdated (in turn-taking deterministic perfect-information games). However, schemes such as NST and MAST, which generalize statistics across a large set of game positions, may benefit from decaying as the quality of the generalization may change over time with the game situation.
+
+The article is structured as follows. First, Section \ref{sec:mcts} gives the necessary background information about  MCTS. Next, the simulation strategies NST and MAST are explained in Section \ref{sec:simstrat}. The different decay factor methods are discussed in Section \ref{sec:decay}. Subsequently, Sections \ref{sec:setup} and \ref{sec:results} deal with the experimental setup and results. Finally, Section \ref{sec:conclusions} gives conclusions and an outlook to future research. 
+
+%\section{General Game Playing}
+%\label{sec:ggp}
+%The Logic Group at Stanford University initiated the annual International GGP competition to stimulate research in the area of GGP. As a part of the initiative they developed a standard for describing the rules of a game. Subsection \ref{subsec:gdl} explains briefly how game rules are specified. Subsection \ref{subsec:gamemaster} describes how matches between GGP agents are conducted.
+%\subsection{The Game Description Language}
+%\label{subsec:gdl}
+%The rules of a game are expressed in the Game Description Language (GDL) \citebay{gdl1} which is a specialization of the Knowledge Interchange Format (KIF) \citebay{kif}. It is a first-order logic language for describing knowledge. With GDL \textit{n}-player, deterministic, perfect-information, simultaneous-move games can be described. Turn-based games are represented by introducing a so called \textit{noop} (no operation) move which has no effect and is the only possible move for the player currently not on turn. Recently, GDL-2 \citebay{gdl2} was introduced, which allows games with chance and imperfect information to be described.
+%% Below a description is given of GDL. GDL-2 is left out, because only games expressed in GDL are used in the experiments.
+%
+%In GDL a game state is represented by a set of true facts. The legal moves in that state are described with logical rules. These legal moves define the possible transitions to other states. For a detailed specification of GDL, we refer to \citeaby{gdl1}.
+%\subsection{Game-Master}
+%\label{subsec:gamemaster}
+%A game-master server orchestrates games played by GGP agents. The \textit{Dresden GGP Server} is a well-known game-master server hosted on-line \citebay{dresdenserver}. Furthermore, a standalone Java implementation is freely available under the name \textit{GameController} \citebay{gamecontroller}. The agents register themselves at the server. When the game starts, the game-master sends the rules of the game to the players, including their role, the \textit{startclock} and \textit{playclock}. The startclock is the time between receiving the rules and the first move. The playclock is the time between each move after play has started.
+%
+%Each agent sends its move to the game-master. If the moves are legal the game-master applies them to the current game state. If a player sends an illegal move it is replaced with a random move determined by the game-master. The game-master informs the agents about all moves played such that each agent can update its internal game state accordingly. The game ends when a terminal state is reached. The agents are then informed about the obtained rewards.
+
+
+\section{Monte Carlo Tree Search}
+\label{sec:mcts}
+\begin{figure*}[t!]
+\centering
+
+\includegraphics[width=5.5in]{figure1.eps}
+
+\caption{Four strategic steps in Monte Carlo Tree Search}
+\label{fig:mctsdiagram}
+\end{figure*}
+
+
+\textsc{CadiaPlayer} \cite{BjornssonF09,finnsonphdthesis} uses Monte Carlo Tree Search (MCTS) \cite{mctsBandit,mctsSelectivity} to determine which moves to play. The advantage of MCTS over minimax-based approaches is that no evaluation function is required. This makes it especially suited for GGP, in which it is difficult to come up with an accurate evaluation function.
+MCTS is a best-first search technique that gradually builds up a tree in memory. Each node in the tree corresponds to a state in the game. The edges of a node represent the legal moves in the corresponding state. Moves are evaluated based on the average return of simulated games.
+
+MCTS consists of four strategic steps \cite{mcts}, outlined in \figurename~\ref{fig:mctsdiagram}. (1) The \textit{selection step} determines how to traverse the tree from the root node to a leaf node \textit{L}. It should balance the exploitation of successful moves with the exploration of new moves. (2) In the \textit{play-out step}, a random game is simulated from leaf node \textit{L} until the end of the game.  Usually a \textit{simulation strategy} is employed to improve the play-out \cite{Gelly:2007}. (3) In the \textit{expansion step}, one or more children of \textit{L} are added. (4) In the \textit{back-propagation step}, the reward \textit{R} obtained is back-propagated through the tree from \textit{L} to the root node.
+%In this manner, the average return of each state-move pair, $Q(s,a)$, is calculated. These four steps are repeated until time is up. When time is up, \textsc{CadiaPlayer} plays the move at the root node having the highest average return.
+
+Below we describe how these four strategic steps are implemented in \textsc{CadiaPlayer}:
+\begin{enumerate}
+
+\item In the \textit{selection step} the Upper Confidence Bounds applied to Trees (UCT) algorithm \cite{mctsBandit}, which employs the UCB1 \cite{UCB1} formula, is applied to determine which moves to select in the tree. At each node \textit{s} move $a^*$ selected is given by Formula \ref{eqn:uct}.
+
+\begin{equation}
+\label{eqn:uct}
+a^* \leftarrow \argmax_{a \in A(s)} \left\{ Q(s,a) + C \sqrt{ \frac{\ln{N(s)}}{N(s,a)} }\right\}
+\end{equation}
+\\
+where $N(s)$ is the visit count of \textit{s} and $N(s,a)$ is the number of times move \textit{a} is selected in node \textit{s}. The first term, $Q(s,a)$ is the average return when move $a$ is played in state $s$. The second term increases when state $s$ is visited and siblings of $a$ are selected. If a state $s$ is visited frequently then even moves with a relatively low $Q(s,a)$ could be selected again at some point, because their second term has risen high enough. Thus, the first term supports the exploitation of successful moves while the second term establishes the exploration of infrequently visited moves. The $C$ parameter influences the balance between exploration and exploitation. Increasing $C$ leads to more exploration.
+
+If $A(s)$, the set of legal moves in state $s$, contains moves that are never visited before, then another selection mechanism is utilized, because these moves do not have an estimated value yet. If there is exactly one move that is not visited before, then this one is selected by default. If there are multiple moves that are not visited before, then the same simulation strategies as used in the play-out step are used to determine which move to select.
+%These strategies are described in Section \ref{sec:simstrat}.
+In all other cases Formula \ref{eqn:uct} is applied.
+
+
+\item During the \textit{play-out step} a complete game is simulated. The most basic approach is to play uniformly random moves. However, the play-outs can be improved significantly by playing non-uniform random moves biased by a \textit{simulation strategy} \cite{Gelly:2007}. The simulation strategies used in this article are described in Section \ref{sec:simstrat}.
+
+\item In the \textit{expansion step} nodes are added to the tree. In \textsc{CadiaPlayer}, only one node per simulation is added \cite{mctsSelectivity}. This node corresponds to the first position encountered outside the tree. Adding only one node after a simulation prevents excessive memory usage, which could occur when the simulations are fast.
+
+\item In the \textit{back-propagation step} the reward obtained in the play-out is propagated backwards through all the nodes on the path from the leaf node \textit{L} to the root node. The $Q(s,a)$ values of all state-move pairs on this path are updated with the reward that was just obtained. In GGP, the reward lies in the range [0, 100].
+\end{enumerate}
+
+More details about the implementation of \textsc{CadiaPlayer} can be found in Finnsson \cite{finnsonphdthesis}.
+
+
+\section{Simulation Strategies}
+\label{sec:simstrat}
+This section explains the simulation strategies employed in the experiments. Subsection \ref{subsec:mast} explains the Move-Average Sampling Technique used by \textsc{CadiaPlayer} when it won the AAAI 2008 GGP competition. Subsection \ref{subsec:ngramselection} explains the N-Gram Selection Technique (NST).
+
+\subsection{Move-Average Sampling Technique}
+\label{subsec:mast}
+The Move-Average Sampling Technique (MAST) \cite{FinnssonB08a,finnsonphdthesis} is based on the principle that moves good in one state are likely to be good in other states as well. The history heuristic \cite{schaeffer83}, which is used to order moves in $\alpha\beta$ search \cite{alphabeta}, is based on the same principle. For each move $a$, a global average $Q_h(a)$ is kept in memory, which is the average of the returned rewards of the play-outs in which move $a$ occurred.
+These values are used to bias the selection of moves, primarily in the play-out phase but also for tie-breaking of unexplored moves in the selection phase.  The moves are selected using a softmax-based Gibbs measure \cite{gibbs}: 
+\begin{equation}
+\label{eq:gibs}
+P(s,a) = \frac{e^{Q_h(a)/ \tau}}{\sum_{b \in A(s)} e^{Q_h(b)/ \tau}}
+\end{equation}
+where $P(s,a)$ is the probability that move $a$ will be selected in state or node $s$. Moves with a higher $Q_h(a)$ value are more likely to be selected. How greedy the selection is can be tuned with the $\tau$ parameter. In order to encourage exploration of non-visited moves, the initial $Q_h(a)$ value is set to the maximum possible score of 100.
+
+
+\subsection{N-Gram Selection Technique}
+\label{subsec:ngramselection}
+The N-Gram Selection Technique (NST) was introduced by Tak \emph{et al.} \cite{ngramArticle}. NST keeps track of move sequences as opposed to single moves as in MAST. Tak \emph{et al.} \cite{ngramArticle} showed that  NST often outperforms MAST in GGP.
+
+
+A method similar to NST has been applied successfully in Havannah \cite{havannahThesis,stankiewicz2011} and Tron \cite{thesisTron}. Another method similar to NST is called NAST (N-Gram-Average-Sampling), which is applied in Dou Di Zhu, Hearts, and Lord of the Rings: The Confrontation \cite{nast}. Furthermore, NST also bears some resemblance to the simulation strategy introduced by Rimmel and Teytaud \cite{rimmel2010multiple}, which is based on a tiling of the space of Monte Carlo simulations.
+
+
+NST is based on N-Gram models, which were invented by Shannon \cite{shanon}. An N-Gram model is a statistical model to predict the next word based on the previous N-1 words. N-Grams are often employed in statistical language processing \cite{languagebook}. N-Grams have also been applied in various research on computer games, including predicting the next move of the opponent \cite{gameswisdom,gamesbook},  extracting opening moves \cite{ngramOpening},  ordering moves \cite{bigram,ngramthesis}, and detecting forced moves  \cite{ngramForcedMove}.
+
+The N-Grams in NST consist of consecutive move sequences $z$
+%.  NST stores move sequences
+of length 1, 2, and 3. Similar to MAST, the average of the returned rewards of the play-outs is accumulated. However, the average reward for a sequence $z$, here called $R(z)$, is also kept for longer move sequences as opposed to only single moves.
+
+The N-Grams are formed as follows. After each simulation, starting at the root of the tree, for each player all move sequences of length 1, 2, and 3 that appeared in the simulated game are extracted. The averages of these sequences are updated with the obtained reward from the simulation. It is not checked whether the same move sequence occurred more than once in the simulation. Thus, if there are $m$ occurrences of the same move sequence, then the average of this sequence is updated $m$ times. For each player the extracted move sequences are stored separately. 
+
+The move sequences consist of moves from both the current player and the opponent(s). The role numbers $0, 1, 2, \cdots, n-1$, which are assigned to the players at the beginning of a game with $n$ players, are employed in order to determine the move of which opponent to include in the sequences. Suppose that the current player has role number $i$ and there are $n$ players, then the sequences are constructed as follows. A sequence of length 1 consists of just one move of the current player. A sequence of length 2 starts with a move of the player with role $\left(i+n-1 \right) \bmod{n}$ and ends with a move of the current player. A sequence of length 3 starts with a move of the player with role $\left(i+n-2 \right) \bmod{n}$, followed by a move of the player with role $\left(i+n-1 \right) \bmod{n}$ and ends with a move made by the current player. The moves in these sequences are consecutive moves.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.55]{figure2.eps}
+
+\caption{Extracted N-Grams from play-out}
+\label{fig:tilingplayerdiagrams}
+\end{figure}
+
+
+
+\figurename~\ref{fig:tilingplayerdiagrams} gives an example of a play-out. At each step, both players have to choose a move, because all games in GGP are by default simultaneous-move games. The example given here concerns a turn-taking, two-player game, which means that at each step one of the players can only play the \textit{noop} move. The example shows that these \textit{noop} moves are included in the sequences, because NST handles them as regular moves. This does not cause any problem, because these move sequences will only be used during move selection when the player is not really on turn and has the only option of choosing the \textit{noop} move. Therefore, the move sequences containing \textit{noop} moves do not influence the decision process during the play-out.
+
+If the game is truly simultaneous, then at each step all players choose an actual move instead of some players having to choose the \textit{noop} move like in turn-taking games. As explained above, NST includes only one move per step in its sequences. This means that for an $n$-player simultaneous game, moves of $n-1$ players are ignored at each step. Another possibility would have been to include the moves of all players at each step, but that would result in too specific sequences. The disadvantage of such specific sequences is that fewer statistical samples can be gathered about them, because they occur much more rarely.
+
+
+
+
+In the play-out, and at the nodes of the MCTS tree containing unvisited legal moves, the N-Grams are used to determine which move to select. For each legal move, the player determines which sequence of length 1, which sequence of length 2 and which sequence of length 3 would occur when that move is played. The sequence of length 1 is just the move itself. The sequence of length 2 is the move itself appended to the last move played by the player with role $\left(i+n-1 \right) \bmod{n}$. The sequence of length 3 is the move itself appended to the previous last move played by the player with role  $\left(i+n-2 \right) \bmod{n}$ and the last move played by the player with role $\left(i+n-1 \right) \bmod{n}$.  Thus, in total three sequences could occur. The player then calculates a score $T(a)$ for a move by taking the unweighted average of the $R(z)$ values stored for these sequences. In this calculation, the $R(z)$ values for the move sequences of length 2 and length 3 are only taken into account if they are visited at least \textit{k} times. 
+
+
+If a move has been played at least once, but the sequences of length 2 and length 3 occurred fewer than $k$ times, then the $R(z)$ value of the move sequence of length 1 (which is the move itself) will be returned.
+%In the performed experiments, $k=7$. 
+The $k$ parameter thus prevents move sequences with only a few visits from being considered.
+
+If a move has never been played before, then no move sequences exist and the calculation outlined above is not possible. In that case, the score is set to the maximum possible value of 100 to bias the selection towards unexplored moves.
+
+
+In this manner, a score $T(a)$ is assigned to each legal move $a$ in a given state. These scores are then used with $\epsilon$-greedy~\cite{suttonBarto,Sturtevant2008} to determine which move to select. With a probability of $1-\epsilon$ the move with the highest $T(a)$ value is selected, otherwise a legal move is chosen uniformly at random.
+
+
+\section{Decay Factor}
+\label{sec:decay}
+
+\begin{figure}[t!]
+\centering
+\includegraphics[trim=0cm 0cm 0cm 0cm, clip=true, scale=0.5]{figure3.eps}
+
+\caption{Why a decay factor can be useful}
+\label{fig:decayFigure}
+\end{figure}
+
+
+
+The information gathered by NST and MAST is kept between successive searches. On the one hand, this reuse of information may bolster the simulation strategy  as it is immediately known what the strong moves are in the play-out. This is especially important in GGP as the number of simulations to gather information is quite low. On the other hand, this information can become outdated as moves that are strong in one phase of the game are weak in another phase. Moreover, statistics can be mostly gathered for a particular part of the search tree that subsequently is not reached as the opponent moves differently from what was anticipated.
+Therefore we propose to introduce a decay factor. Applying a decay factor can be done in different ways. For NST in particular, we investigate the following three methods. 
+
+For the first two decay methods, all move sequences are multiplied with a decay factor $\gamma \in [0,1]$. In \textbf{Move Decay}, the decay takes place after an actual move is made in the game. \textbf{Batch Decay} takes place after a fixed number of simulations. Both methods can be represented by Equation \ref{eq:firstSecondDecayMethod}. In this equation, $Z$ is a set containing all stored N-Grams, $z$ represents an N-Gram, and $V(z)$ represents the visit count of N-Gram $z$.
+
+\begin{equation}
+\label{eq:firstSecondDecayMethod}
+	\forall z \in Z , V(z) \leftarrow \gamma \cdot V(z)  
+\end{equation}
+
+In the third method, called \textbf{Simulation Decay}, the decay factor $\omega$ is applied after each simulation. The decay is only applied to the N-Grams that were played in the simulation. If an N-Gram occurred multiple times in a simulation, that N-Gram will be decayed multiple times. This method is shown below, in which $H \subseteq Z$ represents all the N-Grams that occurred in the simulation.
+
+
+\begin{algorithmic}
+\label{algThirdSimulationMethod}
+\FOR{$i=1$ to $|H|$}
+\STATE	$V(i) \leftarrow \omega \cdot V(i)$ 
+\ENDFOR
+\end{algorithmic}
+
+
+We suspect the first method to work best, because after an agent and the opponent(s) actually make their moves, the game state changes and the $R(z)$ values are probably no longer relevant in the new game state. Figure \ref{fig:decayFigure} sketches this phenomenon. Simulations performed in the left part of the tree have updated the $R(z)$ values, while after the actual moves are played this part of the tree is probably not used any more. Therefore, the $R(z)$ values were updated based on simulations that do not reflect the actual progress of the game. 
+
+
+%For NST in particular, it would mean that the $R(z)$ values, which store the average rewards per move sequence, should change based on the current state of the game. A decay factor would cause more recent simulations to have added weight on the $R(z)$ values. It is implemented such that after a move is applied in the actual game, the visit count of all the stored sequences is multiplied by a decay factor $\gamma \in [0, 1]$. A decay factor of 1 means that there is no decay. During the search no decaying takes place --- only after an actual move is made in the current game state are the visit counts of the corresponding $R(z)$ values discounted. 
+%The discount is done after an actual move in the game, because after an actual move in the game the game state changes which means that the old $R(z)$ statistics are probably no longer valid. 
+
+
+
+We remark that Stankiewicz \cite{havannahThesis} introduced the first method and showed that for NST a decay factor between 0 and 0.25 performs best in Havannah. A decay factor of 0 means that the results are reset before each move. NST with a decay factor of 0 resembles in many ways the Last-Good-Reply Policy (LGRP) \cite{DrakeLastGoodReply,LGRBaier}. In LGRP the most recent successful replies are stored in memory  and a reply is removed from memory when it is no longer successful. Note that the three proposed decay methods can be equally well applied to MAST.
+
+A somewhat different approach to decaying UCT values, called Discounted UCT, was evaluated by Hashimoto \emph{et al.} \cite{acceleratedUCT} in the games Othello, Havannah, and Go. The decaying method did, however, not improve performance. 
+
+\section{Experimental Setup}
+
+\label{sec:setup}
+The N-Gram adjustments are implemented in \textsc{CadiaPlayer} in order to investigate the effectiveness for GGP. This program is called CP$_{\textrm{NST}}$. The program using MAST instead of NST is called CP$_{\textrm{MAST}}$. In Subsection \ref{subsec:games} an overview is given on the games used in the experiments. In Subsection \ref{subsec:setup} the setup of the experiments is described.
+
+\subsection{Games}
+\label{subsec:games}
+The games and their characteristics are shown in Table \ref{table:games}. For a brief description of the games, see Appendix \ref{appendix:games}.
+These games were chosen because they are used in several previous \textsc{CadiaPlayer} experiments \cite{finnssonthesis,FinnssonB08a,FinnssonB09a,BjornssonF09,FinnssonB10a,FinnssonB11a,finnsonphdthesis}. \textit{Pawn Whopping} and \textit{Frogs and Toads} were used during the \textit{German Open in GGP} of 2011 \cite{germanopen}. Furthermore, this selection contains different types of games. Namely, one-player games, two-player games, multi-player games, constant-sum games and general-sum games. All games can be found on the Dresden GGP Server\cite{dresdenserver}.
+
+\begin{table}[h]
+\caption{Games used in the experiments}
+\footnotesize
+\label{table:games}
+\centering
+\begin{tabular}{|c|c|c|c|}
+
+\hline
+ \multirow{2}{*}{\textbf{Game}} & \multirow{2}{*}{\textbf{Players}} & \textbf{Simul-} & \textbf{Constant-} \\
+  & & \textbf{\textbf{taneous}} & \textbf{Sum}  \\
+\hline\hline
+Sudoku\_simple & 1 & n/a & n/a   \\ \hline
+StatespaceLarge & 1 & n/a & n/a  \\ \hline
+Queens & 1 & n/a & n/a   \\ \hline
+Pancakes88 & 1 & n/a  & n/a   \\ \hline
+MaxKnights & 1 & n/a & n/a   \\ \hline
+Frogs and Toads & 1 &n/a & n/a   \\ \hline
+\hline
+Zhadu & 2 & No & Yes   \\ \hline
+GridGame2 & 2 & No & No    \\ \hline
+3DTicTacToe & 2 & No & Yes     \\ \hline
+TTCC4 & 2 & No & No   \\ \hline
+Connect5 & 2 & No & Yes     \\ \hline
+Checkers & 2 & No & Yes     \\ \hline
+Breakthrough & 2 & No & Yes    \\ \hline
+Knightthrough & 2 & No & Yes  \\ \hline
+Othello & 2 & No & Yes     \\ \hline
+Skirmish & 2 & No & No    \\ \hline
+Merrills & 2 & No & Yes    \\ \hline
+Quad & 2 & No & Yes     \\ \hline
+Sheep and Wolf & 2 & No & Yes     \\ \hline
+\hline
+Farmers & 3 & No & No     \\ \hline
+TTCC4 3P & 3 & No & No     \\ \hline
+Chinese Checkers 3P & 3 & No & No \\ \hline
+\hline
+Battle & 2  & Yes  & No      \\ \hline
+Chinook & 2  & Yes  & No    \\ \hline
+Runners & 2  & Yes &  No   \\ \hline
+Pawn Whopping & 2  & Yes  & Yes  \\ \hline
+\end{tabular}
+\end{table}
+
+
+
+
+
+\subsection{Setup}
+\label{subsec:setup}
+In all experiments two variants of \textsc{CadiaPlayer} are matched against each other. For NST, $\epsilon$ is set to 0.2, because it turned out to work best in \cite{ngramArticle}. The \textit{k} parameter is set to 7, because it then makes sure that the N-Grams of length 2 and 3 are not applied when they have been rarely visited. 
+For determining an appropriate value for $k$, we experimented with different values of $k$ using a smaller test-suit where $k$=7 edged out other settings. However, it seems as the agent's performance is not that sensitive to the exact value of $k$ (as long as it is not set unreasonably high).  For example, our trials with $k \in \{0, 7, 14\}$ resulted in a typical performance difference within $\pm$ 4\% on individual games and a comparable overall average performance.  We would thus not expect much different results, even if other (reasonable) values of $k$ were to be chosen.
+
+The $\tau$ parameter of the Gibbs measure used in \textsc{CadiaPlayer} was left unchanged to its preset value of 10. 
+
+%Different versions of the \textsc{CadiaPlayer} program are used, but for comparisons within tables the program versions are kept the same.
+
+%\begin{table*}[bt]
+%\caption{Win \%  of CP$_{\textrm{NST}}$ with $\kappa=7$ against CP$_{\textrm{NST}}$ with $\kappa \in \left\{ {0, 14}\right\}$, both without decay, startclock$=$70s, playclock$=$40s, on gogeneral}
+%\label{table:experimentTuningK}
+%\centering
+%\begin{tabular}{|c|c|c|}
+%\hline
+% \textbf{Game} & $\kappa=0$ & $\kappa=14$ \\
+%\hline\hline
+%3DTicTacToe & 45.2 ($\pm 3.51)$ & 54.3 ($\pm 4.30)$\\ 
+%Connect5 & 53.4 ($\pm 3.47)$ & 53.3 ($\pm 4.39)$ \\ 
+%Checkers & 55.0 ($\pm 5.45)$ & 49.8 ($\pm 5.44)$\\ 
+%Merrills & 48.9 ($\pm 4.82)$ & 47.4 ($\pm 5.03)$\\ 
+%Quad & 56.8 ($\pm 2.82)$ & 51.0 ($\pm 4.86)$\\ 
+%\hline
+%Battle & 40.7 ($\pm 3.42)$ & 43.2 ($\pm 4.44)$ \\ 
+%Chinook & 54.4 ($\pm 3.67)$ & 48.9 ($\pm 5.05)$\\ 
+% \hline
+%\end{tabular}
+%\end{table*}
+
+% All programs using NST cut off simulations that take more than 400 moves. All programs using MAST also cut off simulations that take more than 400 moves, except for the program using MAST in Table \ref{table:exp2b} which does not cut off.  
+
+In GGP, the time setting is defined by a \textit{startclock} and a \textit{playclock}. The \textit{startclock} is the time between the GGP programs receive the rules and the game starts. The \textit{playclock} is the time per move. In the experiments, two different time settings are used. Usually a startclock of 60s and a playclock of 30s is employed, but in the experiments where CP$_{\textrm{NST}}$ plays against CP$_{\textrm{MAST}}$ the startclock is set to 70s and the playclock is set to 40s. 
+
+Different time settings are used, because on the one hand, we want to have a high number of simulations per move, but on the other hand, it takes much computation time.
+
+In all experiments, the programs switch roles such that no one has any advantage. For the two-player games, there are two possible configurations. For the three-player games, there are eight possible configurations, where two of them consist of three times the same player. Therefore, only six  configurations are employed in the experiments \cite{Sturtevant2008}. All experiments, except the one-player experiments, are performed on 
+%\textit{gogeneral}, this machine 
+a computer consisting of 64 AMD Opteron 6174 2.2 Ghz cores, called gogeneral. The one-player experiments are performed on a computer consisting of 48 AMD Opteron 6274 2.2 Ghz cores, called go4nature01. %The experiments are performed such that when experiments have to be compared against each other, they are are performed on the same hardware.
+
+%In the first experiment it is investigated how the different methods of forming the N-Grams perform. The original version, already presented by \citeaby{ngramArticle}, uses the \textit{Mix} setting (CP$_{\textrm{NST-Mix}}$). This version is matched against the other two N-Gram forming methods, namely \textit{Opp} and \textit{Own}. These N-Gram forming methods were explained in Subsection \ref{subsec:formingNGrams}. When for a particular game \textit{Mix} performs worse than \textit{Opp} or \textit{Own} additional experiments are run for this game. These experiments are between the original \textsc{CadiaPlayer} using MAST(CP$_{\textrm{MAST}}$) and \textsc{CadiaPlayer} using NST. They are validation experiments in order to investigate whether the different N-Gram forming method is really better than \textit{Mix}.
+
+
+\label{sec:expSetup}
+\section{Experimental Results}
+
+\begin{table*}[t]
+%Epsilon greedy is checked and is enabled
+\caption{Win \% of CP$_{\textrm{NST}}$ using Move Decay with different values of $\gamma$ against CP$_{\textrm{NST}}$ without decay, startclock$=$60s, playclock$=$30s, on gogeneral}
+\small
+\label{table:exp2}
+\centering
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+ \textbf{Game} & $ \gamma = 0$ & $ \gamma = 0.2$ & $ \gamma = 0.4$ & $ \gamma = 0.6$ & $ \gamma = 0.8$\\
+\hline\hline
+Zhadu & 26.6 ($\pm 3.75 )$ & 32.4 ($\pm 4.05)$ & 36.5  ($\pm 3.80)$ & 47.0  ($\pm 3.67) $ & 47.4 ($\pm 4.97)$ \\  
+GridGame2 & 49.4  ($\pm 5.38)$ & 49.9  ($\pm 3.43)$ &  50.5 ($\pm 4.11)$ &  49.8 ($\pm 3.43 )$ & 49.3  ($\pm 4.58)$  \\ 
+3DTicTacToe & 66.5 ($\pm 4.97)$ & 69.0 ($\pm 3.53)$ &  66.2 ($\pm 4.29)$ & 61.8  ($\pm 4.82)$ &  58.2 ($\pm 4.85)$  \\ 
+TTCC4 &  27.5 ($\pm 4.75)$ & 44.4 ($\pm 5.04)$ & 47.9 ($\pm 4.51)$ &  52.5 ($\pm 5.63)$ & 51.7 ($\pm 4.33 )$  \\ 
+Connect5 &  61.1 ($\pm 4.72)$ & 69.1 ($\pm 4.19)$ & 65.7 ($\pm 4.02)$ & 66.2 ($\pm 3.69 )$ &  59.4 ($\pm 4.99)$  \\ 
+Checkers &  45.6 ($\pm 4.76)$ & 54.0 ($\pm 4.72)$ &  63.3 ($\pm 4.41)$ &  60.8 ($\pm 5.38 )$ & 62.6 ($\pm 5.46)$  \\ 
+Breakthrough &  37.3 ($\pm 5.22)$ & 41.9 ($\pm 4.36 )$ & 45.5 ($\pm 4.25)$ & 44.6  ($\pm 5.18)$ & 53.6  ($\pm 5.62)$  \\ 
+Knightthrough &  46.4 ($\pm 5.62)$ & 38.1  ($\pm 4.95)$ & 43.6 ($\pm 4.64)$ &  44.1 ($\pm 5.58 )$ & 54.6  ($\pm 5.60)$  \\ 
+Othello & 36.1 ($\pm 5.29)$ & 44.4 ($\pm 4.17)$ & 45.2 ($\pm 4.02)$ & 49.1 ($\pm 5.46)$ & 48.1 ($\pm 5.58)$  \\ 
+Skirmish &  51.0 ($\pm 5.28)$ & 49.1 ($\pm 5.28 )$ & 53.2 ($\pm 4.85)$ & 55.1 ($\pm 4.40)$ & 52.2  ($\pm 4.48)$  \\ 
+Merrills & 58.3 ($\pm 4.32)$ & 58.6 ($\pm 5.05)$ & 58.3  ($\pm 3.89)$ & 60.7 ($\pm 5.02 )$ & 55.6 ($\pm 5.22)$ \\ 
+Quad & 61.5  ($\pm 3.87)$ & 68.7 ($\pm 3.63 )$ &  67.2 ($\pm 3.37 )$ & 65.3 ($\pm 3.11)$ & 60.4  ($\pm 4.25)$ \\ 
+Sheep and Wolf & 44.3 ($\pm 4.11 )$ & 44.0 ($\pm 3.41)$ & 47.2 ($\pm 4.08)$ & 49.0 ($\pm 3.46)$ & 52.2 $\pm 5.47)$ \\ 
+\hline
+Farmers & 44.9 ($\pm 4.11)$ & 52.7  ($\pm 2.62)$ &  53.0 ($\pm 3.13)$ & 50.3  ($\pm 2.62)$ & 50.3 ($\pm 4.10)$ \\ 
+TTCC4 3P & 53.2 ($\pm 5.65 )$ & 56.2 ($\pm 4.31)$ &  54.6 ($\pm 3.96)$ & 54.5  ($\pm 3.59)$ & 56.2  ($\pm 5.61)$ \\ 
+Chinese Checkers 3P &  41.4 ($\pm 5.09)$ & 50.7  ($\pm 4.24)$ & 53.2 ($\pm 4.67)$ & 51.3  ($\pm 4.29)$ & 51.0  ($\pm 5.66)$ \\ 
+\hline
+Battle & 56.6 ($\pm 5.32)$ & 65.6 ($\pm 4.46)$ &  63.8 ($\pm 4.15)$ &  64.5 ($\pm 5.03 )$ &  59.3 ($\pm 5.15)$ \\ 
+Chinook &  45.7 ($\pm 5.30)$ & 55.0 ($\pm 4.75 )$ &  57.3 ($\pm 4.36 )$ & 56.9  ($\pm 5.31 )$ & 54.4 ($\pm 5.36)$ \\ 
+Runners &  55.8 ($\pm 4.73)$ & 53.4 ($\pm 4.66)$ & 49.7  ($\pm 4.66)$ & 49.5  ($\pm 4.67)$ & 52.1  ($\pm 3.98)$ \\ 
+Pawn Whopping & 47.2 ($\pm 2.72)$ & 50.2 ($\pm 2.72)$ & 51.5 ($\pm 2.71)$ & 50.0 ($\pm 2.71)$ & 50.3  ($\pm 2.30)$ \\ \hline 
+\end{tabular}
+\end{table*}
+
+\label{sec:results}
+In the experiments, it is examined how the different decay factor methods perform. In the first set of experiments, \textit{Move Decay} is tested on CP$_{\textrm{NST}}$ and CP$_{\textrm{MAST}}$. After tuning the parameters, the best version of CP$_{\textrm{MAST}}$ is matched against the best version of CP$_{\textrm{NST}}$. Furthermore, the \textit{Move Decay} is also tested on one-player games. 
+In all experiments that follow, only CP$_{\textrm{NST}}$ is employed, because of computational constraints. In the second and the third sets of experiments \textit{Batch Decay} and \textit{Simulation Decay} are tested, respectively. In the last set of experiments, \textit{Simulation Decay} is mixed with \textit{Move Decay}.
+
+
+
+
+% In the first experiment, the original N-Gram player, CP$_{\textrm{NST}}$, is matched against CP$_{\textrm{NST}}$ with \textit{MoveDecay}. In the second experiment, the best decay factor deduced from the first experiment is used when CP$_{\textrm{NST}}$ is matched against CP$_{\textrm{MAST}}$ to further validate whether the decay factor is a genuine improvement. In the fourth experiment, the \textit{MoveDecay} is applied to single player games. In the fifth experiment, it is investigated how well the \textit{BatchDecay} performs. Based on the result of the first experiment, we have only selected games for which decaying was beneficial. In the sixth experiment the \textit{SimulationDecay} is tested in CP$_{\textrm{NST}}$. In the seventh experiment CP$_{\textrm{MAST}}$ with decay after an actual move in the game is matched against CP$_{\textrm{MAST}}$ without decay to investigate whether decaying is beneficial for MAST as well. In the eight experiment, CP$_{\textrm{MAST}}$ with \textit{MoveDecay} is matched against CP$_{\textrm{NST}}$ without decay in order to validate the results. In the ninth and last experiment, CP$_{\textrm{MAST}}$ with its optimal decay factor for MoveDecay is matched against CP$_{\textrm{NST}}$ with its optimal decay factor.  
+The table of the one-player games shows the average score over at least 300 games with a 95\% confidence interval.
+All other tables show the win rate averaged over at least 300 games, and a 95\% confidence interval. %%The amount of games played varied depending on the size of the confidence interval.
+The win rate is calculated as follows. For the two-player games, each game won gives a score of 1 point and each game that ends in a draw results in a score of $\frac{1}{2}$ point. The win rate is the sum of these points divided by the total number of games played. For the three-player games, a similar calculation is performed except that draws are counted differently. If all three players obtained the same reward, then the draw is counted as $\frac{1}{3}$ point. If two players obtained the same, highest reward, the draw is counted as $\frac{1}{2}$ point for the corresponding players.
+
+
+\subsection{Move Decay}
+
+\subsubsection{Move Decay in NST}
+Table \ref{table:exp2} shows the win rate of CP$_{\textrm{NST}}$ with decay versus CP$_{\textrm{NST}}$ without decay. Note that no decay means that $\gamma = 1$. The results show that decay may improve the program. Furthermore, the results demonstrate that simply resetting the NST statistics at each move (which means $\gamma = 0$) can decrease the performance significantly in some games (i.e., Zhadu, TTCC4, Breakthrough, Othello and Chinese Checkers 3P). The best results were obtained for $\gamma = 0.4$ and $\gamma = 0.6$.  For picking the best value there are two criteria of interest: the best overall {\em average performance} and {\em robustness}. For the latter we used the metric: the number of games showing statistically significant improvement minus the number of games showing statistically significant deterioration.  When overall performance and robustness do not agree on a best setting some objectivity may be called for.  However, in this case this was unnecessary as the chosen settings were the best according to both metrics (for NST $\gamma=0.6$ was a clear winner on both metrics, but for MAST there was a close call between $\gamma=0.4$ and $\gamma=0.6$, both having the same robustness but the former edging out on overall average performance, 57.6\% vs. 56.8\%).
+
+\begin{table}[h!]
+%Results in this table are checked and ok
+%The ngram player used epsilon greedy, is checked and ok
+\caption{Win \% of CP$_{\textrm{NST}}$ using Move Decay with $\gamma \in \{1,0.6\}$ against CP$_{\textrm{MAST}}$ without decay, startclock$=$70s, playclock$=$40s, on gogeneral}
+\label{table:exp2b}
+\centering
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+ \textbf{Game} & $ \gamma = 1$ & $ \gamma = 0.6$\\
+\hline\hline
+Zhadu & 74.9 ($\pm 4.51)$ & \textbf{75.5} ($\pm 4.39)$ \\ 
+GridGame2 & 52.3 ($\pm 3.79)$ & \textbf{52.8}  ($\pm 4.52$)   \\ 
+3DTicTacToe & 73.3 ($\pm 3.87)$ & \textbf{80.4} ($\pm 3.59)$   \\ 
+TTCC4 & \textbf{85.4} ($\pm 2.18)$ & 84.4 ($\pm 1.69)$ \\ 
+Connect5 & 70.4 ($\pm 3.57)$ & \textbf{78.9} ($\pm 3.79)$  \\ 
+Checkers &  68.9 ($\pm 5.14)$ & \textbf{80.0} ($\pm 4.38)$   \\ 
+Breakthrough & 63.7 ($\pm 3.69)$ & \textbf{72.3}  ($\pm 2.82)$   \\ 
+Knightthrough & 47.7 ($\pm 5.29)$ & \textbf{50.0} ($\pm 5.30)$   \\ 
+Othello & \textbf{67.4} ($\pm 4.54)$ & 67.0 ($\pm 4.55)$   \\ 
+Skirmish & 69.6  ($\pm 5.01)$ & \textbf{70.1}  ($\pm 5.03 )$  \\ 
+Merrills & 44.6 ($\pm 2.81)$ & \textbf{50.9}  ($\pm 2.82)$  \\ 
+Quad & 79.1 ($\pm 2.96 )$ & \textbf{92.3} ($\pm 2.30)$   \\ 
+Sheep and Wolf & 61.1 ($\pm 3.94)$ & \textbf{61.3} ($\pm 4.73)$   \\ 
+\hline
+Farmers & 72.2 ($\pm 2.64)$ & \textbf{73.1}  ($\pm 3.11)$  \\ 
+TTCC4 3P & 53.2 ($\pm 3.66)$ & \textbf{58.1} ($\pm 2.43)$  \\ 
+Chinese Checkers 3P & \textbf{57.6} ($\pm 4.87)$ & 55.1  ($\pm 5.32 )$  \\ 
+\hline
+Battle & 19.2  ($\pm 4.01)$ &  \textbf{29.8} ($\pm 4.69)$  \\ 
+Chinook & 73.7 ($\pm 2.88)$ & \textbf{79.4} ($\pm 1.96 )$  \\ 
+Runners & 35.7  ($\pm 4.62)$ &  \textbf{36.7} ($\pm 4.60)$  \\ 
+Pawn Whopping & \textbf{52.2} ($\pm 2.80 )$ & 51.3 ($\pm 2.80)$  \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table*}[t]
+%Results in this table are checked and ok
+%Epsilon greedy is not used so thats ok
+\caption{Win \% of CP$_{\textrm{MAST}}$ using Move Decay with different values of $\gamma$ against CP$_{\textrm{MAST}}$ without decay, startclock$=$60s, playclock$=$30s, on gogeneral}
+\label{table:expMast}
+\centering
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+ \textbf{Game} & $ \gamma = 0$ & $ \gamma = 0.2$ & $ \gamma = 0.4$ & $ \gamma = 0.6$ & $ \gamma = 0.8$\\
+\hline\hline
+Zhadu & 52.8 ($\pm 3.73)$ & 51.2 ($\pm 4.44)$ & 58.9 ($\pm 3.71)$ & 54.2 ($\pm 3.78)$ & 53.4 ($\pm 2.66)$ \\ 
+GridGame2 & 50.0 ($\pm 3.56)$ & 50.0 ($\pm 4.01)$ & 50.0 ($\pm 3.28)$ & 49.9 ($\pm 3.26)$ & 50.0 ($\pm 2.84)$  \\ 
+3DTicTacToe & 88.0 ($\pm 1.95)$ & 92.4 ($\pm 2.00)$ & 91.3 ($\pm 1.80)$ & 87.7 ($\pm 2.10)$ & 77.3 ($\pm 2.35)$  \\ 
+TTCC4 & 48.3 ($\pm 3.65)$ & 50.4 ($\pm 4.54)$ & 52.7 ($\pm 3.81)$ & 52.0 ($\pm 3.81)$ & 50.6 ($\pm 2.75)$  \\ 
+Connect5 & 77.6 ($\pm 3.04)$ & 76.4 ($\pm 3.81)$ & 76.3 ($\pm 3.16)$ & 68.8 ($\pm 3.44)$ & 61.7 ($\pm 3.19)$   \\ 
+Checkers & 59.1 ($\pm 4.43)$ & 67.4 ($\pm 4.58)$ & 67.4 ($\pm 4.28)$ & 65.0 ($\pm 4.45)$ & 62.7 ($\pm 4.07)$  \\ 
+Breakthrough & 53.2 ($\pm 5.03)$ & 53.0 ($\pm 4.11)$ & 56.7 ($\pm 4.67)$ & 58.0 ($\pm 4.91)$ & 55.4 ($\pm 3.53)$  \\ 
+Knightthrough & 53.2 ($\pm 3.92)$ & 54.3 ($\pm 3.22)$ & 53.4 ($\pm 4.25)$ & 52.2 ($\pm 4.21 )$ & 52.2 ($\pm 2.79)$  \\ 
+Othello & 43.4 ($\pm 5.13)$ & 44.9 ($\pm 4.22)$ & 47.9 ($\pm 5.56)$ & 46.2 ($\pm 5.11)$ & 46.3 ($\pm 3.64)$  \\ 
+Skirmish & 49.6 ($\pm 4.08 )$ & 48.6 ($\pm 5.22)$ & 49.4 ($\pm 4.39)$ & 51.6 ($\pm 4.40)$ & 48.7 ($\pm 2.89)$  \\
+Merrills & 53.5 ($\pm 3.71)$ & 54.7 ($\pm 3.98)$ & 50.6 ($\pm 5.24)$ & 52.1 ($\pm 5.23)$ & 51.1 ($\pm 3.69)$ \\ 
+Quad & 72.2 ($\pm 2.86)$ & 77.8 ($\pm 3.17)$ & 76.6 ($\pm 2.72)$ & 73.9 ($\pm 2.80)$ & 65.1 ($\pm 2.13)$  \\ 
+Sheep and Wolf & 50.0 ($\pm 3.92)$ & 51.2 ($\pm 4.40)$ & 51.1 ($\pm 3.58)$ & 49.2 ($\pm 3.59)$ & 50.4 ($\pm 3.15)$  \\ 
+\hline
+Farmers & 48.3 ($\pm 2.90)$ & 54.3 ($\pm 3.25)$ & 53.6 ($\pm 2.66)$ & 53.9 ($\pm 4.95)$ & 50.5 ($\pm 2.33)$ \\ 
+TTCC4 3P & 51.9 ($\pm 3.37)$ & 49.6 ($\pm 4.37)$ & 53.8 ($\pm 3.64)$ & 54.0 ($\pm 3.64)$ & 51.9 ($\pm 3.19)$ \\ 
+Chinese Checkers 3P & 52.9 ($\pm 4.06)$ & 53.1 ($\pm 5.20)$ & 48.0 ($\pm 4.39)$ & 51.8 ($\pm 4.36)$ & 49.7 ($\pm 2.86)$ \\ 
+\hline
+Battle & 50.5 ($\pm 3.57)$ & 50.2 ($\pm 2.93)$ & 49.4 ($\pm 3.84)$ & 52.6 ($\pm 3.82)$ & 48.1 ($\pm 3.34)$ \\ 
+Chinook & 53.1 ($\pm 3.70)$ & 62.0 ($\pm 4.64)$ & 63.5 ($\pm 3.86)$ & 60.2 ($\pm 3.95)$ & 60.1 ($\pm 2.76)$ \\ 
+Runners & 51.8 ($\pm 4.42)$ & 53.8 ($\pm 5.03)$ & 51.6 ($\pm 4.11)$ & 52.5 ($\pm 4.08)$ & 50.3 ($\pm 3.55)$ \\ 
+Pawn Whopping & 49.9 ($\pm 2.78)$ & 50.1 ($\pm 3.13)$ & 50.6 ($\pm 2.56)$ & 49.5 ($\pm 4.78)$ & 49.2 ($\pm 2.24)$ \\ \hline
+\end{tabular}
+\end{table*}
+
+
+In order to validate the results, the CP$_{\textrm{NST}}$ with $\gamma = 0.6$ is matched against CP$_{\textrm{MAST}}$ with $\gamma = 1$. The reason for choosing $\gamma = 0.6$ for CP$_{\textrm{NST}}$ rather than the seemingly equally performing $\gamma = 0.4$, is because that parameter setting seems to be slightly more robust, that is, it hardly ever performs worse against the non-decaying program. Furthermore, the average over all games is highest for $\gamma=0.6$, namely 54.1\%
+As a reference experiment, CP$_{\textrm{NST}}$ with $\gamma = 1$ played against CP$_{\textrm{MAST}}$ with $\gamma = 1$. The results of the validation are given in Table \ref{table:exp2b}. Win rates in bold indicate that they are the highest win rates of their rows. This result shows that in nine games the performance of the program with a decay factor of $\gamma = 0.6$ is significantly better than the program without a decay factor (i.e., 3DTicTacToe, Connect5, Checkers, Breakthrough, Merrills, Quad, TTCC4 3P, Battle, and Chinook). In the other games, the performance is approximately equal. We suspect that games in which the quality of a move highly depends on the game state and current phase of the game, can be improved by using a decay factor. Games without this property may profit less from a decay factor. This line of reasoning is supported by the results. Namely in Othello the decay factor did not improve the results. In this game there are certain moves that are always good independent of the game state, like placing a stone in the corner. 
+
+
+Also, as reported previously by Tak \emph{et al.} \cite{ngramArticle}, we see that NST is mostly superior to MAST as a general move-selection strategy, with the notable exceptions of the simultaneous-move games Battle and Runners. Both these games could be classified as greedy as opposed to strategic, that is, the same greedy action is often the best independent of the current state and the recent move history (for example, in Runners the furthest advancing action is the best one to take in all game states); such situations are best-case scenarios for MAST.
+
+
+
+
+
+
+
+
+
+\subsubsection{Move Decay in MAST}
+\label{subsubsec:decMast}
+
+As shown in the previous subsection, positive results are obtained with decay after an actual move in the game. Therefore, we tested whether \textit{Move Decay} also works for other simulation strategies, CP$_{\textrm{MAST}}$ in this case. CP$_{\textrm{MAST}}$ with \textit{Move Decay} was matched against CP$_{\textrm{MAST}}$ without decay. The results are shown in Table \ref{table:expMast}. Again, we see that a decay factor may improve the program. In contrast with NST, simply resetting the statistics each move (which means $\gamma = 0$) has approximately the same or better performance than no decay. The result shows that in six games the performance of the program with a decay factor of $\gamma = 0.4$ is significantly better than the program without a decay factor (i.e., Zhadu, 3DTicTacToe, Connect5, Checkers, Quad and Chinook). The performance stays approximately the same in the other games. Furthermore, we notice that there is an overlap with NST in the games where decaying is effective (3DTicTacToe, Connect5, Checkers and Quad). This can be explained by the fact that the N-Grams of length 1 are in essence the same as MAST, which means that NST will behave similar to MAST when these techniques are changed in the same way (e.g., with a decay factor).
+
+In order to validate the results in a non-selfplay experiment, the CP$_{\textrm{MAST}}$ with $\gamma = 0.4$ was matched against CP$_{\textrm{NST}}$ with $\gamma = 1$. CP$_{\textrm{MAST}}$ with $\gamma = 0.4$ is used, because that appears to be the optimal value. It has the highest win rate over all the games, namely 57.6\%. As a reference experiment, CP$_{\textrm{MAST}}$ with $\gamma = 1$ played against CP$_{\textrm{NST}}$. The results of the validation are given in Table \ref{table:expMastvsNST}. It shows again that the same four games profit from a decay factor, namely 3DTicTacToe, Connect5, Checkers, and Quad.
+
+
+
+
+
+
+\begin{table}[h!]
+%Results in this table are checked and ok
+%The ngram player used epsilon greedy, is checked and ok
+\caption{Win \% of CP$_{\textrm{MAST}}$ using Move Decay and $\gamma \in \{1,0.4\}$ against CP$_{\textrm{NST}}$ without decay, startclock$=$70s, playclock$=$40s, on gogeneral}
+\label{table:expMastvsNST}
+\centering
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+ \textbf{Game} & $ \gamma = 1$ & $ \gamma = 0.4$\\
+\hline\hline
+Zhadu & 20.3 ($\pm 3.81)$ & \textbf{24.1} ($\pm 4.18)$ \\ 
+GridGame2 & 47.2 ($\pm 5.16)$ & \textbf{47.7} ($\pm 4.10)$   \\ 
+3DTicTacToe & 28.2 ($\pm 4.00)$ & \textbf{69.8} ($\pm 4.00)$   \\ 
+TTCC4 & 16.7 ($\pm 3.67)$ & \textbf{17.2} ($\pm 3.05)$ \\ 
+Connect5 & 26.7 ($\pm 4.21)$ & \textbf{59.6} ($\pm 4.23)$  \\ 
+Checkers & 27.5 ($\pm 4.84)$ & \textbf{47.0} ($\pm 5.50)$   \\ 
+Breakthrough & \textbf{31.8} ($\pm 4.76)$ & 25.4 ($\pm 4.34)$   \\ 
+Knightthrough & 49.4 ($\pm 5.28)$ & \textbf{51.3} ($\pm 4.53)$   \\ 
+Othello & \textbf{34.9} ($\pm 4.67)$ & 28.4 ($\pm 4.42)$   \\ 
+Skirmish & 27.8 ($\pm 4.94)$ & \textbf{33.8} ($\pm 5.25)$  \\ 
+Merrills & 48.2 ($\pm 4.66)$ & \textbf{54.3} ($\pm 5.31)$  \\ 
+Quad & 27.5 ($\pm 3.80)$ & \textbf{61.1} ($\pm 3.46)$   \\ 
+Sheep and Wolf & \textbf{36.3} ($\pm 4.43)$ & 34.9 ($\pm 4.31)$   \\ 
+\hline
+Farmers & 33.2 ($\pm 3.79)$ & \textbf{33.9} ($\pm 3.02)$  \\ 
+TTCC4 3P & 42.5 ($\pm 4.54)$ & \textbf{47.3} ($\pm 4.49)$  \\ 
+Chinese Checkers 3P & 36.7 ($\pm 5.20)$ & \textbf{41.8} ($\pm 5.32)$  \\ 
+\hline
+Battle & 76.9 ($\pm 4.02)$ & \textbf{79.0} ($\pm 3.25)$  \\ 
+Chinook & 27.8 ($\pm 3.47)$ & \textbf{36.3} ($\pm 3.39)$  \\ 
+Runners & \textbf{67.5} ($\pm 4.82)$ & 63.6 ($\pm 4.88)$  \\ 
+Pawn Whopping & 46.5 ($\pm 3.77)$ & \textbf{47.7} ($\pm 3.01)$  \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table*}[t]
+\caption{Average scores of CP$_{\textrm{MAST}}$ using Move Decay with $\gamma \in \left\{ {0.4, 1.0}\right\}$ and CP$_{\textrm{NST}}$ using Move Decay with $\gamma \in \left\{ {0.6, 1.0}\right\}$, startclock$=$70s, playclock$=$40s, on go4nature01}
+\label{table:singlePlayerExperiments}
+\centering
+\begin{tabular}{|c|c|c| |c|c|}
+\hline
+ \multirow{2}{*}{\textbf{Game}} & CP$_{\textrm{MAST}}$  & CP$_{\textrm{MAST}}$ & CP$_{\textrm{NST}}$ & CP$_{\textrm{NST}}$ \\
+  & $\gamma=0.4$ & $\gamma=1.0$ & $\gamma=0.6$ & $\gamma=1.0$ \\
+\hline\hline
+Sudoku\_simple & 38.0 ($\pm 0.81)$ & 38.4 ($\pm 0.85)$ & 65.5 ($\pm 1.20)$ & 62.5 ($\pm 1.15)$\\ 
+StatespaceLarge & 30.9 ($\pm 0.62)$ & 30.3 ($\pm 0.53)$ & 29.3 ($\pm 0.36)$ & 30.0 ($\pm 0.45)$\\
+Queens & 82.4 ($\pm 0.65)$ & 81.5 ($\pm 0.67)$ & 86.7 ($\pm 0.59)$ & 85.9 ($\pm 0.57)$\\ 
+Pancakes88 & 61.1 ($\pm 0.78)$ & 61.0 ($\pm 0.80)$ & 55.7 ($\pm 0.79)$ & 55.5 ($\pm 0.82)$\\ 
+MaxKnights & 65.4 ($\pm 1.89)$ & 65.9 ($\pm 1.98)$ & 67.5 ($\pm 1.84)$ & 70.5 ($\pm 1.95)$\\ 
+Frogs and Toads & 53.8 ($\pm 0.66)$ & 54.2 ($\pm 0.65)$ & 66.6 ($\pm 0.40)$ & 62.9 ($\pm 0.38)$\\ 
+
+ \hline
+\end{tabular}
+\end{table*}
+
+\subsubsection{Move Decay in One-Player Games}
+The reasoning behind a decay factor is that during a game, the learned information can become outdated when the opponent selects a branch the current player did not investigate thoroughly. In one-player games this problem does not occur, therefore we expect decay not to be beneficial in one-player games. Table \ref{table:singlePlayerExperiments} shows indeed that there is hardly any improvement by using a decay factor. As it can be easily detected how many players a game has, there is no problem, because when it detects that it is a one-player game it can switch off the decay method.
+
+
+
+
+\subsubsection{Move Decay in NST versus Move Decay in MAST}
+In \cite{ngramArticle} it is shown that NST outperforms MAST. The aim of this experiment is to find out whether this relation still holds when \textit{Move Decay} is used. In this experiment, NST with \textit{Move Decay} is matched against MAST with \textit{Move Decay}. Both programs are using their optimal parameter settings found in the previous experiments. Table \ref{table:NSTvsMAST} shows the results. In 11 games, NST is clearly significantly better than MAST. Only in 4 games, 3DTicTacToe, Knightthrough, Battle and Runners, MAST performs significantly better than NST. These results are in line with the earlier obtained results. For instance, Tables \ref{table:exp2b} and \ref{table:expMastvsNST} show that for 3DTicTacToe CP$_{\textrm{MAST}}$ profits much more from the decay factor than CP$_{\textrm{NST}}$ does. Namely, the win rate for CP$_{\textrm{MAST}}$ rises from 28.2\% to 69.8\% when decay is enabled, while the win rate for CP$_{\textrm{NST}}$ only goes up from 73.3\% to 80.4\%.
+
+
+
+\begin{table}[h]
+\vspace{-12pt}
+%Results are checked and ok
+%The ngram player used epsilon greedy, is checked and ok
+\caption{Win \%  of CP$_{\textrm{NST}}$ using Move Decay with $\gamma=0.6$ against CP$_{\textrm{MAST}}$ using Move Decay with $\gamma=0.4$, startclock$=$70s, playclock$=$40s, on gogeneral}
+\label{table:NSTvsMAST}
+\centering
+\begin{tabular}{|c|c|}
+\hline
+ \textbf{Game} & \\
+\hline\hline
+Zhadu & 70.3 ($\pm 5.17)$  \\ 
+GridGame2 & 52.7 ($\pm 2.01)$   \\ 
+3DTicTacToe & 38.1 ($\pm 5.04)$   \\ 
+TTCC4 & 80.9 ($\pm 3.67)$  \\ 
+Connect5 & 52.6 ($\pm 2.48)$   \\ 
+Checkers & 65.6 ($\pm 3.20)$    \\ 
+Breakthrough & 73.9 ($\pm 4.89)$    \\ 
+Knightthrough & 44.1 ($\pm 2.44)$    \\ 
+Othello & 65.8 ($\pm 5.03)$    \\ 
+Skirmish & 73.4 ($\pm 4.71)$   \\ 
+Merrills & 51.5 ($\pm 2.83)$   \\ 
+Quad & 52.9 ($\pm 2.04)$ \\ 
+Sheep and Wolf & 63.0 ($\pm 5.09)$ \\ 
+\hline
+Farmers & 66.0 ($\pm 4.19)$  \\ 
+TTCC4 3P & 56.8 ($\pm 3.01)$  \\ 
+Chinese Checkers 3P & 56.7 ($\pm 3.35)$ \\ 
+\hline
+Battle & 27.2 ($\pm 4.13)$  \\ 
+Chinook & 70.0 ($\pm 4.50)$   \\ 
+Runners & 34.5 ($\pm 4.69)$ \\ 
+Pawn Whopping & 50.7 ($\pm 2.14)$  \\ \hline
+\end{tabular}
+\vspace{-12pt}
+\end{table}
+
+
+\subsection{Batch Decay}
+In this experiment, the aim is to find out whether besides \textit{Move Decay}, \textit{Batch Decay} also performs well. \textit{Batch Decay} has two parameters, namely a decay factor $\lambda$ and batch size $B$. First, the best $\lambda$ is found by running experiments with $\lambda \in \left\{ {0.6, 0.7, 0.8, 0.9}\right\}$ and $B \in \left\{ {25, 50, 100}\right\}$ for the three games \textit{Quad}, \textit{Connect5} and \textit{Chinook}. The results are shown in Table~\ref{table:experimentBatchDecayLambda}. It shows that for \textit{Chinook}, a $\lambda$ of 0.9 is clearly the optimal value. Only for this value of $\lambda$, the win rate becomes more than 50\% for $B=50$ and $B=100$. Therefore, we select a $\lambda$ of 0.9 for the rest of the experiments, because for both \textit{Quad} and \textit{Connect5} the win rates for the three different batch sizes are always above 50\%. 
+
+\begin{table}[h!]
+%Results are checked and ok.
+%Epsilon greedy is enabled so ok.
+\caption{Win \%  of CP$_{\textrm{NST}}$ using Batch Decay with batch size $B$ and decay factor $\lambda$ against CP$_{\textrm{NST}}$ without decay, startclock$=$60s, playclock$=$30s, on gogeneral}
+\label{table:experimentBatchDecayLambda}
+\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+ & & \textbf{Connect5} & & \\
+
+	$B$  & \textbf{$\lambda$} = 0.6 & \textbf{$\lambda$} = 0.7 & \textbf{$\lambda$} = 0.8 & \textbf{$\lambda$} = 0.9\\
+\hline\hline
+25  & 54.1 ($\pm 5.09)$ & 60.4 ($\pm 5.01)$ & 59.4 ($\pm 4.86)$ & 64.0 ($\pm 4.81)$\\ 
+50  & 60.5 ($\pm 4.04)$ & 60.8 ($\pm 4.06)$ & 64.7 ($\pm 3.97)$ & 66.6 ($\pm 3.92)$\\ 
+100 & 65.0 ($\pm 4.77)$ & 62.0 ($\pm 3.64)$ & 60.9 ($\pm 5.00)$ & 59.2 ($\pm 4.97)$\\ 
+ \hline \hline
+  & & \textbf{Quad} & & \\
+
+	$B$  & \textbf{$\lambda$} = 0.6 & \textbf{$\lambda$} = 0.7 & \textbf{$\lambda$} = 0.8 & \textbf{$\lambda$} = 0.9\\
+\hline\hline
+25  & 65.4 ($\pm 4.98)$ & 66.5 ($\pm 4.93)$ & 63.4 ($\pm 5.03)$ & 68.1 ($\pm 4.82)$\\ 
+50  & 68.7 ($\pm 4.80)$ & 67.4 ($\pm 4.83)$ & 65.8 ($\pm 4.85)$ & 60.2 ($\pm 5.04)$\\ 
+100 & 64.6 ($\pm 4.92)$ & 65.0 ($\pm 4.93)$ & 60.4 ($\pm 4.94)$ & 58.3 ($\pm 5.00)$\\ 
+ \hline  \hline
+& & \textbf{Chinook} & & \\
+
+	$B$  & \textbf{$\lambda$} = 0.6 & \textbf{$\lambda$} = 0.7 & \textbf{$\lambda$} = 0.8 & \textbf{$\lambda$} = 0.9\\
+\hline\hline
+25  & 31.7 ($\pm 5.04)$ & 33.9 ($\pm 5.11)$ & 40.3 ($\pm 5.29)$ & 39.3 ($\pm 5.29)$\\ 
+50  & 40.1 ($\pm 4.34)$ & 42.8 ($\pm 4.38)$ & 43.6 ($\pm 4.36)$ & 53.3 ($\pm 4.43)$\\ 
+100 & 45.7 ($\pm 5.39)$ & 49.1 ($\pm 4.10)$ & 54.3 ($\pm 5.44)$ & 54.5 ($\pm 5.42)$\\ 
+ \hline 
+\end{tabular}
+\end{table}
+
+
+
+\begin{table*}[t]
+%Eps greedy is checked and is used
+%Results are checked and are ok.
+\caption{Win \%  of CP$_{\textrm{NST}}$ using Batch Decay with batch size $B$ and decay factor $\lambda=0.9$ against CP$_{\textrm{NST}}$ without decay, startclock$=$60s, playclock$=$30s, on gogeneral}
+\label{table:batchExperiments}
+\centering
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+\hline
+ \textbf{Game} & $ B = 25$ & $ B = 50$ & $ B = 100$ & $ B = 150$ & $ B = 200$ \\
+\hline\hline
+3DTicTacToe & 68.3 ($\pm 3.55)$ & 71.1 ($\pm 3.49)$ & 68.5 ($\pm 3.57)$  & 67.5 ($\pm 3.55)$ & 66.4 ($\pm 3.81)$\\ 
+Connect5 & 64.0 ($\pm 4.81)$ & 66.6 ($\pm 3.92)$ & 59.2 ($\pm 4.97)$ & 60.9 ($\pm 3.76)$ & 58.2 ($\pm 4.06)$\\ 
+Checkers & 60.9 ($\pm 5.16)$ & 61.3 ($\pm 5.10)$ & 61.1 ($\pm 5.17)$ & 58.1 ($\pm 5.20)$ & 51.9 ($\pm 5.31)$\\ 
+Merrills & 57.8 ($\pm 5.19)$ & 56.5 ($\pm 5.15)$ & 54.0 ($\pm 5.22)$ & 53.7 ($\pm 5.29)$ & 53.2 ($\pm 5.26)$\\ 
+Quad & 68.1 ($\pm 4.82)$ & 60.2 ($\pm 5.04)$ & 58.3 ($\pm 5.00)$  & 56.6 ($\pm 3.30)$ & 52.9 ($\pm 3.55)$\\ 
+\hline
+Battle & 63.6 ($\pm 3.88)$ & 62.0 ($\pm 3.91)$ & 60.4 ($\pm 3.95)$ & 57.9 ($\pm 3.98)$ & 57.8 ($\pm 4.25)$\\ 
+Chinook & 39.3 ($\pm 5.29)$ & 53.3 ($\pm 4.43)$ & 54.5 ($\pm 5.42)$ & 56.4 ($\pm 4.06)$ & 57.9 ($\pm 4.02)$\\ 
+ \hline
+\end{tabular}
+\end{table*}
+In the second experiment, the aim is to find out how the \textit{Batch Decay} performs in the games for which the \textit{Move Decay} performed well. The results are shown in Table \ref{table:batchExperiments}. The best results are obtained for $n=50$. For this particular value, the \textit{Batch Decay} always improved the playing strength, except for Chinook were there was no positive or negative effect on the playing strength.
+
+In the third experiment, all games (except the one-player games) are employed and CP$_{\textrm{NST}}$ using \textit{Batch Decay} with batch size 50 and decay factor 0.9 plays against CP$_{\textrm{NST}}$ without decay. The results of this experiment are shown in Table \ref{table:batchDecayFinal}. It appears that for \textit{3DTicTacToe} and \textit{Farmers} the \textit{Batch Decay} is a little bit better than the results shown for CP$_{\textrm{NST}}$ in Table \ref{table:exp2} at $\gamma=0.6$. However, for most of the games \textit{Move Decay} is at least as good as the \textit{Batch Decay}. Furthermore, \textit{Move Decay} is much better than the \textit{Batch Decay} in Zhadu, TTCC4, and Breakthrough. Therefore, \textit{Batch Decay} does not seem to be a good alternative to \textit{Move Decay}. Furthermore, \textit{Move Decay} might be preferred, because it has only one parameter to tune instead of two.
+
+
+
+
+
+\begin{table}[h!]
+%Results are checked and ok
+%Epsilon greedy is enabled for both players so thats ok.
+\caption{Win \%  of CP$_{\textrm{NST}}$ using Batch Decay with batch size $B=50$ and decay factor $\lambda=0.9$ against CP$_{\textrm{NST}}$ without decay, startclock$=$60s, playclock$=$30s, on gogeneral}
+\label{table:batchDecayFinal}
+\centering
+\begin{tabular}{|c|c|}
+\hline
+ \textbf{Game} & \\
+\hline\hline
+Zhadu & 32.6 ($\pm 3.32)$  \\ 
+GridGame2 & 48.9 ($\pm 3.42)$   \\ 
+3DTicTacToe & 71.1 ($\pm 3.49)$   \\ 
+TTCC4 & 31.2 ($\pm 3.68)$  \\ 
+Connect5 & 66.6 ($\pm 3.92)$   \\ 
+Checkers & 61.3 ($\pm 5.10)$    \\ 
+Breakthrough & 31.9 ($\pm 5.01)$    \\ 
+Knightthrough & 42.8 ($\pm 4.17)$    \\ 
+Othello & 47.4 ($\pm 5.45)$    \\ 
+Skirmish & 52.6 ($\pm 3.97)$   \\ 
+Merrills & 56.5 ($\pm 5.15)$   \\ 
+Quad & 60.2 ($\pm 5.04)$ \\ 
+Sheep and Wolf & 42.7 ($\pm 3.39)$ \\ 
+\hline
+Farmers & 57.7 ($\pm 3.90)$  \\ 
+TTCC4 3P & 54.9 ($\pm 3.58)$  \\ 
+Chinese Checkers 3P & 49.6 ($\pm 4.26)$ \\ 
+\hline
+Battle & 62.0 ($\pm 3.91)$  \\ 
+Chinook & 53.3 ($\pm 4.43)$   \\ 
+Runners & 55.3 ($\pm 4.03)$ \\ 
+Pawn Whopping & 50.4 ($\pm 4.96)$  \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table*}[t]
+%Eps greedy is checked and is enabled
+%Results are checked and are ok
+\caption{Win \% of CP$_{\textrm{NST}}$ using Simulation Decay with decay factor $\omega$ against CP$_{\textrm{NST}}$ without decay, startclock$=$60s, playclock$=$30s, on gogeneral}
+\label{table:experimentSimulationDecayKappa}
+\centering
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+	\textbf{Game}  & \textbf{$\omega$} = 0.85 & \textbf{$\omega$} = 0.90 & \textbf{$\omega$} = 0.94 & \textbf{$\omega$} = 0.97 & \textbf{$\omega$} = 0.99\\
+\hline \hline
+
+Connect5  & 38.6 ($\pm 5.03)$ & 53.2 ($\pm 4.96)$ & 64.5 ($\pm 5.33)$ & 58.4 ($\pm 4.90)$ & 59.2 ($\pm 5.08)$\\ 
+Quad  & 58.0 ($\pm 5.00)$ & 64.6 ($\pm 4.16)$ & 66.3 ($\pm 4.71)$ & 64.0 ($\pm 4.18)$ & 60.1 ($\pm 4.87)$\\ 
+Chinook & 36.5 ($\pm 5.19)$ & 52.4 ($\pm 5.36)$ & 56.6 ($\pm 5.36)$ & 50.9 ($\pm 5.38)$ & 56.6 ($\pm 5.36)$\\ 
+ \hline 
+
+\end{tabular}
+\end{table*}
+
+%Table \ref{table:batchExperiments} shows the win rate of CP$_{\textrm{NST}}$ with decay versus CP$_{\textrm{NST}}$ without decay. The win rates in bold indicate that they are the highest win rate of their row. The results indicate that decaying after a fixed number of simulations may improve the program, but may also harm the program. Furthermore, the improvements are less profound than those reported with Table \ref{table:exp2}. For example, although 3DTicTacToe and Quad both show an improvement when decaying after a fixed number of simulations, then this improvement is less than when the decay is applied after each move in the game. However, it should be noted that it is possible that other values for $\lambda$ and $n$ lead to better results. Due to computational constraints, we could not test more combinations. Nevertheless, this result does suggest that decaying after each move in the game is better than decaying after a fixed number of simulations. Also, in the former case there is only one parameter ($\gamma$) to tune instead of two ($\lambda$ and $n$). 
+
+
+\subsection{Simulation Decay}
+The goal of this experiment is to find out whether \textit{Simulation Decay} can be an alternative to \textit{Move Decay}. It has only one parameter $\omega$. This parameter is tuned over the three games Connect5, Quad, and Chinook. The results are shown in Table \ref{table:experimentSimulationDecayKappa}. According to this Table, $\omega=0.94$ performs best. In the next experiment, CP$_{\textrm{NST}}$ with \textit{Simulation Decay} with $\omega=0.94$ is matched against CP$_{\textrm{NST}}$ without decay. Comparing the results shown in Table \ref{table:simDecay} with the results of Move Decay in Table \ref{table:exp2} at $\gamma=0.6$ it is clear that in most games the \textit{Move Decay} is at least as good as the \textit{Simulation Decay}. There are a few exceptions. The \textit{Move Decay} seems to be better than \textit{Simulation Decay} in Zhadu, TTCC4, and Chinese Checkers 3P while the \textit{Simulation Decay} appears to be better in Breakthrough, Knightthrough, and Farmers. However, the overall win rate is comparable with that of the Move Decay with $\gamma=0.6$, because both overall win rates are around 54\%.
+
+
+
+
+
+\begin{table}[h!]
+%Results are checked and ok
+%Epsilon greedy is checked and is enabled so ok.
+\caption{Win \% of CP$_{\textrm{NST}}$ using Simulation Decay with decay factor $\omega=0.94$ against CP$_{\textrm{NST}}$ without decay, startclock$=$60s, playclock$=$30s, on gogeneral}
+\label{table:simDecay}
+\centering
+\begin{tabular}{|c|c|}
+\hline
+ \textbf{Game} & \\
+\hline\hline
+Zhadu & 39.1 ($\pm 3.64)$  \\ 
+GridGame2 & 49.0 ($\pm 3.45)$   \\ 
+3DTicTacToe & 65.0 ($\pm 3.60)$   \\ 
+TTCC4 & 39.6 ($\pm 4.13)$  \\ 
+Connect5 & 64.5 ($\pm 5.33)$   \\ 
+Checkers & 56.0 ($\pm 4.46)$    \\ 
+Breakthrough & 59.6 ($\pm 4.09)$    \\ 
+Knightthrough & 52.3 ($\pm 4.28)$    \\ 
+Othello & 47.8 ($\pm 3.85)$    \\ 
+Skirmish & 54.3 ($\pm 3.11)$   \\ 
+Merrills & 59.0 ($\pm 5.04)$   \\ 
+Quad & 66.3 ($\pm 4.71)$ \\ 
+Sheep and Wolf & 53.9 ($\pm 2.82)$ \\ 
+\hline
+Farmers & 60.4 ($\pm 2.58)$  \\ 
+TTCC4 3P & 57.0 ($\pm 3.60)$  \\ 
+Chinese Checkers 3P & 43.6 ($\pm 4.23)$ \\ 
+\hline
+Battle & 53.3 ($\pm 3.97)$  \\ 
+Chinook & 56.6 ($\pm 5.36)$   \\ 
+Runners & 54.4 ($\pm 3.04)$ \\ 
+Pawn Whopping & 52.7 ($\pm 2.51)$  \\ \hline
+\end{tabular}
+\end{table}
+
+\subsection{Simulation Decay Mixed with Move Decay}
+The aim of the last experiment is to investigate whether combining two decay methods may further improve the program. We choose to mix \textit{Simulation Decay} with \textit{Move Decay}. The reason to mix these two is that with \textit{Simulation Decay} there were improvements in playing strength in some games for which no improvement was observed with \textit{Move Decay} and the other way around. For example, in Breakthrough, Knightthrough and Farmers the \textit{Simulation Decay} seems to perform better than the \textit{Move Decay}. However, in Zhadu and TTCC4 the \textit{Move Decay} appears to be better.
+We have tested two different settings. In the first setting, CP$_{\textrm{NST}}$ with \textit{Move Decay} and $\gamma=0.6$ and a \textit{Simulation Decay} with $\omega=0.94$ plays against CP$_{\textrm{NST}}$ without decay. These settings were the optimal settings when used separately and therefore when they are combined there might be too much decay. Therefore, we also test a second setting where $\gamma=0.8$ and $\omega=0.97$.
+
+The results are shown in Table \ref{table:expSimulationDecayMoveDecayMixed}. As expected, the parameters $\gamma=0.8$ and $\omega=0.97$ perform better than the settings that where optimal for \textit{Move Decay} and \textit{Simulation Decay} alone. Nevertheless, mixing the two strategies did not really improve the playing strength, because the overall average is around 54\% which is comparable with that of \textit{Move Decay} with $\gamma=0.6$. 
+
+
+\begin{table}[h]
+%The results are checked, there where small errors, but they are fixed now, so it should be correct
+%Epsilon greedy is checked and is enabled so ok.
+\caption{Win \% of CP$_{\textrm{NST}}$ using Simulation Decay and Move Decay with decay factors $\gamma \in \left\{ {0.6, 0.8}\right\}$ and $\omega \in \left\{ {0.94, 0.97}\right\}$ against CP$_{\textrm{NST}}$ without decay, startclock$=$60s, playclock$=$30s, on gogeneral}
+\label{table:expSimulationDecayMoveDecayMixed}
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+ \textbf{Game} & $\gamma=0.6$, $\omega=0.94$ & $\gamma=0.8$, $\omega=0.97$  \\
+\hline\hline
+Zhadu & 26.7 ($\pm 2.39)$  & 39.3 ($\pm 3.21)$\\ 
+GridGame2 & 49.3 ($\pm 2.65)$ & 49.3 ($\pm 3.07)$  \\ 
+3DTicTacToe & 63.3 ($\pm 2.73)$ & 68.0 ($\pm 3.14)$  \\ 
+TTCC4 & 29.8 ($\pm 2.77)$ & 41.8 ($\pm 3.74)$ \\ 
+Connect5 & 54.9 ($\pm 2.84)$ & 64.2 ($\pm 3.19)$  \\ 
+Checkers & 49.8 ($\pm 4.80)$ & 55.8 ($\pm 5.58)$   \\ 
+Breakthrough & 45.7 ($\pm 4.41)$ & 52.0 ($\pm 5.28)$    \\ 
+Knightthrough & 48.0 ($\pm 3.27)$ & 48.8 ($\pm 3.79)$    \\ 
+Othello & 40.2 ($\pm 4.13)$ & 45.9 ($\pm 4.87)$   \\ 
+Skirmish & 51.4 ($\pm 3.40)$ & 54.0 ($\pm 3.95)$  \\ 
+Merrills & 54.9 ($\pm 3.94)$ & 58.2 ($\pm 4.52)$  \\ 
+Quad & 63.1 ($\pm 2.44)$ & 64.4 ($\pm 2.77)$ \\ 
+Sheep and Wolf & 47.7 ($\pm 2.63)$ & 54.1 ($\pm 3.18)$ \\ 
+\hline
+Farmers & 59.7 ($\pm 1.98)$ & 61.8 ($\pm 2.28)$ \\ 
+TTCC4 3P & 55.8 ($\pm 2.76)$ & 55.6 ($\pm 3.21)$ \\ 
+Chinese Checkers 3P & 41.2 ($\pm 3.22)$ & 52.3 ($\pm 3.79)$ \\ 
+\hline
+Battle & 62.1 ($\pm 2.95)$ & 60.3 ($\pm 3.43)$ \\ 
+Chinook & 48.8 ($\pm 3.09)$ & 55.9 ($\pm 3.56)$   \\ 
+Runners & 52.5 ($\pm 3.33)$ & 49.5 ($\pm 3.83)$ \\ 
+Pawn Whopping & 50.7 ($\pm 2.19)$ & 50.9 ($\pm 2.23)$ \\ \hline
+\end{tabular}
+\end{table}
+
+
+
+\section{Conclusions and Future Work}
+
+\label{sec:conclusions}
+In this article, we experimented with applying a decay factor to simulation strategies in the domain of GGP. We tested three variants of decaying, namely \textit{Move Decay}, \textit{Batch Decay} and \textit{Simulation Decay}. Furthermore, we also experimented with combining \textit{Move Decay} with \textit{Simulation Decay}. \textit{Move Decay} decays after each move, \textsl{Batch Decay} decays after a fixed number of simulations and \textit{Simulation Decay} decays after each simulation, but then only the N-Grams/moves that occurred within the simulation. While all decaying variants offer genuine improvements in playing strength in some games, the \textit{Move Decay} and \textit{Simulation Decay} appear superior.    
+
+\textit{Move Decay} was implemented in two well-established methods for simulation-biasing in GGP: NST and MAST. \textsc{CadiaPlayer}, the GGP champion in 2012, was used in the experiments. For both simulation strategies, decaying showed significant performance gains. Moreover, with decaying factors tuned to appropriately balance remembering and forgetting ($\gamma$ in the range $0.4-0.6$), the improvements were robust across a large set of disparate games. One of the recurring challenges in developing new algorithmic techniques and enhancements for GGP is to demonstrate such robustness.
+
+Decaying seems to work especially well in games where the selection of a best action is strongly influenced by local context, e.g., the current game position and recent history.
+By decaying the search statistics in such games, one still gets the generalization benefits of schemes such as NST and MAST, but with less risk of overgeneralizing. 
+
+%The only games in our test-suite in which decaying seemed somewhat harmful were Breakthrough, Knightthrough and Othello. That decay is not beneficial for Othello can be explained by that in this game there are some moves that are almost always good to play when available, independent of the current game position (e.g., placing a stone on an edge or in a corner). 
+
+Our results also confirm previous work suggesting that NST seems overall somewhat superior to MAST as a general move-selection strategy in simulation-based GGP, using both a larger test-suite of games and by running more extensive experiments than before.  The only notable exceptions were the simultaneous-move games Battle and Runners, but  both these games are somewhat greedy as opposed to strategic, that is, the same greedy action is often the best independent of the current state and the recent move history. Such situations are best-case scenarios for MAST.
+
+For future research, it would be interesting to investigate methods for setting in real-time the most appropriate decay factor and/or decay method for the game at hand. In this paper, for \textit{Move Decay} we chose to find a single decay factor that works reasonably well across many games, however, our experiments show that no single decay factor or decay method is the best for all the games in our test-suite. Therefore, determining the decay method and its parameters online can give substantial improvement. Also of interest is to investigate how a decay factor can be applied to the UCT values. Related work is the Discounted UCT, but there was no performance increase measured in Othello, Havannah, and Go  \cite{acceleratedUCT}. Furthermore, our decaying methods are heuristics and it would be interesting to investigate whether they can be combined in a way such that they minimize the mean squared error. 
+Also, although we used a constant decaying factor for this work it might be worthwhile to have it more dynamic, e.g. by being a function of the visit count. Moreover, tuning the parameters when mixing decay strategies could possibly also lead to significantly better results.
+
+
+
+\section*{Acknowledgements}
+This work is funded by the Netherlands Organisation for Scientific Research (NWO) in the framework of the project GoGeneral, grant number 612.001.121. Moreover, the authors
+would like to thank Marc Lanctot for proofreading the article and the anonymous reviewers for their helpful comments. 
+
+% if have a single appendix:
+\appendix
+\label{appendix:games}
+Below an overview is given of the games used in the experiments. Note that most of the classic games enlisted below are usually a variant of its original counterpart. The most common adjustments are a smaller board size and a bound on the number of steps.
+The following one-player games are used:
+\begin{itemize}
+\item \textit{Sudoku\_simple} is played on a grid of 9$\times$9 cells. This grid is further divided into 9, 3$\times$3 blocks of 9 cells. The aim is to put all numbers from 1 till 9 in the cells of each column, row and block. The player gets 3 points for each correctly filled row, column or block. An additional 19 points is given when the player fills the entire grid correctly.
+\item \textit{StatespaceLarge} is a game where the player controls a robot by choosing from 4 different directions. The game ends after 14 steps. The score for the player, which ranges from 7 till 100, depends on the directions chosen per step. 
+\item \textit{Queens} is an instance of the $n$-queens puzzle, where in this case $n=10$. The goal is to put 10 queens on a 10$\times$10 checkerboard in such a way that these queens do not attack each other. After placing the 10 queens, a score is calculated such that there are higher scores when fewer queens are attacking each other. A score of 100 is obtained when there is no queen attacking any other queen.
+\item \textit{Pancakes88} is a sorting game where 8 pancakes have to be put in order. Each move, the player chooses the pancake to flip which will change the order of the pancakes. If the player is able to put the pancakes in order, the score will range from 40 till 100 depending on how many steps it took to rearrange the pancakes. 0 points are scored when after 40 steps the pancakes are still not in the correct order.
+\item \textit{MaxKnights} is a bit similar to \textit{Queens}. It is played on a 8$\times$8 chessboard and each turn the player has to put a chess knight on the board. As soon as one of the knights attacks another knight the game is over. The score for the player depends on the number of knights that are put on the board.
+\item \textit{Frogs and Toads} is played on two 4$\times$4 boards which are diagonally placed along each other and share the middle cell of this diagonal. In the initial position, the board on the lower right is filled with 15 frogs and the board on the upper left is filled with 15 toads. The cell that is shared by both boards is empty. The goal of the game is to inverse the initial position. To achieve this, the player can move a frog or a toad to an empty adjacent cell (horizontal or vertical) or it may jump (horizontally or vertically) over another frog or toad into an empty cell. After 116 steps the game ends and points will be given based on how many of the frogs and toads are placed correctly.
+\end{itemize}
+The following two-player, turn-taking games are used:
+\begin{itemize}
+\item \textit{Zhadu} is a strategy game consisting of a placement phase and a movement phase. The first piece that is captured, determines what other piece need to be captured in order to win.
+\item In \textit{GridGame2} each player has to find a book, a candle and a bell. A score between 0 and 100 is given, based on how many items were found.
+\item \textit{3DTicTacToe} is a variant on Tic-Tac-Toe. It is played on a 4$\times$4$\times$4 cube and the goal is to align four pieces in a straight line.
+\item \textit{TTCC4} stands for: \textit{TicTacChessCheckersFour}. Each player has a pawn, a checkers piece and a knight. The aim of each player is to form a line of three with its own pieces.
+\item \textit{Connect5} is played on an 8$\times$8 board and the player on turn has to place a piece in an empty square. The aim is to place five consecutive pieces of the own color horizontally, vertically or diagonally, like %% \textit{Go-Moku} or%% 
+\textit{Five-in-a-Row}.
+\item \textit{Checkers} is played on an 8$\times$8 board and the aim is to capture the pieces of the opponent.
+\item \textit{Breakthrough} is played on an 8$\times$8 board. Each player starts on one side of the board and the goal is to move one of their pieces to the other side of the board.
+\item \textit{Knightthrough} is almost the same as \textit{Breakthrough}, but is played with chess knights.
+\item \textit{Othello} is played on an 8$\times$8 board. Each turn a player places a piece  of its own color on the board. This will change the color of some of the pieces of the opponent. The aim is to have the most pieces of the own color on the board at the end of the game.
+\item \textit{Skirmish} is played on an 8$\times$8 board with different kind of pieces, namely: bishops, pawns, knights and rooks. The aim is to capture as many pieces from the opponent as possible, without losing too many pieces either.
+\item \textit{Merrills} is also known as Nine Men's Morris. Both players start with nine pieces each. In order to win, pieces of the opponent need to be captured. The objective is to form a horizontal or vertical line of three pieces, called a mill, because pieces in a mill cannot be captured. The game ends when one player has only two pieces left.
+\item \textit{Quad} is played on a 7$\times$7 board. Each player has `quad' pieces and `white' pieces. The purpose of the `white' pieces is to form blockades. The player that forms a square consisting of four `quad' pieces wins the game.
+\item \textit{Sheep and Wolf} is an asymmetric game played on an 8$\times$8 board. One player controls the Sheep and the other player controls the Wolf. The game ends when none of the players can move or when the Wolf is behind the Sheep. In this case, if the Wolf is not able to move the Sheep wins. Otherwise, the Wolf wins.
+\end{itemize}
+The following three-player, turn-taking games are used:
+\begin{itemize}
+\item \textit{Farmers} is a trading game. In the beginning of the game, each player gets the same amount of money. They can use the money to buy cotton, cloth, wheat and flour. It is also possible to buy a farm or factory and then the player can produce its own products. The player that has the most money at the end of the game wins. 
+\item \textit{TTCC4 3P} is the same as \textit{TTCC4}, but then with one extra player.
+\item \textit{Chinese Checkers 3P} is played on a star shaped board. Each player starts with three pieces positioned in one corner. The aim is to move all these three pieces to the empty corner at the opposite side of the board. This is a variant of the original \textit{Chinese Checkers}, because according to the standard rules each player has ten pieces instead of three.
+\end{itemize}
+The following two-player, simultaneous-move games are used:
+\begin{itemize}
+\item \textit{Battle} is played on an 8$\times$8 board. Each player has 20 disks. These disks can move one square or capture an opponent square next to them. Instead of a move, the player can choose to defend a square occupied by their piece. If an attacker attacks such a defended square, the attacker will be captured. The goal is to be the first player to capture 10 opponent disks. 
+\item \textit{Chinook} is a variant of \textit{Breakthrough} where two independent games are played simultaneously. One game on the white squares and another one on the black squares. Black and White move their pieces simultaneously like Checkers pawns. As in Breakthrough, the first player that reaches the opposite side of the board wins the game. 
+\item In \textit{Runners} each turn both players decide how many steps they want to move forward or backward. The aim is to reach the goal location before the opponent does.
+\item \textit{Pawn Whopping} is similar to \textit{Breakthrough}, but with slightly different movement and is simultaneous.
+\end{itemize}
+
+
+These games were chosen because they are used in several previous \textsc{CadiaPlayer} experiments \cite{finnssonthesis,FinnssonB08a,FinnssonB09a,BjornssonF09,FinnssonB10a,FinnssonB11a,finnsonphdthesis}. \textit{Pawn Whopping} was used during the \textit{German Open in GGP} of 2011 \cite{germanopen}. Furthermore, this selection contains different types of games: one-player games, two-player games, multi-player games, constant-sum games and general-sum games (e.g., GridGame2, Skirmish, Battle, Chinook, Farmers and Chinese Checkers 3P belong to the latter).
+
+
+
+% or
+%\appendix  % for no appendix heading
+% do not use \section anymore after \appendix, only \section*
+% is possibly needed
+
+% use appendices with more than one appendix
+% then use \section to start each appendix
+% you must declare a \section before using any
+% \subsection or using \label (\appendices by itself
+% starts a section numbered zero.)
+%
+
+
+
+% Can use something like this to put references on a page
+% by themselves when using endfloat and the captionsoff option.
+\ifCLASSOPTIONcaptionsoff
+  \newpage
+\fi
+
+
+
+% trigger a \newpage just before the given reference
+% number - used to balance the columns on the last page
+% adjust value as needed - may need to be readjusted if
+% the document is modified later
+%\IEEEtriggeratref{8}
+% The "triggered" command can be changed if desired:
+%\IEEEtriggercmd{\enlargethispage{-5in}}
+
+% references section
+
+% can use a bibliography generated by BibTeX as a .bbl file
+% BibTeX documentation can be easily obtained at:
+% http://www.ctan.org/tex-archive/biblio/bibtex/contrib/doc/
+% The IEEEtran BibTeX style support page is at:
+% http://www.michaelshell.org/tex/ieeetran/bibtex/
+%\bibliographystyle{IEEEtran}
+% argument is your BibTeX string definitions and bibliography database(s)
+%\bibliography{IEEEabrv,../bib/paper}
+%
+% <OR> manually copy in the resultant .bbl file
+% set second argument of \begin to the number of references
+% (used to reserve space for the reference number labels box)
+\bibliographystyle{IEEEtran}
+% argument is your BibTeX string definitions and bibliography database(s)
+
+\bibliography{IEEEabrv,references}
+
+
+
+
+\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{figure4.eps}}]{Mandy Tak}
+received a M.Sc. degree in Operations Research from Maastricht University, Maastricht, The Netherlands, in January 2012. Currently, she is a Ph.D. student at the Department of Knowledge Engineering, Maastricht University. Her Ph.D. research concerns on-line learning of search control in General Game Playing.
+\end{IEEEbiography}
+
+
+\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{figure5.eps}}]{Mark Winands}
+received a Ph.D. degree in Artificial Intelligence from the Department of
+Computer Science, Maastricht University, Maastricht, The Netherlands, in 2004.
+Currently, he is an Assistant Professor at the Department of Knowledge Engineering, Maastricht University. His research interests include heuristic search, machine learning and games.
+Dr. Winands serves as a section editor of the ICGA Journal and as an associate editor of IEEE Transactions on Computational Intelligence and AI in Games.
+\end{IEEEbiography}
+
+
+\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{figure6.eps}}]{\bf Yngvi Bj\"{o}rnsson}
+is an associate professor at the School of Computer Science, Reykjav\'{i}k University and a director (and co-founder) of the CADIA research lab. He received a Ph.D in computer science from the Department of Computing Science, University of Alberta, Canada, in 2002.  His research interests are in heuristic search methods and search-control learning,  and the application of such techniques for solving large-scale problems in a wide range of problem domains, including computer games and industrial process optimization. 
+%He is also the principal investigator of the {\sc CadiaPlayer} GGP agent.
+\end{IEEEbiography}
+
+
+% You can push biographies down or up by placing
+% a \vfill before or after them. The appropriate
+% use of \vfill depends on what kind of text is
+% on the last page and whether or not the columns
+% are being equalized.
+
+%\vfill
+
+% Can be used to pull up biographies so that the bottom of the last one
+% is flush with the other column.
+%\enlargethispage{-5in}
+
+
+
+% that's all folks
+\end{document}
+
+
