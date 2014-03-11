@@ -535,8 +535,6 @@ In addition, the performance of each method in Tron varied significantly based o
 in \cite{DenTeuling12Tron}.
 These results seem to indicate that the success of each simultaneous move MCTS variant may depend largely on the particular game. 
 
-\mlanctot{I think we need some more motivation from the GGP perspective. Maybe import some text from one of Mandy's previous papers...?}
-
 In this paper, we aim to clarify the dependencies and game properties that determine the relative performance of the different 
 simultaenous move MCTS variants. First, we describe a general simultaneous move MCTS framework along with the most popular 
 techniques used to date. Then, we perform an 
@@ -555,19 +553,40 @@ We also describe the terminology required to formalize the techniques.
 \subsection{Monte Carlo Tree Search}
 
 Monte Carlo Tree Search (MCTS)~\cite{Coulom06Efficient,Kocsis06Bandit} is a simulation-based search algorithm often 
-used in game trees. The main idea is to iteratively run simulations to a terminal state, incrementally 
-growing a tree rooted at the current state. 
-In its simplest form, the tree is initially empty and a single leaf is added each iteration. 
-The nodes in the tree represent game states (decision nodes) or chance events (chance nodes). 
-Each simulation starts by visiting nodes in the tree, selecting (or sampling) which actions to take based on 
-information maintained in the node, and then consequently transitioning to the successor states. 
-When a node is visited whose immediate children are not all in the tree, the node is expanded by adding a new 
-leaf to the tree. Then, a rollout policy is applied from the new leaf to a terminal state.
-The outcome of the simulation is then back-propagated to all the nodes that were visited during the simulation.
+used in game trees. The main idea is to iteratively run simulations from the root of the search tree to a terminal 
+state of the game, incrementally growing a tree rooted at the current state of the actual match. 
+
+MCTS consists of four strategic steps. (1) The \textit{selection step} determines how to traverse the tree from the 
+root node to a leaf node of the tree \textit{L}. It should balance the exploitation of successful moves with the 
+exploration of new moves. (2) In the \textit{playout step}, a random game is simulated from leaf node of the tree 
+\textit{L} until the end of the game.  (3) In the \textit{expansion step}, one or more children of \textit{L} are 
+added. (4) In the \textit{back-propagation step}, the reward \textit{R} obtained is back-propagated through the tree 
+from \textit{L} to the root node.
 
 Several examples for standard MCTS, including diagrams and pseudo-code, can be found in~\cite{Browne12MCTSSurvey}.
+In the case of simultaneous move games, the overall process for MCTS is the same, but additional challenges are 
+introduced due to the players choosing their moves simultaneously.
 
 \subsection{General Game Playing}
+
+Most research in artificial intelligence (AI) game-playing has focused on developing programs that can play one
+game at a strong level. These programs 
+generally rely on human-expert knowledge embedded into the programs by the software developers. In General Game Playing 
+(GGP)~\cite{Genesereth05GGP} the aim is to create programs that can learn to play a wide variety of games. 
+GGP engines are given as input only the game's description, with
+human intervention disallowed, so no prior domain-specific knowledge can be incorporated ahead of time.
+
+Games rules are described using the Game Description Language~\cite{Love08GDL}. In GDL, at every state each player has 
+a set of available actions and transitions from state to state require that all players submit a legal action. In essence, 
+every game is described as a simultaneous move game, but strictly sequential games can be modeled by, at every state, 
+having the a single player with possibly many legal moves with that player's opponents restricted to a single legal 
+\textit{no-op} move. 
+ 
+General game playing is a field of AI that encourages the development of general artificial intelligence, and as such
+has generated much interest among researchers. 
+Since 2005, nine yearly GGP competitions have taken place and three academic workshops have focused on GGP. 
+Several web sites have been created to maintain software and host repositories of game descriptions, and 
+a massively open online course was given in 2013. This year's competition is set for summer of 2014. 
 
 \subsection{Simultaenous Move Games}
 
@@ -584,7 +603,7 @@ $v_{min}$ and $v_{\max}$ denoting the minimum and maximum possible utility respe
 %$\forall z \in \cZ, u_1(z) = k - u_2(z)$. 
 The game begins in an initial state $s_0$. 
 
-\begin{figure}[b!]
+\begin{figure}[t!]
 \centering
 \begin{subfigure}{6cm}
 \centering
@@ -635,14 +654,16 @@ The model can be easily extended to include chance events~\cite{Lanctot13Goofspi
 \section{Simultaneous Move MCTS}
 \label{sec:smmcts}
 
-In this section, we present a generalized description of Monte Carlo Tree Search for simultaneous move games. This 
-description is based on the one used in Tron~\cite{Perick12Comparison}.
-
 \newcommand{\SMMCTS}{{\sc SM-MCTS}}
 \newcommand{\ExpReq}{{\sc ExpansionRequired}}
 \newcommand{\Update}{{\sc Update}}
 \newcommand{\Select}{{\sc Select}}
 \newcommand{\Playout}{{\sc Playout}}
+
+In this section, we present a generalized description of Monte Carlo Tree Search for simultaneous move games. This 
+description is based on the one used in Tron~\cite{Perick12Comparison}. First, we describe the overall process. 
+Each specific step (\Select, \Update, and final move selection) depends on the chosen variant described in the 
+appropriate subsection. 
 
 \begin{algorithm2e}[t!]
   \SMMCTS$($node $s$)\\                         \label{alg:function}
@@ -684,23 +705,82 @@ joint actions form an estimated payoff matrix for node $s$.
 The critical parts of the algorithm are the updates on lines \ref{alg:update1} and \ref{alg:update2}, and the selection 
 on line \ref{alg:select}. Each variant below will describe a different way to select a joint action and update a decision node. 
 
-In practice, there are several optimizations to the base algorithm that might be desirable. 
-For example, if a game has a large branching factor, it may take many iterations for 
+In practice, there are several optimizations to the base algorithm that might be desirable.
+If a game has a large branching factor, it may take many iterations for 
 the expansion condition and consequence in lines \ref{alg:expand} to \ref{alg:choose-expand} to fill up the matrix before 
 switching to a selection policy. 
-The matrix can instead be filled such that at least one action has been taken from each row and one from each column before switching to the selection policy. 
-Since DUCT and Exp3 do not require values for each entry in the matrix, this could reduce the number of simulations before switching 
-to $|\cA_1(s)| + |\cA_2(s)|$ from $|\cA_1(s)||\cA_2(s)|$. The use of progressive widening~\cite{Chaslot08Progressive,Coutoux11b} may also lead to deeper searches. 
+The matrix can instead be filled such that at least one action has been taken from each row and one from each column before 
+switching to the selection policy. 
+Since most variants do not require values for each entry in the matrix, this could reduce the number of simulations before 
+switching to $|\cA_1(s)| + |\cA_2(s)|$ from $|\cA_1(s)||\cA_2(s)|$. The use of progressive 
+widening~\cite{Chaslot08Progressive} may also lead to deeper searches. 
 In this paper, the implementation for experiments is based on the pseudo-code presented in Algorithm~\ref{alg:sm-mcts}.
 
+\subsection{Decoupled UCT} 
+
+\subsection{Exp3}
+
+\subsection{Regret Matching}
+
+\subsection{Sequential UCT}
 
 \section{Application to General Game-Playing}
 \label{sec:appggp}
 
+In this section, we discuss specific adaptations of SM-MCTS to general game playing.
+
+\subsection{Using N-Grams for Dynamic Playout Policies}
+
+\subsection{Game Descriptions}
+
+In this subsection, we describe eight simultaneous move games used to evaluate SM-MCTS in GGP. Some of these 
+descriptions are teaken from~\cite[Appendix C]{Finnsson12}.
+
+\textit{Battle} is played on an 8$\times$8 board. Each player has 20 disks. These disks can move one square or 
+capture an opponent square next to them. Instead of a move, the player can choose to defend a square occupied by their 
+piece. If an attacker attacks such a defended square, the attacker will be captured. The goal is to be the first player 
+to capture 10 opponent disks. 
+
+\textit{Bidding Tic-Tac-Toe} is a variation of normal Tic-Tac-Toe where there is a bidding round between 
+normal play that decides who gets to place a marker on the board. Each player begins with three coins, and the 
+\textsc{x} player has an additional tiebreaker token. When a player wins a bidding round, allowing that player to 
+place a marker, the coins used to bid are given to the opponent. The tiebreaker token can optionally be used to break 
+ties, and if so, the tiebreaker token is also given to the opponent. The winning conditions are the same as 
+standard Tic-Tac-Toe. 
+
+\textit{Chinook} is a variant of \textit{Breakthrough} where two independent games are played simultaneously. 
+One game on the white squares and another one on the black squares. Black and White move their pieces simultaneously 
+like Checkers pawns. As in Breakthrough, the first player that reaches the opposite side of the board wins the game. 
+
+\textit{Goofspiel}$(N)$ is a card game where each player gets $N$ cards marked 1-$N$, and there is a central pile, 
+shuffled and face down called the point-card deck (also 1-$N$). Every turn, the top card of this point card deck flips, 
+it is called the {\it upcard}. Then, players choose a {\it bid} card from their hand and reveal it simultaneously. 
+The player with the higher bid card obtains a number of points equal to the value of the upcard. The bid cards and 
+upcard are then discarded and a new round starts. At the end of $N$ rounds, the player with the highest number of 
+points wins. If the number of points are tied, the game ends in a draw. The standard game of Goofspiel has 
+$N = 13$. In this paper, we assume that the point cards have a fixed order. 
+
+In \textit{Runners} each turn both players decide how many steps they want to move forward or backward. The aim 
+is to reach the goal location before the opponent does.
+
+\textit{Oshi-Zumo}$(N,K,M)$ is a wrestling simulation game played on a discrete single-dimensional grid with 
+$2K+1$ positions, where each player starts with $N$ coins~\cite{Buro03OshiZumo}. A wrestler token begins in the middle 
+position. Every turn, 
+each player bids $b \ge M$ coins. The coins bid are then discarded and the player bidding the most coins pushes the 
+wrestler one position closer to the goal for that player. 
+
+\textit{Pawn Whopping} is similar to Breakthrough, and is played on an 8$\times$8 board. Each player starts on
+one side of the board and the goal is to move one of their pieces to the other side of the board.
+Pawn Whopping has slightly different movement and is simultaneous.
+
+\textit{Tron} is a two-player game played on discrete two-dimensional grid possibly obstructed by walls. At each
+step in Tron both players move to adjacent cells, and a wall is placed in the cells that the player started on that turn. 
+The game is won if the opponent crashes into a wall or moves off the board. If both players crash at the same turn 
+into a wall, the game ends in a draw.
+
 \section{Empirical Evaluation}
 \label{sec:exp}
 
-\subsection{Game Descriptions}
 
 \section{Conclusion and Future Work}
 \label{sec:conc}
