@@ -600,8 +600,9 @@ transition function $\cT : \cS \times \cA_1 \times \cA_2 \mapsto \cS$ defines th
 state and actions for both players. The utility functions 
 $u_i : \cZ \mapsto [v_{\min}, v_{\max}] \subseteq \mathbb{R}$ gives the utility of player $i$, with 
 $v_{min}$ and $v_{\max}$ denoting the minimum and maximum possible utility respectively. 
-%$\forall z \in \cZ, u_1(z) = k - u_2(z)$. 
-The game begins in an initial state $s_0$. 
+The game begins in an initial state $s_0$. For the presentation of our algorithm, we assume constant-sum games, so
+$\forall z \in \cZ, u_1(z) + u_2(z) = k$. 
+
 
 \begin{figure}[t!]
 \centering
@@ -693,20 +694,20 @@ appropriate subsection.
 \end{algorithm2e}
 
 
-In Simultaneous Move MCTS (SM-MCTS), the main difference is that a joint action is selected. The convergence to an optimal strategy 
-depends critically on the selection and update policies applied, which are not as straightforward as in purely 
-sequential games. 
+In Simultaneous Move MCTS (SM-MCTS), the main difference is that a joint action is selected. The convergence to an 
+optimal strategy depends critically on the selection and update policies applied, which are not as straightforward 
+as in purely sequential games. 
 Algorithm~\ref{alg:sm-mcts} describes a single simulation of SM-MCTS. 
 $T$ represents the MCTS tree in which each state is represented by one node. Every node $s$ maintains a 
 cumulative reward sum over all simulations through it, $X_s$, and a visit count $n_s$, both initially set to 0. 
 As with standard MCTS, when a state is visited these values are incremented on line \ref{alg:increment2}, and in the node 
 updates on lines \ref{alg:update1} and \ref{alg:update2}. 
-As seen in Figure~\ref{fig:example}, a matrix of references to the children is maintained at each decision node. 
+As seen in Figure~\ref{fig:example}, a matrix of references to the children is maintained at each state. 
 
 At node $s$, the estimated values $\bar{X}_{s'}$ of the children nodes $s' = \cT(s,a_1,a_2)$ over all 
 joint actions form an estimated payoff matrix for node $s$. 
 The critical parts of the algorithm are the updates on lines \ref{alg:update1} and \ref{alg:update2}, and the selection 
-on line \ref{alg:select}. Each variant below will describe a different way to select a joint action and update a decision node. 
+on line \ref{alg:select}. Each variant below will describe a different way to select a joint action and update a node. 
 
 In practice, there are several optimizations to the base algorithm that might be desirable.
 If a game has a large branching factor, it may take many iterations for 
@@ -733,21 +734,104 @@ independently:
 a_i = \argmax_{a \in A_i(s)}{ \left\{ \bar{X}^i_{s,a} + C_i \sqrt{\frac{\ln n_s}{n_{s,a}}} \right\} }, 
   \mbox{ where } \bar{X}^i_{s,a} = \frac{X^i_{s,a}}{n_{s,a}}
 \end{equation}
-\noindent In DUCT, \Update~simply increments the values for each player $i$: $X^i_{s,a_i} \leftarrow X^i_{s,a_i} + u_i$,
+\noindent In DUCT, \Update~simply increments the decoupled values for each player $i$: $X^i_{s,a_i} \leftarrow X^i_{s,a_i} + u_i$,
 and $n_{s,a_i} \leftarrow n_{s,a_i} + 1$. 
 
 As an example, consider the game in Figure~\ref{fig:example}, with player set $\cN = \{\Max,\Min\}$, root node $s$,
 and action sets $\cA_{\Max}(s) = \{t,b\}, \cA_{\Min}(s) = \{l,r\}$ representing top, bottom, left, and right. 
 Suppose four simulations are run, and rewards received are $u_\Max = 3$ for $(t,l)$, $2$ for $(t,r)$, $1$ for $(b,l)$, 
 and $0$ for $(b,r)$. The tree would contain exactly five states: $s$, and each child of $s$. On the fifth simulation, 
-\Max chooses among $t$ and $b$ and \Min chooses among $r$ and $l$, both by using Equation~\ref{eq:duct}. 
+\Max~chooses among $t$ and $b$ and \Min~chooses among $r$ and $l$, both by using Equation~\ref{eq:duct}. 
 In this case, $\bar{X}_{s,t}^\Max = (3 + 2) / 2 = 2.5$ and $\bar{X}_{s,b}^\Max = (1 + 0) / 2 = 0.5$. 
 Supposing $v_{\max} = 4$, then $\bar{X}_{s,l}^\Min = (1 + 3) / 2 = 2$ and $\bar{X}^\Min_{s,r} = (2 + 4) / 2 = 3$. 
+
+An enhancement to the UCT selection strategy can be made by replacing the parameter $C$ by an upper bound of the variance of 
+the rewards. This is either $\frac{1}{4}$, which is an upper bound of the variance of a $\{0,1\}$-outcome Bernoulli
+random variable, or an upper confidence bound computed using Equation~\ref{ucb1tuned}. 
+This variant is referred to as UCB1-Tuned~\cite{Auer02Finite}. Then, an action is selected from parent 
+node $s$ using:
+
+\begin{equation}
+\label{ucb1tuned}
+a^* = \argmax_{a \in \cA(s)} \left\{ \bar{X}_{s,a} + \sqrt{\frac{\min(\frac{1}{4},\mathrm{Var}_{\mathit{UCB1}}(s,a)) \ln (n_{s})}{n_{s,a}}} \right\}, 
+\end{equation}
+\[
+\mbox{Var}_{\mathit{UCB1}}(s,a)=\mbox{sv}^2_{s,a}+\sqrt{\frac{2 \ln (n_{s})}{n_{s,a}}},
+\]
+where $\mbox{sv}^2_{s,a}$ is the sample variance of the observed rewards for taking action $a$ from $s$. 
+When UCB1-Tunded is used in the tree setting, we refer to it as the SM-MCTS variant {\it Decoupled UCB1-Tuned}, or DUCB1T for short.
 
 
 \subsection{Exp3}
 
+In Exp3~\cite{Exp3}, each player maintains an estimate of the sum of rewards, denoted $\hat{x}^i_{s,a}$, and visit 
+counts $n^i_{s,a}$ for each of their own actions. 
+Since these values and strategies are maintained separately for each player, 
+Exp3 is decoupled in the same sense as DUCT. 
+
+The joint action selected on line \ref{alg:select} is composed of actions independently selected for each player 
+based on a sampling probability distribution composed for each player based on $\hat{x}^i_{s,a}$. 
+The probability of sampling action $a_i$ is
+\begin{equation}
+\label{eq:exp3select}
+\sigma^t_i(s,a_i) = \frac{(1-\gamma) \exp(\eta w^i_{s,a_i})}{\sum_{a_j \in \cA_i(s)} \exp(\eta w^i_{s,a_j})} + \frac{\gamma}{|\cA_i(s)|}, \mbox{ where }
+\end{equation}
+\[ \eta = \frac{\gamma}{|\cA_i(s)|}, \mbox{ and } w^i_{s,a} = \hat{x}^i_{s,a} - \max_{a' \in \cA_i(s)} \hat{x}^i_{s,a'}. \]
+
+The update after selecting actions $(a_1,a_2)$ and obtaining a simulation result $(u_1,u_2)$ updates the visits count 
+and adds to the corresponding reward sum estimates the reward divided by the probability that the action was played by the player using
+\[n_{s,a_i} \leftarrow n_{s,a_i} + 1, ~~~ \hat{x}^i_{s,a_i} \leftarrow \hat{x}^i_{s,a_i} + \frac{u_i}{\sigma^t_i(s,a_i)}.\]
+Dividing the value by the probability of selecting the corresponding action makes $\hat{x}^i_{s,a}$ estimate the sum of rewards over all 
+iterations, not only the ones where $a_i$ was selected. 
+
+The mixed strategy used by player $i$ after the simulations are done is given by the frequencies of visit counts of the actions, 
+\[\sigma^{final}_i(s,a_i) = \frac{n_{s,a_i}}{\sum_{b_i\in A_i(s)} n_{s,b_i}}.\]
+Previous work \cite{Teytaud11Upper} suggests first removing the samples caused by the exploration. This modification proved to be useful also in our experiments, so before computing the resulting final mixed strategy, we set
+\begin{equation}
+n_{s,a_i}' \leftarrow \max\left(0,n_{s,a_i} - \frac{\gamma}{|A_i(s)|}\sum_{b_i\in A_i(s)}n_{s,b_i}\right).
+\end{equation}
+For final move selection, a move is chosen by sampling according to a distribution that normalizes $n'_{s,a_i}$. 
+
 \subsection{Regret Matching}
+
+This variant applies regret matching \cite{Hart00} to the current estimated matrix game at each stage. 
+Suppose iterations are numbered from $t \in \{ 1, 2, 3, \cdots \}$ and at each iteration and each node $s$ 
+there is a mixed strategy $\sigma_i^t(s)$ used by each player $i$ for each node $s$ in the tree, initially set to 
+uniform random: $\sigma^0_i(s,a) = 1 / |\cA(s)|$. 
+Each player $i$ maintains a cumulative regret $r^i_s[a]$ for having played $\sigma_i^t(s)$ instead of $a \in \cA_i(s)$. 
+In addition, a table for the average strategy is maintained per player as well $\bar{\sigma}^i_s[a]$. The values in 
+both tables are initially set to 0. 
+As in DUCT, the regret values $r^i_s[a_i]$ are maintained separately by each player.
+However, the updates and specifically the reward uses a value that is a function of the joint action space. 
+
+On iteration $t$, the selection policy (line \ref{alg:select} in Algorithm~\ref{alg:sm-mcts}) first builds 
+the player's current strategies from the cumulative regret. Define $x^+ = \max(x,0)$,
+\begin{equation}
+\label{eq:rm}
+\sigma^t_i(s,a) = \frac{r^i_s[a]}{R^+_{sum}} \mbox{ if } R^+_{sum} > 0 
+\mbox{ oth. } \frac{1}{|\cA_i(s)|},  
+\end{equation}
+where $R^+_{sum} = \sum_{a \in \cA_i(s)}{r^{i,+}_s[a]}$. 
+The main idea is to adjust the strategy by assigning higher weight proportionally to actions based on the regret of 
+having not taken them over the long-term. 
+To ensure exploration, an $\gamma$-on-policy sampling procedure similar to Equation~\ref{eq:exp3select} is used 
+choosing action $a$ with probability $\gamma/|\cA(s)| + (1-\gamma) \sigma^t_i(s,a)$. 
+
+The updates on line \ref{alg:update1} and \ref{alg:update2} add regret accumulated at the iteration to  
+the regret tables $r^i_s$ and the average strategy $\bar{\sigma}^i_s[a]$. 
+Suppose joint action $(a_1,a_2)$ is 
+sampled from the selection policy and utility $u_i$ is returned from the recursive call on line~\ref{alg:reccall}. 
+Label the current child $(i,j)$ estimate $\bar{X}_{s,i,j}$ and the $reward(i,j) = \bar{X}_{s,i,j}$ if 
+$(i,j) \not= (a_1,a_2)$, or $u_i$ otherwise. The updates to the regret are:
+\begin{eqnarray*}
+\forall a_1' \in \cA_1(s),  r^1_s[a_1'] \leftarrow r^1_s[a_1'] + ( reward(a_1', a_2) - u_1 ),\\
+\forall a_2' \in \cA_2(s),  r^2_s[a_2'] \leftarrow r^2_s[a_2'] + ( reward(a_1, a_2') - u_2 ),
+\end{eqnarray*}
+\noindent and average strategy updates are $\bar{\sigma}^i_s[a] \leftarrow \bar{\sigma}^i_s[a] + \sigma^t_i(s,a)$ 
+for each player.
+
+The final move for the root $s$ is chosen by sampling over the strategy obtained by 
+normalizing the values in $\bar{\sigma}_s^i$. 
 
 \subsection{Sequential UCT}
 
@@ -757,6 +841,12 @@ Supposing $v_{\max} = 4$, then $\bar{X}_{s,l}^\Min = (1 + 3) / 2 = 2$ and $\bar{
 \label{sec:appggp}
 
 In this section, we discuss specific adaptations of SM-MCTS to general game playing.
+
+In GGP, all utilities are non-negative, so without loss of generality, $v_{\min} = 0$. 
+Also, games may not be constant-sum. In our implementation, we ensure that all payoffs 
+are appropriately scaled to ensure that they are $k$-sum, with $k > 0$, by using 
+a similar transformation previously used in Cadiaplayer~\cite{Finnsson12}:
+\[ \text{\sc Scale}(u_1, u_2) = \left( \frac{u_1 - u_2 + k}{2k}, \frac{u_2 - u_1 + k}{2k} \right). \]
 
 \subsection{Using N-Grams for Dynamic Playout Policies}
 
@@ -804,7 +894,7 @@ Pawns can capture diagonally and only move forward one cell straight or diagonal
 If opposing pawns try to capture each other or move to the same square, no change is made. 
 Pawn Whopping has slightly different movement and is simultaneous.
 
-\textit{Racetrack Corridor} 
+\textit{Racetrack Corridor} is bla bla...
 
 \textit{Tron} is a two-player game played on discrete two-dimensional grid possibly obstructed by walls. At each
 step in Tron both players move to adjacent cells, and a wall is placed in the cells that the player started on that turn. 
