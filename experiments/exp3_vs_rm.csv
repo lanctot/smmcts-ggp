@@ -1,0 +1,126 @@
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,Directory on gogeneral:,Java/SimultaneousMoveGames/FinalExperiments/RandomUCT/RealExperiments_version46,,,,,,,Battle,,,,
+,,version:,GGP_MCTS46,,,,,,,Results in point of view of Exp3:,,,Results in point of view of RegretMatching,
+,,Thinking time per move:,2.5s,,,,,,,,,,,
+,,gogeneral,,,,,,,,21/03/2014_21.54,,,21/03/2014_21.54,
+,,,,,,,,,, Games played,500,, Games played,500
+,,,,,,,,,, Mean,0.426,, Mean,0.574
+,,,,,,,,,, Wins,70,, Wins,144
+,,,,,,,,,, Draws,286,, Draws,286
+,,,,,,,,,, Losses,144,, Losses,70
+,,,,,,,,,, Conf. interval binomial formula based,0.0433442822,, Conf. interval binomial formula based,0.0433442822
+,,,,,,,,,, Conf.interval 95% with n,0.0279290028,, Conf.interval 95% with n,0.0279290028
+,,,,,,,,,, Conf.interval 95% with n-1,0.0279569738,, Conf.interval 95% with n-1,0.0279569738
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,BiddingTicTacToe,,,,
+,,,,,,,,,,Results in point of view of Exp3:,,,Results in point of view of RegretMatching,
+,,,,,,,,,,,,,,
+,,,,,,,,,,21/03/2014_14.04,,,21/03/2014_14.04,
+,,,,,,,,,, Games played,500,, Games played,500
+,,,,,,,,,, Mean,0.461,, Mean,0.539
+,,,,,,,,,, Wins,224,, Wins,263
+,,,,,,,,,, Draws,13,, Draws,13
+,,,,,,,,,, Losses,263,, Losses,224
+,,,,,,,,,, Conf. interval binomial formula based,0.0436934074,, Conf. interval binomial formula based,0.0436934074
+,,,,,,,,,, Conf.interval 95% with n,0.0431181291,, Conf.interval 95% with n,0.0431181291
+,,,,,,,,,, Conf.interval 95% with n-1,0.043161312,, Conf.interval 95% with n-1,0.043161312
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,Chinook,,,,
+,,,,,,,,,,Results in point of view of Exp3:,,,Results in point of view of RegretMatching,
+,,,,,,,,,,,,,,
+,,,,,,,,,,21/03/2014_17.12,,,21/03/2014_17.12,
+,,,,,,,,,, Games played,500,, Games played,500
+,,,,,,,,,, Mean,0.915,, Mean,0.085
+,,,,,,,,,, Wins,456,, Wins,41
+,,,,,,,,,, Draws,3,, Draws,3
+,,,,,,,,,, Losses,41,, Losses,456
+,,,,,,,,,, Conf. interval binomial formula based,0.0244450584,, Conf. interval binomial formula based,0.0244450584
+,,,,,,,,,, Conf.interval 95% with n,0.0242081821,, Conf.interval 95% with n,0.0242081821
+,,,,,,,,,, Conf.interval 95% with n-1,0.0242324266,, Conf.interval 95% with n-1,0.0242324266
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,Goofspiel,,,,
+,,,,,,,,,,Results in point of view of Exp3:,,,Results in point of view of RegretMatching,
+,,,,,,,,,,,,,,
+,,,,,,,,,,21/03/2014_14.39,,,21/03/2014_14.39,
+,,,,,,,,,, Games played,500,, Games played,500
+,,,,,,,,,, Mean,0.379,, Mean,0.621
+,,,,,,,,,, Wins,187,, Wins,308
+,,,,,,,,,, Draws,5,, Draws,5
+,,,,,,,,,, Losses,308,, Losses,187
+,,,,,,,,,, Conf. interval binomial formula based,0.0425242315,, Conf. interval binomial formula based,0.0425242315
+,,,,,,,,,, Conf.interval 95% with n,0.0422977809,, Conf.interval 95% with n,0.0422977809
+,,,,,,,,,, Conf.interval 95% with n-1,0.0423401422,, Conf.interval 95% with n-1,0.0423401422
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,OshiZumo,,,,
+,,,,,,,,,,Results in point of view of Exp3:,,,Results in point of view of RegretMatching,
+,,,,,,,,,,,,,,
+,,,,,,,,,,21/03/2014_14.16,,,21/03/2014_14.16,
+,,,,,,,,,, Games played,500,, Games played,500
+,,,,,,,,,, Mean,0.235,, Mean,0.765
+,,,,,,,,,, Wins,92,, Wins,357
+,,,,,,,,,, Draws,51,, Draws,51
+,,,,,,,,,, Losses,357,, Losses,92
+,,,,,,,,,, Conf. interval binomial formula based,0.0371651353,, Conf. interval binomial formula based,0.0371651353
+,,,,,,,,,, Conf.interval 95% with n,0.0344285591,, Conf.interval 95% with n,0.0344285591
+,,,,,,,,,, Conf.interval 95% with n-1,0.0344630394,, Conf.interval 95% with n-1,0.0344630394
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,PawnWhopping,,,,
+,,,,,,,,,,Results in point of view of Exp3:,,,Results in point of view of RegretMatching,
+,,,,,,,,,,,,,,
+,,,,,,,,,,21/03/2014_12.54,,,21/03/2014_12.54,
+,,,,,,,,,, Games played,500,, Games played,500
+,,,,,,,,,, Mean,0.953,, Mean,0.047
+,,,,,,,,,, Wins,470,, Wins,17
+,,,,,,,,,, Draws,13,, Draws,13
+,,,,,,,,,, Losses,17,, Losses,470
+,,,,,,,,,, Conf. interval binomial formula based,0.0185509625,, Conf. interval binomial formula based,0.0185509625
+,,,,,,,,,, Conf.interval 95% with n,0.0171521839,, Conf.interval 95% with n,0.0171521839
+,,,,,,,,,, Conf.interval 95% with n-1,0.0171693618,, Conf.interval 95% with n-1,0.0171693618
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,RacetrackCorridor,,,,
+,,,,,,,,,,Results in point of view of Exp3:,,,Results in point of view of RegretMatching,
+,,,,,,,,,,,,,,
+,,,,,,,,,,21/03/2014_12.44,,,21/03/2014_12.44,
+,,,,,,,,,, Games played,500,, Games played,500
+,,,,,,,,,, Mean,0.937,, Mean,0.063
+,,,,,,,,,, Wins,459,, Wins,22
+,,,,,,,,,, Draws,19,, Draws,19
+,,,,,,,,,, Losses,22,, Losses,459
+,,,,,,,,,, Conf. interval binomial formula based,0.0212966424,, Conf. interval binomial formula based,0.0212966424
+,,,,,,,,,, Conf.interval 95% with n,0.0195078594,, Conf.interval 95% with n,0.0195078594
+,,,,,,,,,, Conf.interval 95% with n-1,0.0195273966,, Conf.interval 95% with n-1,0.0195273966
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,Runners,,,,
+,,,,,,,,,,Results in point of view of Exp3:,,,Results in point of view of RegretMatching,
+,,,,,,,,,,,,,,
+,,,,,,,,,,22/03/2014_03.48,,,22/03/2014_03.48,
+,,,,,,,,,, Games played,500,, Games played,500
+,,,,,,,,,, Mean,0.402,, Mean,0.598
+,,,,,,,,,, Wins,4,, Wins,102
+,,,,,,,,,, Draws,394,, Draws,394
+,,,,,,,,,, Losses,102,, Losses,4
+,,,,,,,,,, Conf. interval binomial formula based,0.0429768606,, Conf. interval binomial formula based,0.0429768606
+,,,,,,,,,, Conf.interval 95% with n,0.0182597959,, Conf.interval 95% with n,0.0182597959
+,,,,,,,,,, Conf.interval 95% with n-1,0.0182780832,, Conf.interval 95% with n-1,0.0182780832
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,Tron,,,,
+,,,,,,,,,,Results in point of view of Exp3:,,,Results in point of view of RegretMatching,
+,,,,,,,,,,22/03/2014_04.58,,,22/03/2014_04.58,
+,,,,,,,,,, Games played,500,, Games played,500
+,,,,,,,,,, Mean,0.754,, Mean,0.246
+,,,,,,,,,, Wins,340,, Wins,86
+,,,,,,,,,, Draws,74,, Draws,74
+,,,,,,,,,, Losses,86,, Losses,340
+,,,,,,,,,, Conf. interval binomial formula based,0.037750638,, Conf. interval binomial formula based,0.037750638
+,,,,,,,,,, Conf.interval 95% with n,0.0337762086,, Conf.interval 95% with n,0.0337762086
+,,,,,,,,,, Conf.interval 95% with n-1,0.0338100356,, Conf.interval 95% with n-1,0.0338100356
