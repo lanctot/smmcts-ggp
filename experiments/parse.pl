@@ -160,7 +160,8 @@ sub parsefile {
 # Cols: algs (other than ductmax)
 #
 sub print_tableA { 
-   
+  
+  print "Table A.\n";
   print "                             ";
   for (my $a = 0; $a < scalar(@algorithms); $a += 1) { 
     my $alg = $algorithms[$a]; 
@@ -191,6 +192,71 @@ sub print_tableA {
   }
 }
 
+#
+# Table D: overall summary
+# Rows: algs
+# Single col: win rate
+#
+
+sub print_tableD { 
+
+  # "alg" => points
+  my %points = (); 
+  my $ttlPoints = 0;
+  
+  print "Table D.\n";
+
+  for (my $g = 0; $g < scalar(@games); $g += 1) {
+    my $game = $games[$g]; 
+    my $hashref = $bigHash{$game}; 
+
+    for (my $a1 = 0; $a1 < scalar(@algorithms); $a1 += 1) { 
+      for (my $a2 = $a1+1; $a2 < scalar(@algorithms); $a2 += 1) { 
+        my $alg1 = $algorithms[$a1];
+        my $alg2 = $algorithms[$a2];
+
+        my $key = "$alg1-$alg2";
+
+        # some combinations are missing
+        if (defined $$hashref{$key}) { 
+          #print "Summing $game $key\n";
+
+          my $entry = $$hashref{$key};
+        
+          my ($wins, $draws, $losses) = split('-', $entry); 
+          my $inc = $wins + $draws*0.5; 
+
+          $points{$alg1} += $inc;
+          $ttlPoints += $inc;
+        }
+
+        my $revkey = "$alg2-$alg1";
+        
+        if (defined $$hashref{$revkey}) { 
+          #print "Summing $game $revkey\n";
+
+          my $entry = $$hashref{$revkey};
+        
+          my ($wins, $draws, $losses) = split('-', $entry); 
+          my $inc = $wins + $draws*0.5; 
+
+          $points{$alg2} += $inc;
+          $ttlPoints += $inc;
+        }
+
+      }
+    }
+  }
+
+  for (my $a = 0; $a < scalar(@algorithms); $a += 1) { 
+    my $alg = $algorithms[$a];
+    my $rate = $points{$alg} / ($ttlPoints * 1.0); 
+    printf("%10s     %3.5f\n", $alg, $rate); 
+  }
+}
+
+
+
 ### start main part of the program
 
 # Parse all the files, adding all the info
@@ -203,6 +269,10 @@ for my $filename (@csvfiles) {
 ### produce each table
 
 print_tableA();
+
+print "\n\n";
+
+print_tableD();
 
 
 
