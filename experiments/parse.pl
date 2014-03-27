@@ -13,9 +13,12 @@ my @algorithms = ("ductmax", "ducb1t", "exp3", "rm", "suctmax");
 my @games = ( "Battle", "BiddingTicTacToe", "Chinook", "Goofspiel", "OshiZumo", "PawnWhopping", "RacetrackCorridor", "Runners", "Tron"); 
 
 my @csvfiles = ("ductmax_vs_ducb1t.csv", "ductmax_vs_exp3.csv", "ductmax_vs_rm.csv", "ductmax_vs_suctmax.csv", 
-  "exp3_cs_suctmax.csv", "exp3_vs_rm.csv", "rm_cs_suctmax.csv"); 
+  "ducb1t_vs_exp3.csv", "ducb1t_vs_rm.csv", "ducb1t_vs_suctmax.csv", "exp3_cs_suctmax.csv", "exp3_vs_rm.csv", 
+  "rm_cs_suctmax.csv", ); 
 
 my $NGAMES = 500;
+
+my %hash = (); 
 
 sub addinfo { 
   my ($game, $alg1, $alg2, $wins, $draws, $losses) = @_;
@@ -255,6 +258,64 @@ sub print_tableD {
   }
 }
 
+#
+# Table C: everything vs. everything for every game
+# Actually prints multiple tables, one per game. 
+# For each table: 
+#   Rows: alg1
+#   Col: alg2
+#
+
+sub print_tablesC { 
+
+  print "Tables C\n\n";
+
+  for (my $g = 0; $g < scalar(@games); $g += 1) { 
+    my $game = $games[$g]; 
+
+    print "$game\n";
+
+    print "         "; 
+    for (my $a = 0; $a < scalar(@algorithms); $a += 1) { 
+      my $alg = $algorithms[$a]; 
+      #if ($alg eq "ductmax") { next; }
+      printf("%10s   ", $alg); 
+    } 
+
+    print "\n";
+    my $hashref = $bigHash{$game};
+
+    for (my $a1 = 0; $a1 < scalar(@algorithms); $a1 += 1) { 
+      my $alg1 = $algorithms[$a1];
+      printf("%10s ", $alg1);
+
+      for (my $a2 = 0; $a2 < scalar(@algorithms); $a2 += 1) { 
+        my $alg2 = $algorithms[$a2]; 
+
+        #if ($alg2 eq "ductmax") { next; }
+
+        if ($alg2 eq $alg1) { 
+          printf("%10s   ", "---"); 
+          next;
+        }
+
+        my $key = "$alg1-$alg2"; 
+        my $entry = $$hashref{$key}; 
+
+        my ($wins, $draws, $losses) = split('-', $entry); 
+
+        if ($wins + $draws + $losses != $NGAMES) { die "inconsistent data!"; }
+
+        my $winrate = ($wins + 0.5*$draws) / ($NGAMES * 1.0); 
+        printf("      %3.2lf   ", $winrate); 
+      } 
+
+      print "\n";
+    }
+
+    print "\n";
+  }
+}
 
 
 ### start main part of the program
@@ -274,5 +335,8 @@ print "\n\n";
 
 print_tableD();
 
+print "\n\n";
+
+print_tablesC(); 
 
 
