@@ -501,12 +501,20 @@ nine games used in practice and study of GGP. Our results indicate that ...
 
 \section{Introduction}
 
-Monte Carlo Tree Search (MCTS)~\cite{Coulom06Efficient,Kocsis06Bandit,Browne12MCTSSurvey} is a popular search technique 
+Monte Carlo Tree Search (MCTS)~\cite{Coulom06Efficient,Kocsis06Bandit} is a popular search technique 
 that has demonstrated initial success in sequential turn-taking games such as Go~\cite{Gelly12}, Hex~\cite{Arneson10Hex},
 and Lines of Action~\cite{Winands10MCTS-LOA}. MCTS has also been applied with practical success in general game playing 
-(GGP)~\cite{Finnsson08,Finnsson10Learning,Finnsson12Generalized} and other complex settings such as real-time 
-games~\cite{Balla09UCT,Pepels14Monte}, imperfect information and popular card 
-games~\cite{Sturtevant08icga,Buro09Improving,Cowling12MTG,Cowling12ISMCTS,Whitehouse13Integrating}. 
+(GGP)~\cite{Bjornsson09CadiaPlayer} and other complex settings such as real-time 
+games~\cite{Balla09UCT,Pepels14Monte} 
+%and imperfect information games~\cite{Buro09Improving,Cowling12MTG,Cowling12ISMCTS,Whitehouse13Integrating}. 
+and imperfect information games~\cite{Buro09Improving,Cowling12ISMCTS}.
+
+Simultaneous move games are turn-based games where on each turn all the players choose their moves simultaneously.
+Then, the state of the game in the following turn depends on the collection of moves chosen by all players. 
+A simple example is the one-shot game of Rock, Paper, Scissors where each player has the same three legal actions 
+a wins and losses are determined by the combination of moves chosen by both players. 
+Another example is the classic board game Diplomacy by Avalon Hill, where each turn consists of players submitting 
+lists of orders for each of their units, and the outcome of each order depends on the orders of units in surrounding regions. 
 
 The most popular MCTS algorithm is Upper Confidence Bounds for Trees (UCT)~\cite{Kocsis06Bandit} based on a bandit algorithm 
 Upper Confidence Bounds~\cite{Auer02Finite}. Since UCT was originally 
@@ -514,19 +522,17 @@ designed for strictly sequential turn-taking games, its theoretical guarantees (
 strategy) do not apply in simultaneous move games. The standard application of UCT to simultaneous move games, first used in 
 general game-playing~\cite{Finnsson08}, is a variant we call {\it Decoupled UCT} (DUCT), where each player uses UCB to select 
 their own actions independent of how the opponent's (simultaneously chosen) move on the same turn can affect the outcome. 
-This variant has been shown to not converge to an optimal strategy, even in a game with a single state (biased Rock, Paper, 
-Scissors)~\cite{Shafiei09}. 
+This variant has been shown to not converge to an optimal strategy, even in a game with a single state~\cite{Shafiei09}. 
 
 A popular choice for a simultaneous move game among researchers and enthusiasts has been Tron, a game played on a discrete 
 grid inspired by the 1982 movie.
-In Tron, Samothrakis et al. propose a purely sequential version which we call {\it Sequential UCT}~\cite{Samothrakis10Tron}. 
-Den Teuling et al. improved Sequential UCT in Tron by suggesting several heuristic improvements and handling some of the 
+In Tron, Samothrakis et al.~\cite{Samothrakis10Tron} propose a purely sequential version which we call {\it Sequential UCT}. 
+Den Teuling and Winands improved Sequential UCT in Tron by suggesting several heuristic improvements and handling some of the 
 important simultaneous move situations~\cite{DenTeuling12Tron}. Perick et al.~\cite{Perick12Comparison} proposed several new 
-search variants, including stochastic selection strategies, and compared their success in Tron. Unlike in \cite{Samothrakis10Tron}, 
-they found that {\it UCB1-Tuned} was the most successful in Tron, which was also confirmed by a more recent study~\cite{Lanctot13Tron}.
+search variants, including stochastic selection strategies, and compared their success in Tron. 
 
 Several new selection strategies for simultaneous move MCTS were also proposed for Goofspiel~\cite{Lanctot13Goofspiel}. In Goofspiel, 
-as in Rock, Paper, Scissors, there is evidence that playing with a randomized (``mixed'') strategy is important. 
+there is evidence that playing with a randomized (``mixed'') strategy is important. 
 Several of these new techniques compute a mixed strategy, and appear to perform better against DUCT in Goofspiel. 
 Under appropriate settings, some of these variants were shown to converge to an optimal strategy~\cite{Lisy13Computing}. 
 Nonetheless, in Tron, a variant of DUCT out-performed the stochastic variants that were successful in Goofspiel, even though Tron 
@@ -536,13 +542,13 @@ in \cite{DenTeuling12Tron}.
 These results seem to indicate that the success of each simultaneous move MCTS variant may depend largely on the particular game. 
 
 In this paper, we aim to clarify the dependencies and game properties that determine the relative performance of the different 
-simultaenous move MCTS variants. First, we describe a general simultaneous move MCTS framework along with the most popular 
-techniques used to date. Then, we perform an 
+simultaenous move MCTS variants. First, we describe a general simultaneous move MCTS framework along with several variants
+used to date. Then, we perform an 
 elaborate analysis of these variants over nine different games chosen from previous work and GGP competitions. We measure 
 the effect as a function of time settings and with the presence or lack of enhancements that have proven successful in GGP. 
-Our results show that ...
+The results show that ...
 
-The layout for the rest the paper is as follows. ...
+The structure for the rest the paper is as follows. ...
 
 \section{Background}
 \label{sec:background}
@@ -554,7 +560,7 @@ We also describe the terminology required to formalize the techniques.
 
 Monte Carlo Tree Search (MCTS)~\cite{Coulom06Efficient,Kocsis06Bandit} is a simulation-based search algorithm often 
 used in game trees. The main idea is to iteratively run simulations from the root of the search tree to a terminal 
-state of the game, incrementally growing a tree rooted at the current state of the actual match. 
+game state, incrementally growing a tree rooted at the current state of the actual played game. 
 
 MCTS consists of four strategic steps. (1) The \textit{selection step} determines how to traverse the tree from the 
 root node to a leaf node of the tree \textit{L}. It should balance the exploitation of successful moves with the 
@@ -588,7 +594,10 @@ Since 2005, nine yearly GGP competitions have taken place and three academic wor
 Several web sites have been created to maintain software and host repositories of game descriptions, and 
 a massively open online course was given in 2013. This year's competition is set for summer of 2014. 
 
-\subsection{Simultaenous Move Games}
+% Seems to be done later in the experiments section.. ?
+%\mlanctot{Mention that we're not using GDL and why?}
+
+\subsection{Simultaneous Move Games}
 
 A finite game with simultaneous moves can be described by a tuple 
 $(\cN, \cS = \cD \cup \cZ, \cA, \cT, u_i, s_0)$. The player set $\cN = \{ 1, 2 \}$ contains player 
@@ -709,16 +718,17 @@ joint actions form an estimated payoff matrix for node $s$.
 The critical parts of the algorithm are the updates on lines \ref{alg:update1} and \ref{alg:update2}, and the selection 
 on line \ref{alg:select}. Each variant below will describe a different way to select a joint action and update a node. 
 
-In practice, there are several optimizations to the base algorithm that might be desirable.
-If a game has a large branching factor, it may take many iterations for 
-the expansion condition and consequence in lines \ref{alg:expand} to \ref{alg:choose-expand} to fill up the matrix before 
-switching to a selection policy. 
-The matrix can instead be filled such that at least one action has been taken from each row and one from each column before 
-switching to the selection policy. 
-Since most variants do not require values for each entry in the matrix, this could reduce the number of simulations before 
-switching to $|\cA_1(s)| + |\cA_2(s)|$ from $|\cA_1(s)||\cA_2(s)|$. The use of progressive 
-widening~\cite{Chaslot08Progressive} may also lead to deeper searches. 
-In this paper, the implementation for experiments is based on the pseudo-code presented in Algorithm~\ref{alg:sm-mcts}.
+% MarcL, Mar27: Removed since we're not including any of these 
+%In practice, there are several optimizations to the base algorithm that might be desirable.
+%If a game has a large branching factor, it may take many iterations for 
+%the expansion condition and consequence in lines \ref{alg:expand} to \ref{alg:choose-expand} to fill up the matrix before 
+%switching to a selection policy. 
+%The matrix can instead be filled such that at least one action has been taken from each row and one from each column before 
+%switching to the selection policy. 
+%Since most variants do not require values for each entry in the matrix, this could reduce the number of simulations before 
+%switching to $|\cA_1(s)| + |\cA_2(s)|$ from $|\cA_1(s)||\cA_2(s)|$. The use of progressive 
+%widening~\cite{Chaslot08Progressive} may also lead to deeper searches. 
+%In this paper, the implementation for experiments is based on the pseudo-code presented in Algorithm~\ref{alg:sm-mcts}.
 
 \subsection{Decoupled UCT} 
 
@@ -731,7 +741,7 @@ When a joint action needs to be selected on line
 independently:
 \begin{equation}
 \label{eq:duct}
-a_i = \argmax_{a \in A_i(s)}{ \left\{ \bar{X}^i_{s,a} + C_i \sqrt{\frac{\ln n_s}{n_{s,a}}} \right\} }, 
+a_i = \argmax_{a \in \cA_i(s)}{ \left\{ \bar{X}^i_{s,a} + C_i \sqrt{\frac{\ln n_s}{n_{s,a}}} \right\} }, 
   \mbox{ where } \bar{X}^i_{s,a} = \frac{X^i_{s,a}}{n_{s,a}}
 \end{equation}
 \noindent In DUCT, \Update~simply increments the decoupled values for each player $i$: $X^i_{s,a_i} \leftarrow X^i_{s,a_i} + u_i$,
@@ -751,6 +761,7 @@ random variable, or an upper confidence bound computed using Equation~\ref{ucb1t
 This variant is referred to as UCB1-Tuned~\cite{Auer02Finite}. Then, an action is selected from parent 
 node $s$ using:
 
+\mlanctot{@Mandy: can you add the $C$ parameter below in the appropriate place? (I'm not sure where you put it.)}
 \begin{equation}
 \label{ucb1tuned}
 a^* = \argmax_{a \in \cA(s)} \left\{ \bar{X}_{s,a} + \sqrt{\frac{\min(\frac{1}{4},\mathrm{Var}_{\mathit{UCB1}}(s,a)) \ln (n_{s})}{n_{s,a}}} \right\}, 
@@ -761,6 +772,8 @@ a^* = \argmax_{a \in \cA(s)} \left\{ \bar{X}_{s,a} + \sqrt{\frac{\min(\frac{1}{4
 where $\mbox{sv}^2_{s,a}$ is the sample variance of the observed rewards for taking action $a$ from $s$. 
 When UCB1-Tunded is used in the tree setting, we refer to it as the SM-MCTS variant {\it Decoupled UCB1-Tuned}, or DUCB1T for short.
 
+In DUCT and DUCB1T, after all the simulations have been performed, each player $i$ chooses separately their own final move 
+with the highest estimated reward $\max_{a \in \cA_i(s)} \bar{X}^i_{s,a}$. 
 
 \subsection{Exp3}
 
@@ -853,11 +866,6 @@ descriptions are taken from~\cite[Appendix C]{Finnsson12}.
 
 \subsection{Game Descriptions}
 \label{subsec:games}
-In GGP, all utilities are non-negative, so without loss of generality, $v_{\min} = 0$. 
-Also, games may not be constant-sum. In our implementation, we ensure that all payoffs 
-are appropriately scaled to ensure that they are $k$-sum, with $k > 0$, by using 
-a similar transformation previously used in Cadiaplayer~\cite{Finnsson12}:
-\[ \text{\sc Scale}(u_1, u_2) = \left( \frac{u_1 - u_2 + k}{2k}, \frac{u_2 - u_1 + k}{2k} \right). \]
 
 \textit{Battle} is played on an 8$\times$8 board. Each player has 20 disks. These disks can move one square or 
 capture an opponent square next to them. Instead of a move, the player can choose to defend a square occupied by their 
@@ -910,6 +918,12 @@ Each of the games described above is implemented in Java. The advantage is that 
 
 DUCT, DUCB1T, SUCT, Exp3, and RM are pair wise compared in each of the nine games. The time setting is 2.5 seconds per move and each game is played 500 times.  
 
+In GGP, all utilities are non-negative, so without loss of generality, $v_{\min} = 0$. 
+Also, games may not be constant-sum. In our implementation, we ensure that all payoffs 
+are appropriately scaled to ensure that they are $k$-sum, with $k > 0$, by using 
+a similar transformation previously used in Cadiaplayer~\cite{Finnsson12}:
+\[ \text{\sc Scale}(u_1, u_2) = \left( \frac{u_1 - u_2 + k}{2k}, \frac{u_2 - u_1 + k}{2k} \right). \]
+
 \subsection{Parameters}
 Before the different algorithms are compared, their parameters are tuned by self play where different parameter values are compared against a reference parameter. In DUCT, DUCB1T, and SUCT the default parameter is $C=1.4$. The optimal parameters for Exp3 and RM are set to $\gamma = 0.2$ and $\gamma = 0.025$, respectively, because they are the optimal parameters in Goofspiel \cite{Lanctot13Goofspiel}. The tuned parameter values are shown in Table \ref{table:parameters}. The table shows that the optimal parameter value depends on the game. As it is difficult to choose one parameter value for each algorithm that works well in all games, we choose to use a different parameter value for each game separately. In this way, we can see how well each of the algorithms can perform under optimal conditions.
 \begin{table}[h]
@@ -946,7 +960,9 @@ Tron & $C=1.8$ & $C=2.0$ & $C=2.0$ & $\gamma = 0.3$ & $\gamma = 0.30$ \\
 \label{fig:tuning1}
 \end{figure}
 
-
+% MarcL, Mar. 27th: I took this out of the intro as it was too specific. Maybe we can discuss it here at some point.
+%Unlike in \cite{Samothrakis10Tron}, they found that {\it UCB1-Tuned} was the most successful in Tron, 
+%which was also confirmed by a more recent study~\cite{Lanctot13Tron}.
 
 \subsubsection{Algorithm Comparisons}
 
