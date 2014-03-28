@@ -8,13 +8,17 @@ use warnings;
 # values are references to hashs of strings to strings of the form "alg1-alg2" => "wins1-draws-$losses1"
 my %bigHash = (); 
 
-my @algorithms = ("ductmax", "ducb1t", "exp3", "rm", "suctmax"); 
+#my @algorithms = ("ductmax", "ducb1t", "exp3", "rm", "suctmax"); 
+my @algorithms = ("ductmax", "exp3", "rm", "suctmax"); 
 
 my @games = ( "Battle", "BiddingTicTacToe", "Chinook", "Goofspiel", "OshiZumo", "PawnWhopping", "RacetrackCorridor", "Runners", "Tron"); 
 
-my @csvfiles = ("ductmax_vs_ducb1t.csv", "ductmax_vs_exp3.csv", "ductmax_vs_rm.csv", "ductmax_vs_suctmax.csv", 
-  "ducb1t_vs_exp3.csv", "ducb1t_vs_rm.csv", "ducb1t_vs_suctmax.csv", "exp3_cs_suctmax.csv", "exp3_vs_rm.csv", 
-  "rm_cs_suctmax.csv", ); 
+#my @csvfiles = ("ductmax_vs_ducb1t.csv", "ductmax_vs_exp3.csv", "ductmax_vs_rm.csv", "ductmax_vs_suctmax.csv", 
+#  "ducb1t_vs_exp3.csv", "ducb1t_vs_rm.csv", "ducb1t_vs_suctmax.csv", "exp3_cs_suctmax.csv", "exp3_vs_rm.csv", 
+#  "rm_cs_suctmax.csv", ); 
+
+my @csvfiles = ("ductmax_vs_exp3.csv", "ductmax_vs_rm.csv", "ductmax_vs_suctmax.csv", 
+  "exp3_cs_suctmax.csv", "exp3_vs_rm.csv", "rm_cs_suctmax.csv", ); 
 
 my $NGAMES = 500;
 
