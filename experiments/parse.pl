@@ -20,6 +20,68 @@ my $NGAMES = 500;
 
 my %hash = (); 
 
+sub winstats
+{
+  # compute win rates and confidence intervals. correctly account for draws
+  my $lwins = shift;
+  my $draws = shift;
+  my $rwins = shift;
+
+  my $statslistref = shift; # must be a reference to a list
+  
+  my $total = $lwins + $rwins + $draws;
+  my $ties = $draws; 
+
+  # count wins as 1, draws as 0.5, and losses as 0
+  my $mean = 0;
+  if ($total > 0) {
+    $mean = ($lwins + 0.5*$ties) / $total;
+  }
+  my $var = 0;
+
+  # wins
+  for (my $i = 0; $i < $lwins; $i++)
+  { $var += (1.0 - $mean)*(1.0 - $mean); }
+
+  # draws
+  for (my $i = 0; $i < $ties; $i++)
+  { $var += (0.5 - $mean)*(0.5 - $mean); }
+
+  # losses
+  for (my $i = 0; $i < $rwins; $i++)
+  { $var += (0.0 - $mean)*(0.0 - $mean); }
+
+  my $stddev = 0; 
+  my $ci95 = 0; 
+  my $lrate = 0;
+  my $rrate = 0;
+
+  if ($total > 0) { 
+    $var = $var / ($total-1);
+    $stddev = sqrt($var);
+    $ci95 = 1.96*$stddev / sqrt($total);
+
+    # does this make sense..? when there are a lot of ties, not really 
+    $lrate = ($lwins + 0.5*$ties) / $total;
+    $rrate = ($rwins + 0.5*$ties) / $total;
+  }
+
+  my $lperc = $lrate*100.0;
+  my $rperc = $rrate*100.0;
+  my $ci95perc = $ci95*100.0;
+
+  my $line = sprintf("%.2f %.2f +/- %.2f", $lperc, $rperc, $ci95perc);
+
+  push(@$statslistref, $lrate);
+  push(@$statslistref, $rrate);
+  push(@$statslistref, $ci95);
+  push(@$statslistref, $lperc);
+  push(@$statslistref, $rperc);
+  push(@$statslistref, $ci95perc);
+  push(@$statslistref, $line);
+}
+
+
 sub addinfo { 
   my ($game, $alg1, $alg2, $wins, $draws, $losses) = @_;
 
@@ -157,6 +219,18 @@ sub parsefile {
   print "... done parsing $filename.\n\n";
 }
 
+sub convalgname { 
+  my $alg = shift; 
+
+  if ($alg eq "ductmax") { return "DUCT"; }
+  elsif ($alg eq "ducb1t") { return "DUCB1T"; }
+  elsif ($alg eq "exp3") { return "Exp3"; }
+  elsif ($alg eq "rm") { return "RM"; }
+  elsif ($alg eq "suctmax") { return "SUCT"; }
+
+  return "??";
+}
+
 #
 # Table A: each algorithm vs. ductmax in each game
 # Rows: games
@@ -169,9 +243,9 @@ sub print_tableA {
   for (my $a = 0; $a < scalar(@algorithms); $a += 1) { 
     my $alg = $algorithms[$a]; 
     if ($alg eq "ductmax") { next; }
-    print "$alg\t";
+    printf(" \& %s\t\t", convalgname($alg)); 
   }
-  print "\n"; 
+  print "\\\\ \n"; 
 
   for (my $g = 0; $g < scalar(@games); $g += 1) { 
     my $game = $games[$g]; 
@@ -187,11 +261,15 @@ sub print_tableA {
       my $entry = $$hashref{$key}; 
 
       my ($wins, $draws, $losses) = split('-', $entry); 
-      my $rate = ($wins + 0.5*$draws) / ($NGAMES * 1.0); 
-      printf("%3.2f\t", $rate); 
+      
+      #my $rate = ($wins + 0.5*$draws) / ($NGAMES * 1.0); 
+      my @statslist = (); 
+      winstats($wins, $draws, $losses, \@statslist); 
+
+      printf("\& %3.2f (\$\\pm\$ %2.2f)\t", $statslist[3], $statslist[5]); 
     }
 
-    print "\n";
+    print "\\\\ \n";
   }
 }
 
@@ -203,9 +281,10 @@ sub print_tableA {
 
 sub print_tableD { 
 
-  # "alg" => points
-  my %points = (); 
-  my $ttlPoints = 0;
+  # each map is "alg" => number
+  my %wins = ();
+  my %draws = ();
+  my %losses = ();
   
   print "Table D.\n";
 
@@ -220,41 +299,32 @@ sub print_tableD {
 
         my $key = "$alg1-$alg2";
 
-        # some combinations are missing
-        if (defined $$hashref{$key}) { 
-          #print "Summing $game $key\n";
-
-          my $entry = $$hashref{$key};
+        my $entry = $$hashref{$key};
         
-          my ($wins, $draws, $losses) = split('-', $entry); 
-          my $inc = $wins + $draws*0.5; 
+        my ($w, $d, $l) = split('-', $entry); 
 
-          $points{$alg1} += $inc;
-          $ttlPoints += $inc;
-        }
+        $wins{$alg1} += $w; 
+        $draws{$alg1} += $d;
+        $losses{$alg1} += $l; 
 
-        my $revkey = "$alg2-$alg1";
-        
-        if (defined $$hashref{$revkey}) { 
-          #print "Summing $game $revkey\n";
-
-          my $entry = $$hashref{$revkey};
-        
-          my ($wins, $draws, $losses) = split('-', $entry); 
-          my $inc = $wins + $draws*0.5; 
-
-          $points{$alg2} += $inc;
-          $ttlPoints += $inc;
-        }
-
+        $wins{$alg2} += $l; 
+        $draws{$alg2} += $d; 
+        $losses{$alg2} += $w;
       }
     }
   }
 
   for (my $a = 0; $a < scalar(@algorithms); $a += 1) { 
     my $alg = $algorithms[$a];
-    my $rate = $points{$alg} / ($ttlPoints * 1.0); 
-    printf("%10s     %3.5f\n", $alg, $rate); 
+      
+    my $w = $wins{$alg}; 
+    my $d = $draws{$alg}; 
+    my $l = $losses{$alg}; 
+      
+    my @statslist = (); 
+    winstats($w, $d, $l, \@statslist); 
+
+    printf("%10s  \&   %3.2f (\$\\pm\$ %2.2lf) \\\\\n", convalgname($alg), $statslist[3], $statslist[5]); 
   }
 }
 
@@ -273,21 +343,20 @@ sub print_tablesC {
   for (my $g = 0; $g < scalar(@games); $g += 1) { 
     my $game = $games[$g]; 
 
-    print "$game\n";
+    printf("%15s   ", $game);
 
-    print "         "; 
     for (my $a = 0; $a < scalar(@algorithms); $a += 1) { 
       my $alg = $algorithms[$a]; 
       #if ($alg eq "ductmax") { next; }
-      printf("%10s   ", $alg); 
+      printf("\& %10s   ", convalgname($alg)); 
     } 
 
-    print "\n";
+    print "\\\\\n";
     my $hashref = $bigHash{$game};
 
     for (my $a1 = 0; $a1 < scalar(@algorithms); $a1 += 1) { 
       my $alg1 = $algorithms[$a1];
-      printf("%10s ", $alg1);
+      printf("%15s    ", convalgname($alg1));
 
       for (my $a2 = 0; $a2 < scalar(@algorithms); $a2 += 1) { 
         my $alg2 = $algorithms[$a2]; 
@@ -295,7 +364,7 @@ sub print_tablesC {
         #if ($alg2 eq "ductmax") { next; }
 
         if ($alg2 eq $alg1) { 
-          printf("%10s   ", "---"); 
+          printf("\& %10s   ", "\$--\$"); 
           next;
         }
 
@@ -306,11 +375,15 @@ sub print_tablesC {
 
         if ($wins + $draws + $losses != $NGAMES) { die "inconsistent data!"; }
 
-        my $winrate = ($wins + 0.5*$draws) / ($NGAMES * 1.0); 
-        printf("      %3.2lf   ", $winrate); 
+        #my $winrate = ($wins + 0.5*$draws) / ($NGAMES * 1.0); 
+        #printf("      %3.2lf   ", $winrate); 
+
+        my @statslist = (); 
+        winstats($wins, $draws, $losses, \@statslist); 
+        printf("\& %3.2lf (\$\\pm\$ %2.2lf)   ", $statslist[3], $statslist[5]); 
       } 
 
-      print "\n";
+      print "\\\\\n";
     }
 
     print "\n";
