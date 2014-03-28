@@ -923,7 +923,7 @@ In GGP, all utilities are non-negative, so without loss of generality, $v_{\min}
 Also, games may not be constant-sum. In our implementation, we ensure that all payoffs 
 are appropriately scaled to ensure that they are $k$-sum, with $k > 0$, by using 
 a similar transformation previously used in Cadiaplayer~\cite{Finnsson12}:
-\[ \text{\sc Scale}(u_1, u_2) = \left( \frac{u_1 - u_2 + k}{2k}, \frac{u_2 - u_1 + k}{2k} \right). \]
+\[ \text{\sc Scale}(u_1, u_2) = \left( \frac{u_1 - u_2 + k}{2}, \frac{u_2 - u_1 + k}{2} \right). \]
 
 \subsection{Parameters}
 Before the different algorithms are compared, their parameters are tuned by self play where different parameter values are compared against a reference parameter. In DUCT, DUCB1T, and SUCT the default parameter is $C=1.4$. The reference parameters for Exp3 and RM are set to $\gamma = 0.2$ and $\gamma = 0.025$, respectively, because they are the optimal parameters in Goofspiel \cite{Lanctot13Goofspiel}. The tuned parameter values are shown in Table \ref{table:parameters}. The table shows that the optimal parameter value depends on the game. As it is difficult to choose one parameter value for each algorithm that works well in all games, we choose to use a different parameter value for each game separately. In this way, we can see how well each of the algorithms can perform under optimal conditions.
