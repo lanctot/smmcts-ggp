@@ -762,12 +762,13 @@ This variant is referred to as UCB1-Tuned~\cite{Auer02Finite}. Then, an action i
 node $s$ using:
 
 \mlanctot{@Mandy: can you add the $C$ parameter below in the appropriate place? (I'm not sure where you put it.)}
+
 \begin{equation}
 \label{ucb1tuned}
-a^* = \argmax_{a \in \cA(s)} \left\{ \bar{X}_{s,a} + \sqrt{\frac{\min(\frac{1}{4},\mathrm{Var}_{\mathit{UCB1}}(s,a)) \ln (n_{s})}{n_{s,a}}} \right\}, 
+a^* = \argmax_{a \in \cA(s)} \left\{ \bar{X}_{s,a} + C \times \sqrt{\frac{\min(\frac{1}{4},\mathrm{Var}_{\mathit{UCB1}}(s,a)) \ln (n_{s})}{n_{s,a}}} \right\}, 
 \end{equation}
 \[
-\mbox{Var}_{\mathit{UCB1}}(s,a)=\mbox{sv}^2_{s,a}+\sqrt{\frac{2 \ln (n_{s})}{n_{s,a}}},
+\mbox{Var}_{\mathit{UCB1}}(s,a)=\mbox{sv}^2_{s,a}\sqrt{\frac{2 \ln (n_{s})}{n_{s,a}}},
 \]
 where $\mbox{sv}^2_{s,a}$ is the sample variance of the observed rewards for taking action $a$ from $s$. 
 When UCB1-Tunded is used in the tree setting, we refer to it as the SM-MCTS variant {\it Decoupled UCB1-Tuned}, or DUCB1T for short.
@@ -925,7 +926,7 @@ a similar transformation previously used in Cadiaplayer~\cite{Finnsson12}:
 \[ \text{\sc Scale}(u_1, u_2) = \left( \frac{u_1 - u_2 + k}{2k}, \frac{u_2 - u_1 + k}{2k} \right). \]
 
 \subsection{Parameters}
-Before the different algorithms are compared, their parameters are tuned by self play where different parameter values are compared against a reference parameter. In DUCT, DUCB1T, and SUCT the default parameter is $C=1.4$. The optimal parameters for Exp3 and RM are set to $\gamma = 0.2$ and $\gamma = 0.025$, respectively, because they are the optimal parameters in Goofspiel \cite{Lanctot13Goofspiel}. The tuned parameter values are shown in Table \ref{table:parameters}. The table shows that the optimal parameter value depends on the game. As it is difficult to choose one parameter value for each algorithm that works well in all games, we choose to use a different parameter value for each game separately. In this way, we can see how well each of the algorithms can perform under optimal conditions.
+Before the different algorithms are compared, their parameters are tuned by self play where different parameter values are compared against a reference parameter. In DUCT, DUCB1T, and SUCT the default parameter is $C=1.4$. The reference parameters for Exp3 and RM are set to $\gamma = 0.2$ and $\gamma = 0.025$, respectively, because they are the optimal parameters in Goofspiel \cite{Lanctot13Goofspiel}. The tuned parameter values are shown in Table \ref{table:parameters}. The table shows that the optimal parameter value depends on the game. As it is difficult to choose one parameter value for each algorithm that works well in all games, we choose to use a different parameter value for each game separately. In this way, we can see how well each of the algorithms can perform under optimal conditions.
 \begin{table}[h]
 \caption{Parameters}
 \label{table:parameters}
@@ -950,26 +951,41 @@ Tron & $C=1.8$ & $C=2.0$ & $C=2.0$ & $\gamma = 0.3$ & $\gamma = 0.30$ \\
 \subsection{Experimental Results}
 \label{subsec:results}
 \subsubsection{Parameter Landscape}
-%I (Mandy) am working on a figure to insert for this section
+Figure \ref{fig:tuning1} shows the win rate of Regret Matching depending on $\gamma$ against the reference parameter $\gamma = 0.025$ and it shows the win rate of Decoupled UCT depending on $C$ against the reference parameter $C=1.4$. The figure highlights two important results. First, it is not possible to choose a parameter value that performs well in all games. Second, the performance of Regret Matching and Decoupled UCT can depend heavily on the corresponding parameter value. This kind of behaviour also holds for the other algorithms. Therefore, this figure supports choosing a separate parameter value for each game and algorithm.
 
-
-\begin{figure}[t!]
+\begin{figure*}[h!]
 \centering
-\includegraphics[width=6.0cm]{figures/regretmatchingtuning.jpg}\\
-\caption{Tuning Regret Matching}
+\begin{subfigure}{9cm}
+\includegraphics[width=9.0cm]{figures/duct1}\\
+\end{subfigure}
+\begin{subfigure}{9cm}
+\includegraphics[width=9.0cm]{figures/duct2}\\
+\end{subfigure}
+\begin{subfigure}{9cm}
+\includegraphics[width=9.0cm]{figures/regretmatching1}\\
+\end{subfigure}
+\begin{subfigure}{9cm}
+\includegraphics[width=9.0cm]{figures/regretmatching2}\\
+\end{subfigure}
+\caption{Tuning Regret Matching and Decoupled UCT}
 \label{fig:tuning1}
-\end{figure}
+\end{figure*}
 
 % MarcL, Mar. 27th: I took this out of the intro as it was too specific. Maybe we can discuss it here at some point.
 %Unlike in \cite{Samothrakis10Tron}, they found that {\it UCB1-Tuned} was the most successful in Tron, 
 %which was also confirmed by a more recent study~\cite{Lanctot13Tron}.
 
 \subsubsection{Algorithm Comparisons}
+Tables INSERT TABLE REF. show that there is no algorithm that is best in each game. The overall performance is best for DUCB1T, but is closely followed by DUCT and SUCT.
 
+Table A shows the win rate of the algorithms against DUCT. This table is important, because DUCT is often used in the GGP Competitions. Therefore, it is interesting to investigate whether this is actually a good choice. Based on the results in Table A it seems that DUCT indeed performs well in almost all games. However, in Goofspiel and Oshi-Zumo, Regret Matching performs significantly better than DUCT. The reason why Regret Matching performs so well in Goofspiel and Oshi-Zumo is.... INSERT REASON. 
+
+A surprising result is that they are not always transitive. For example, in Goofspiel, DUCT beats SUCT, but loses from RM. However, SUCT beats RM in Goofspiel. We think that the reason for this surprising result is that the algorithms in simultaneous move games are very sensitive to the parameters. As these parameters are tuned in self play, it could be that we were overfitting the parameters, because the optimal parameter value for a certain algorithm also depends on the algorithm used by the opponent. 
 
 
 
 \section{Conclusion and Future Work}
+In this paper, DUCT, DUCB1T, Exp3 and RM are compared against each other in simultaneous move games. This work entails two important conclusions. First, 
 \label{sec:conc}
 
 
