@@ -25,6 +25,16 @@ a massively open online course was given in 2013. This year's competition is set
 
 \mlanctot{@Mandy: can you add the $C$ parameter below in the appropriate place? (I'm not sure where you put it.)}
 
+%
+%% DUCB1T
+%
+
+An enhancement to the UCT selection strategy can be made by replacing the parameter $C$ by an upper bound of the variance of 
+the rewards. This is either $\frac{1}{4}$, which is an upper bound of the variance of a $\{0,1\}$-outcome Bernoulli
+random variable, or an upper confidence bound computed using Equation~\ref{ucb1tuned}. 
+This variant is referred to as UCB1-Tuned~\cite{Auer02Finite}. Then, an action is selected from parent 
+node $s$ using:
+
 \begin{equation}
 \label{ucb1tuned}
 a^* = \argmax_{a \in \cA(s)} \left\{ \bar{X}_{s,a} + C \times \sqrt{\frac{\min(\frac{1}{4},\mathrm{Var}_{\mathit{UCB1}}(s,a)) \ln (n_{s})}{n_{s,a}}} \right\}, 
@@ -55,4 +65,25 @@ Tron              & $C=1.8$ & $C=2.0$ & $C=2.0$ & $\gamma = 0.3$ & $\gamma = 0.3
  \hline
 \end{tabular}
 \end{table}
+
+
+\begin{figure*}[h!]
+\centering
+\begin{subfigure}{9cm}
+\includegraphics[width=8.0cm]{figures/duct1}\\
+\end{subfigure}
+\begin{subfigure}{9cm}
+\includegraphics[width=8.0cm]{figures/duct2}\\
+\end{subfigure}
+\begin{subfigure}{9cm}
+\includegraphics[width=8.0cm]{figures/regretmatching1}\\
+\end{subfigure}
+\begin{subfigure}{9cm}
+\includegraphics[width=8.0cm]{figures/regretmatching2}\\
+\end{subfigure}
+\caption{Tuning Regret Matching and Decoupled UCT}
+\label{fig:tuning1}
+\end{figure*}
+
+
 
