@@ -408,7 +408,7 @@
 %
 % paper title
 % can use linebreaks \\ within to get better formatting as desired
-\title{Monte Carlo Tree Search Variants for General Simultaneous Move Games}
+\title{Monte Carlo Tree Search Variants for\\Simultaneous Move Games}
 
 
 % author names and affiliations
@@ -470,14 +470,15 @@
 
 \begin{abstract}
 %\boldmath
-Monte Carlo Tree Search (MCTS) is a widely-used technique for game tree search in sequential turn-taking games. 
-The extension to simultaneous move games, where all player choose actions simultaneously each turn, 
+Monte Carlo Tree Search (MCTS) is a widely-used technique for game-tree search in sequential turn-taking games. 
+The extension to simultaneous move games, where all player choose moves simultaneously each turn, 
 is non-trivial due to the complexity of this class of games. In this paper, we describe simultaneous move MCTS 
 and analyze its application in general, over nine different simultaneous move games. We use several possible 
-variants, ones that include both deterministic and stochastic selection strategies as well as different game modes, 
-and characterize the practical performance of each one. Our results indicate that the relative performance of 
+variants, Decoupled UCT, Sequential UCT, Exp3, and Regret Matching. These variants include both 
+deterministic and stochastic selection strategies and we characterize the practical performance of each one. 
+The results indicate that the relative performance of 
 each variant depends strongly on the game and the opponent, and that parameter tuning can also not be as 
-straight-forward as the purely sequential case. Overall, Decoupled UCT performs best in these games, despite its 
+straightforward as the purely sequential case. Overall, Decoupled UCT performs best in these games, despite its 
 theoretical shortcomings. 
 \end{abstract}
 % IEEEtran.cls defaults to using nonbold math in the Abstract.
@@ -514,18 +515,18 @@ and imperfect information games~\cite{Buro09Improving,Cowling12ISMCTS}.
 
 Simultaneous move games are turn-based games where on each turn all the players choose their moves simultaneously.
 Then, the state of the game in the following turn depends on the collection of moves chosen by all players. 
-A simple example is the one-shot game of Rock, Paper, Scissors where each player has the same three legal actions 
+A simple example is the one-shot game of Rock, Paper, Scissors where each player has the same three legal moves 
 a wins and losses are determined by the combination of moves chosen by both players. 
 Another example is the classic board game Diplomacy by Avalon Hill, where each turn consists of players submitting 
 lists of orders for each of their units, and the outcome of each order depends on the orders of units in surrounding regions. 
 
 The most popular MCTS algorithm is Upper Confidence Bounds for Trees (UCT)~\cite{Kocsis06Bandit} based on a bandit algorithm 
-Upper Confidence Bounds~\cite{Auer02Finite}. Since UCT was originally 
+Upper Confidence Bounds~\cite{Auer02Finite}. Since UCT was original~\cite{Shafiei09}. 
 designed for strictly sequential turn-taking games, its theoretical guarantees (such as eventual convergence to the optimal 
-strategy) do not apply in simultaneous move games. The standard application of UCT to simultaneous move games, first used in 
-general game-playing~\cite{Finnsson08}, is a variant we call {\it Decoupled UCT} (DUCT), where each player uses UCB to select 
-their own actions independent of how the opponent's (simultaneously chosen) move on the same turn can affect the outcome. 
-This variant has been shown to not converge to an optimal strategy, even in a game with a single state~\cite{Shafiei09}. 
+strategy) do not apply in simultaneous move games~\cite{Shafiei09}. The standard application of UCT to simultaneous move games, 
+first used in general game-playing~\cite{Finnsson08}, is a variant we call {\it Decoupled UCT} (DUCT), where each player uses UCB to select 
+their own moves independent of how the opponent's (simultaneously chosen) move on the same turn can affect the outcome. 
+This variant has been shown to not converge to an optimal strategy, even in a game with a single state~\cite{Shafiei09}.
 
 A popular choice for a simultaneous move game among researchers and enthusiasts has been Tron, a game played on a discrete 
 grid inspired by the 1982 movie.
@@ -534,31 +535,29 @@ Den Teuling and Winands improved Sequential UCT in Tron by suggesting several he
 important simultaneous move situations~\cite{DenTeuling12Tron}. Perick et al.~\cite{Perick12Comparison} proposed several new 
 search variants, including stochastic selection strategies, and compared their success in Tron. 
 
-Several new selection strategies for simultaneous move MCTS were also proposed for Goofspiel~\cite{Lanctot13Goofspiel}. In Goofspiel, 
-there is evidence that playing with a randomized (``mixed'') strategy is important. 
+Several new selection strategies for simultaneous move MCTS were also proposed for Goofspiel, 
+a domain where playing with randomized (``mixed'') strategies is important~\cite{Lanctot13Goofspiel}.
 Several of these new techniques compute a mixed strategy, and appear to perform better against DUCT in Goofspiel. 
 Under appropriate settings, some of these variants were shown to converge to an optimal strategy~\cite{Lisy13Computing}. 
-Nonetheless, in Tron, a variant of DUCT out-performed the stochastic variants that were successful in Goofspiel, even though Tron 
+Nonetheless, in Tron, a variant of DUCT outperformed the stochastic variants that were successful in Goofspiel, even though Tron 
 also has situations that require mixed strategies~\cite{Lanctot13Tron}. 
 In addition, the performance of each method in Tron varied significantly based on the board configuration, as first seen 
 in \cite{DenTeuling12Tron}.
 These results seem to indicate that the success of each simultaneous move MCTS variant may depend largely on the particular game. 
 
-In this paper, we aim to clarify the dependencies and game properties that determine the relative performance of the different 
-simultaneous move MCTS variants. First, we describe a general simultaneous move MCTS framework along with several variants
-used to date. Then, we perform an 
-elaborate analysis of these variants over nine different games chosen from previous work and GGP competitions. We measure 
-the effect as a function of time settings and with the presence or lack of enhancements that have proven successful in GGP. 
+In this paper, we aim to give a general overview of the relative performance of the different simultaneous move MCTS variants. 
+First, we describe a general simultaneous move MCTS framework along with several variants used to date. Then, we perform an 
+elaborate analysis of these variants over nine different games chosen from previous work and GGP competitions. 
 The results show that the expected performance, and hence choice of variant, can vary significantly based on the game and opponent. 
 
 The structure for the rest the paper is as follows. In Section~\ref{sec:background}, we describe the background necessary to 
 express our technique. In Section~\ref{sec:smmcts} we describe simultaneous move MCTS. In Section \ref{sec:exp}, we present 
-the empirical results and discuss our findings. Finally, in Section~\ref{sec:conc} we conclude. 
+the empirical results and discuss them further. Finally, in Section~\ref{sec:conc} we conclude. 
 
 \section{Background}
 \label{sec:background}
 
-In this section, we describe foundation upon which our algorithms are based. 
+In this section, we describe the foundation upon which our algorithms are based. 
 We also describe the terminology required to formalize the techniques. 
 
 \subsection{Monte Carlo Tree Search}
@@ -584,13 +583,13 @@ A finite game with simultaneous moves can be described by a tuple
 $(\cN, \cS = \cD \cup \cZ, \cA, \cT, u_i, s_0)$. The player set $\cN = \{ 1, 2 \}$ contains player 
 labels, and by convention a player is denoted $i \in \cN$.
 $\cS$ is a set of states, with $\cZ$ denoting the terminal states, and $\cD$ the states where players make decisions.
-$\cA = \cA_1 \times \cA_2$ is the set of joint actions of individual players. We denote $\cA_i(s)$ the actions available 
+$\cA = \cA_1 \times \cA_2$ is the set of joint moves of individual players. We denote $\cA_i(s)$ the moves available 
 to player $i$ in state $s \in \cS$. The 
 transition function $\cT : \cS \times \cA_1 \times \cA_2 \mapsto \cS$ defines the successor state given a current 
-state and actions for both players. The utility functions 
+state and moves for both players. The utility functions 
 $u_i : \cZ \mapsto [v_{\min}, v_{\max}] \subseteq \mathbb{R}$ gives the utility of player $i$, with 
-$v_{min}$ and $v_{\max}$ denoting the minimum and maximum possible utility respectively. 
-The game begins in an initial state $s_0$. For the presentation of our algorithm, we assume constant-sum games, so
+$v_{\min}$ and $v_{\max}$ denoting the minimum and maximum possible utility respectively. 
+The game begins in an initial state $s_0$. We assume constant-sum games, so
 $\forall z \in \cZ, u_1(z) + u_2(z) = k$. 
 An example of a simultaneous move game is depicted in Figure~\ref{fig:example}. 
 
@@ -602,19 +601,19 @@ An example of a simultaneous move game is depicted in Figure~\ref{fig:example}.
 \end{subfigure}
 \caption{An example of a two-player simultaneous game which has Matching Pennies as a subgame. Each node represents a state of 
 the game. Four nodes are shown, and at each node, each player has two individual moves (for the row player: top, bottom) and 
-(column player: left, right), leading to four joint actions per node.
+(column player: left, right), leading to four joint moves per node.
 \label{fig:example}}
 \end{figure}
 
-A {\it matrix game} is a single step simultaneous move game with action sets $\cA_1$ and $\cA_2$. 
+A {\it matrix game} is a single step simultaneous move game with legal move sets $\cA_1$ and $\cA_2$. 
 Each entry in the matrix $A_{rc}$ where $(r,c) \in A_1 \times A_2$ corresponds to a payoff (to player 1) if row $r$ is chosen by player 1 and column $c$ by player 2. 
-For example, in Matching Pennies, each player has two actions (heads or tails). The row player receives a payoff of 1 if both players choose the same action and 0 if they do not match. 
+For example, in Matching Pennies, each player has two moves (heads or tails). The row player receives a payoff of 1 if both players choose the same move and 0 if they do not match. 
 Two-player simultaneous move games are sometimes called {\it stacked matrix games} because at every state 
-$s$ there is a joint action set $\cA_1(s) \times \cA_2(s)$ that either leads to a terminal state or to a subgame which 
+$s$ there is a joint move set $\cA_1(s) \times \cA_2(s)$ that either leads to a terminal state or to a subgame which 
 is itself another stacked matrix game. 
 
 A {\it behavioral strategy} for player $i$ is a mapping from states $s \in \cS$
-to a probability distribution over the actions $\cA_i(s)$, denoted $\sigma_i(s)$. 
+to a probability distribution over the moves $\cA_i(s)$, denoted $\sigma_i(s)$. 
 %Given a profile $\sigma = (\sigma_1, \sigma_2)$, define the probability of reaching a terminal state $z$ under $\sigma$ as 
 %$\pi^\sigma(z) = \pi_1(z) \pi_2(z) \pi_c(z)$, where each $\pi_i(z)$ is a product of probabilities of the actions taken 
 %by player $i$ along the path to $z$ ($c$ being chance's probabilities). 
@@ -625,7 +624,7 @@ V^* = \max_{\sigma_1 \in \Sigma_1} \min_{\sigma_2 \in \Sigma_2} \bE_{z \sim \sig
 %   = \max_{\sigma_1 \in \Sigma_1} \min_{\sigma_2 \in \Sigma_2} \sum_{z \in Z} \pi^\sigma(z) u_1(z).
 \end{equation}
 In other words, neither player can improve their utility by deviating unilaterally. 
-For example, the Matching Pennies matrix game has a single state and the only equilibrium strategy is to mix equally between both actions, \ie play with a {\it mixed strategy} (distribution) of $(0.5, 0.5)$ giving an expected payoff of $V^* = 0.5$. 
+For example, the Matching Pennies matrix game has a single state and the only equilibrium strategy is to mix equally between both moves, \ie play with a {\it mixed strategy} (distribution) of $(0.5, 0.5)$ giving an expected payoff of $V^* = 0.5$. 
 If the strategies also optimize Equation \ref{eq:ne} in each subgame starting in an arbitrary state, the equilibrium strategy is termed subgame perfect.
 
 In two-player constant-sum games a Nash equilibrium strategy is optimal in the minimax sense. It guarantees the payoff of at least $V^*$ against any opponent. Any 
@@ -636,11 +635,13 @@ The value $V^*$ is known as the minimax-optimal value of the game and is the sam
 Two-player constant-sum simultaneous move games can be solved (\ie Nash equilibrium strategies can be computed) using backward 
 induction~\cite{Ross71Goofspiel,Buro03OshiZumo,Rhoads12Computer}. The main idea is to start from the 
 endgame positions and individually compute the values of the subgames and work back to the root state. 
-For the example in Figure 1, the value of the game on the bottom-left is 2 because two strategies are strictly dominated, and the 
-value of Matching Pennies is 0, and so these perfect values represent the correct game-theoretic values in the parent nodes. 
-In MCTS, these values will be approximated using Monte Carlo sampling, and the variants will make use of these estimates when selecting moves.
-As in purely sequential games, search techniques aim to approximate these underlying game-theoretic algorithms, but in simultaneous 
-move games the connection is not straight-forward. 
+For the example in Figure 1, the value of the matrix game on the bottom-left is $3$ (if the row player is maximizing) because each player has a 
+strategy that is strictly dominated, and the 
+value of Matching Pennies is $0.5$. These values represent the correct game-theoretic value for a joint move in the parent node.
+In MCTS, these values are approximated using Monte Carlo sampling, and the variants will the estimates when selecting moves.
+As in purely sequential games, search techniques approximate these underlying game-theoretic algorithms, but  
+the connection is not as straightforward since the optimal strategies can be mixed and $V^*$ can be anything 
+in the range of $[v_{\min}, v_{\max}]$.
 
 %A two-player simultaneous move game is a specific type of two-player imperfect information extensive-form 
 %game. In imperfect information games, states are grouped into {\it information sets}: two states $s, s' \in I$ if the player 
@@ -666,18 +667,19 @@ The model can be easily extended to include chance events~\cite{Lanctot13Goofspi
 In this section, we present a generalized description of Monte Carlo Tree Search for simultaneous move games. This 
 description is based on the one used in Tron~\cite{Perick12Comparison}. First, we describe the overall process. 
 Each specific step (\Select, \Update, and final move selection) depends on the chosen variant described in the 
-appropriate subsection. 
+appropriate subsection. The \Update~function is what ensures that rewards are appropriately back-propagated 
+to nodes that were visited during the simulation. 
 
 \begin{algorithm2e}[t!]
   \SMMCTS$($node $s$)\\                         \label{alg:function}
   \pushline
-    \lIf{$s$ is a terminal state ($s \in \cZ$)}{\Return{$u_1(s)$}}
+    \lIf{$s$ is a terminal state ($s \in \cZ$)}{\Return{$u_1(s)$}}  
     \ElseIf{$s \in T$ {\bf and} \ExpReq$(s)$}{  \label{alg:expand}
       Choose a previously unselected $(a_1,a_2)$ \\
       $s' \gets \cT(s,a_1,a_2)$ \label{alg:choose-expand} \\
       Add $s'$ to $T$\\
       $u_1 \gets$ \Playout($s'$)\\
-      $X_{s'} \gets X_{s'} + u_1$ \\
+      $X_{s'} \gets X_{s'} + u_1$ \\    
       $n_{s'} \gets n_{s'} + 1$  \\     \label{alg:increment2}
       \Update$(s, a_1, a_2, u_1)$\\                     \label{alg:update1}
       {\bf return} $u_1$\\
@@ -693,8 +695,8 @@ appropriate subsection.
 \end{algorithm2e}
 
 
-In Simultaneous Move MCTS (SM-MCTS), the main difference is that during the selection step, at each node, a {\it joint} 
-action is selected. The convergence to an 
+In Simultaneous Move MCTS (SM-MCTS), the main difference is that during the selection step, at each node, a {\it joint move}
+is selected. The convergence to an 
 optimal strategy depends critically on the selection and update policies applied, which are not as straightforward 
 as in purely sequential games. 
 Algorithm~\ref{alg:sm-mcts} describes a single simulation of SM-MCTS. 
@@ -702,12 +704,15 @@ $T$ represents the MCTS tree in which each state is represented by one node. Eve
 cumulative reward sum over all simulations through it, $X_s$, and a visit count $n_s$, both initially set to 0. 
 As with standard MCTS, when a state is visited these values are incremented on line \ref{alg:increment2}, and in the node 
 updates on lines \ref{alg:update1} and \ref{alg:update2}. 
+Note that Algorithm~\ref{alg:sm-mcts} explicitly stores the rewards and estimates only in view of player one, 
+hence the $u_1$ notation, and the opponent's reward is obtained as $u_2 = k - u_1$ as necessary. 
 As seen in Figure~\ref{fig:example}, a matrix of references to the children is maintained at each state. 
 
 At node $s$, the estimated values $\bar{X}_{s'}$ of the children nodes $s' = \cT(s,a_1,a_2)$ over all 
-joint actions form an estimated payoff matrix for node $s$. 
+joint moves form an estimated payoff matrix for node $s$. 
 The critical parts of the algorithm are the updates on lines \ref{alg:update1} and \ref{alg:update2}, and the selection 
-on line \ref{alg:select}. Each variant below will describe a different way to select a joint action and update a node. 
+on line \ref{alg:select}. 
+Each variant below will describe a different way to select a joint move and update a node. 
 
 % MarcL, Mar27: Removed since we're not including any of these 
 %In practice, there are several optimizations to the base algorithm that might be desirable.
@@ -721,9 +726,9 @@ on line \ref{alg:select}. Each variant below will describe a different way to se
 %widening~\cite{Chaslot08Progressive} may also lead to deeper searches. 
 %In this paper, the implementation for experiments is based on the pseudo-code presented in Algorithm~\ref{alg:sm-mcts}.
 
-We focus on a number of SM-MCTS variants. The most popular one is straight-forward adaption of UCT to the 
-simultaneous move case. Though it has been shown to not converge to a Nash equilibrium even in a one-shot single-state 
-game~\cite{Shafiei09}, it has nonetheless been popular and successful in general game playing. 
+We focus on a number of SM-MCTS variants. The most popular one is straightforward adaption of UCT. 
+Though it has been shown to not converge to a Nash equilibrium even in a one-shot single-state 
+game, it has nonetheless been popular and successful in general game playing. 
 The second one is Exp3, first introduced as an adversarial bandit algorithm that can be applied to learning in 
 games~\cite{Exp3}, was also applied successfully to the popular online card game Urban Rivals~\cite{Teytaud11Upper,StPierre12Online}. 
 The third is Regret Matching, which was recently shown to perform particularly well in Goofspiel~\cite{Lanctot13Goofspiel}.
@@ -733,22 +738,23 @@ Finally, we also try Sequential UCT, which has been previously used in Tron~\cit
 \subsection{Decoupled UCT} 
 
 In Decoupled UCT (DUCT), each player $i$ maintains for every state $s$ separate reward sums $X^i_{s,a}$ and 
-visit counts $n^i_{s,a}$ for their own action set $a \in \cA_i(s)$. 
+visit counts $n^i_{s,a}$ for their own move set $a \in \cA_i(s)$. 
 In essence, each player {\it decouples} the matrix in each state and applies UCB over the cumulative rewards for 
-each of their own actions as if there was no joint dependency on these rewards.
-When a joint action needs to be selected on line 
-\ref{alg:select}, each player selects an action that maximizes the decoupled UCB value over their reward estimates 
+each of their own move as if there was no joint dependency on these rewards.
+When a joint move needs to be selected on line 
+\ref{alg:select}, each player selects a move that maximizes the decoupled UCB value over their reward estimates 
 independently:
 \begin{equation}
 \label{eq:duct}
-a_i = \argmax_{a \in \cA_i(s)}{ \left\{ \bar{X}^i_{s,a} + C_i \sqrt{\frac{\ln n_s}{n_{s,a}}} \right\} }, 
+a_i = \argmax_{a \in \cA_i(s)}{ \left\{ \bar{X}^i_{s,a} + C \sqrt{\frac{\ln n_s}{n_{s,a}}} \right\} }, 
   \mbox{ where } \bar{X}^i_{s,a} = \frac{X^i_{s,a}}{n_{s,a}}
 \end{equation}
-\noindent In DUCT, \Update~simply increments the decoupled values for each player $i$: $X^i_{s,a_i} \leftarrow X^i_{s,a_i} + u_i$,
+\noindent Here, $C$ is a parameter that determines how much weight to place on exploration. 
+In DUCT, \Update~simply increments the decoupled values for each player $i$: $X^i_{s,a_i} \leftarrow X^i_{s,a_i} + u_i$,
 and $n_{s,a_i} \leftarrow n_{s,a_i} + 1$. 
 
 As an example, consider the game in Figure~\ref{fig:example}, with player set $\cN = \{\Max,\Min\}$, root node $s$,
-and action sets $\cA_{\Max}(s) = \{t,b\}, \cA_{\Min}(s) = \{l,r\}$ representing top, bottom, left, and right. 
+and move sets $\cA_{\Max}(s) = \{t,b\}, \cA_{\Min}(s) = \{l,r\}$ representing top, bottom, left, and right. 
 Suppose four simulations are run, and rewards received are $u_\Max = 3$ for $(t,l)$, $2$ for $(t,r)$, $1$ for $(b,l)$, 
 and $0$ for $(b,r)$. The tree would contain exactly five states: $s$, and each child of $s$. On the fifth simulation, 
 \Max~chooses among $t$ and $b$ and \Min~chooses among $r$ and $l$, both by using Equation~\ref{eq:duct}. 
@@ -761,27 +767,28 @@ with the highest estimated reward $\max_{a \in \cA_i(s)} \bar{X}^i_{s,a}$.
 \subsection{Exp3}
 
 In Exp3~\cite{Exp3}, each player maintains an estimate of the sum of rewards, denoted $\hat{x}^i_{s,a}$, and visit 
-counts $n^i_{s,a}$ for each of their own actions. 
-Since these values and strategies are maintained separately for each player, 
-Exp3 is decoupled in the same sense as DUCT. 
+counts $n^i_{s,a}$ for each of their own moves. In the case of Exp3, however, $\hat{x}^i_{s,a}$ represents a cumulative 
+{\it weighted} reward, where each value gets scaled by the the probability of it having been sampled. 
+These values and strategies are maintained separately for each player, so Exp3 is decoupled in the same sense as DUCT. 
 
-The joint action selected on line \ref{alg:select} is composed of actions independently selected for each player 
+The joint move selected on line \ref{alg:select} is composed of moves independently selected for each player 
 based on a sampling probability distribution composed for each player based on $\hat{x}^i_{s,a}$. 
-The probability of sampling action $a_i$ is
+The probability of sampling move $a_i$ is
 \begin{equation}
 \label{eq:exp3select}
-\sigma^t_i(s,a_i) = \frac{(1-\gamma) \exp(\eta w^i_{s,a_i})}{\sum_{a_j \in \cA_i(s)} \exp(\eta w^i_{s,a_j})} + \frac{\gamma}{|\cA_i(s)|}, \mbox{ where }
+\sigma^t_i(s,a_i) = \frac{(1-\gamma) e^{\eta w^i_{s,a_i}}}{\sum_{a_j \in \cA_i(s)} e^{\eta w^i_{s,a_j}}} + \frac{\gamma}{|\cA_i(s)|}, \mbox{ where }
 \end{equation}
 \[ \eta = \frac{\gamma}{|\cA_i(s)|}, \mbox{ and } w^i_{s,a} = \hat{x}^i_{s,a} - \max_{a' \in \cA_i(s)} \hat{x}^i_{s,a'}. \]
 
-The update after selecting actions $(a_1,a_2)$ and obtaining a simulation result $(u_1,u_2)$ updates the visits count 
-and adds to the corresponding reward sum estimates the reward divided by the probability that the action was played by the player using
-\[n_{s,a_i} \leftarrow n_{s,a_i} + 1, ~~~ \hat{x}^i_{s,a_i} \leftarrow \hat{x}^i_{s,a_i} + \frac{u_i}{\sigma^t_i(s,a_i)}.\]
-Dividing the value by the probability of selecting the corresponding action makes $\hat{x}^i_{s,a}$ estimate the sum of rewards over all 
+\noindent Here, $\gamma$ is the probability of exploring (choosing a random move). 
+The update after selecting joint move $(a_1,a_2)$ and obtaining a simulation result $(u_1,u_2)$ updates the visits count 
+and adds to the corresponding reward sum estimates the reward divided by the probability that the move was played by the player using
+$n_{s,a_i} \leftarrow n_{s,a_i} + 1, \hat{x}^i_{s,a_i} \leftarrow \hat{x}^i_{s,a_i} + \frac{u_i}{\sigma^t_i(s,a_i)}$.
+Dividing the value by the probability of selecting the corresponding move makes $\hat{x}^i_{s,a}$ estimate the sum of rewards over all 
 iterations, not only the ones where $a_i$ was selected. 
 
-The mixed strategy used by player $i$ after the simulations are done is given by the frequencies of visit counts of the actions, 
-\[\sigma^{final}_i(s,a_i) = \frac{n_{s,a_i}}{\sum_{b_i\in A_i(s)} n_{s,b_i}}.\]
+The mixed strategy used by player $i$ after the simulations are done is given by the frequencies of visit counts of the moves, 
+$\sigma^{final}_i(s,a_i) =  n_{s,a_i}~/~\sum_{b_i\in A_i(s)} n_{s,b_i}$.
 Previous work \cite{Teytaud11Upper} suggests first removing the samples caused by the exploration. This modification proved to be useful also in our experiments, so before computing the resulting final mixed strategy, we set
 \begin{equation}
 n_{s,a_i}' \leftarrow \max\left(0,n_{s,a_i} - \frac{\gamma}{|A_i(s)|}\sum_{b_i\in A_i(s)}n_{s,b_i}\right).
@@ -798,24 +805,25 @@ Each player $i$ maintains a cumulative regret $r^i_s[a]$ for having played $\sig
 In addition, a table for the average strategy is maintained per player as well $\bar{\sigma}^i_s[a]$. The values in 
 both tables are initially set to 0. 
 As in DUCT, the regret values $r^i_s[a_i]$ are maintained separately by each player.
-However, the updates and specifically the reward uses a value that is a function of the joint action space. 
+However, the updates and specifically the reward uses a value that is a function of the joint move space. 
 
 On iteration $t$, the selection policy (line \ref{alg:select} in Algorithm~\ref{alg:sm-mcts}) first builds 
-the player's current strategies from the cumulative regret. Define $x^+ = \max(x,0)$,
+the player's current strategies from the cumulative regret. Define the operator $(\cdot)^+ = \max(\cdot,0)$, 
+\ie $(-3)^+ = 0$ and $4^+ = 4$, and define
 \begin{equation}
 \label{eq:rm}
-\sigma^t_i(s,a) = \frac{r^i_s[a]}{R^+_{sum}} \mbox{ if } R^+_{sum} > 0 
-\mbox{ oth. } \frac{1}{|\cA_i(s)|},  
+\sigma^t_i(s,a) = \frac{r^i_s[a]}{R^+_{sum}} \mbox{ if } R^+_{sum} > 0 \mbox{ or } 
+\frac{1}{|\cA_i(s)|} \mbox{ otherwise},
 \end{equation}
 where $R^+_{sum} = \sum_{a \in \cA_i(s)}{r^{i,+}_s[a]}$. 
-The main idea is to adjust the strategy by assigning higher weight proportionally to actions based on the regret of 
+The main idea is to adjust the strategy by assigning higher weight proportionally to moves based on the regret of 
 having not taken them over the long-term. 
-To ensure exploration, an $\gamma$-on-policy sampling procedure similar to Equation~\ref{eq:exp3select} is used 
-choosing action $a$ with probability $\gamma/|\cA(s)| + (1-\gamma) \sigma^t_i(s,a)$. 
+To ensure exploration, a $\gamma$-on-policy sampling procedure similar to Equation~\ref{eq:exp3select} is used 
+choosing move $a$ with probability $\gamma/|\cA(s)| + (1-\gamma) \sigma^t_i(s,a)$. 
 
 The updates on line \ref{alg:update1} and \ref{alg:update2} add regret accumulated at the iteration to  
 the regret tables $r^i_s$ and the average strategy $\bar{\sigma}^i_s[a]$. 
-Suppose joint action $(a_1,a_2)$ is 
+Suppose joint move $(a_1,a_2)$ is 
 sampled from the selection policy and utility $u_i$ is returned from the recursive call on line~\ref{alg:reccall}. 
 Label the current child $(i,j)$ estimate $\bar{X}_{s,i,j}$ and the $reward(i,j) = \bar{X}_{s,i,j}$ if 
 $(i,j) \not= (a_1,a_2)$, or $u_i$ otherwise. The updates to the regret are:
@@ -824,7 +832,7 @@ $(i,j) \not= (a_1,a_2)$, or $u_i$ otherwise. The updates to the regret are:
 \forall a_2' \in \cA_2(s),  r^2_s[a_2'] \leftarrow r^2_s[a_2'] + ( reward(a_1, a_2') - u_2 ),
 \end{eqnarray*}
 \noindent and average strategy updates are $\bar{\sigma}^i_s[a] \leftarrow \bar{\sigma}^i_s[a] + \sigma^t_i(s,a)$ 
-for each player.
+for each player. Here, $u_1$ is the reward for player one and recall that the reward for the other player $u_2 = k - u_1$.
 
 The final move for the root $s$ is chosen by sampling over the strategy obtained by 
 normalizing the values in $\bar{\sigma}_s^i$. 
@@ -836,20 +844,20 @@ purely sequential game.
 
 Recall again the simultaneous move game from Figure~\ref{fig:example}. If the row 
 player always chooses ``top'' $(t)$ and the column player always chooses ``left'' $(l)$, then in the simultaneous 
-move MCTS, the simulation would consist of two joint actions, $(t,l) \rightarrow (t,l) \rightarrow 2$. However, 
+move MCTS, the simulation would consist of two joint moves, $(t,l) \rightarrow (t,l) \rightarrow 2$. However, 
 in SUCT, this simulation would be four steps. First, the searching player chooses $t$, then it becomes the opponent's
 turn and responds with $l$, then the player plays $t$ again, and the opponent again responds with $l$.  
 
 Therefore, In SUCT a different tree is built, one where a player chooses a move and the opponent is 
 allowed to know which move the player chose and can respond accordingly. The motivation for this is that if a player
 announces his move to the opponent and the opponent is allowed to choose a 1-ply best response, then the searching player
-will learn to play the move that has the least chances of being penalized by an opponent. In fact, in the classical 
+will learn to play the move that has the least chances of being penalized by an opponent. In fact, in the classic 
 minimax setting, the values returned by a search of the serialized game tree are indeed bounds on the actual true 
 minimax value of the node~\cite[Corollary 4.2]{Bosansky13Using}, so it seems reasonable in the SM-MCTS setting as well. 
 
 In this paper, we assume that the searching player always moves first and then the opponent responds, leading to 
 defensive play. However, in general this could be could be reversed for aggressive play, or even randomized as was 
-done in classical $\alpha\beta$ search in abstract combat games~\cite{Kovarsky05RAB}.
+done in $\alpha\beta$ search for abstract combat games~\cite{Kovarsky05RAB}.
 
 %\section{Application to General Game-Playing}
 %\label{sec:appggp}
@@ -859,7 +867,7 @@ done in classical $\alpha\beta$ search in abstract combat games~\cite{Kovarsky05
 \label{sec:exp}
 
 In this section, we discuss our experimental setup for evaluation SM-MCTS to in general games.
-We start by describing nine simultaneous move games used to evaluate SM-MCTS in GGP. Some of these 
+We start by describing nine simultaneous move games used previously in GGP. Some of these 
 descriptions are taken from~\cite[Appendix C]{Finnsson12}.
 
 %An interesting challenge in GGP is the efficient parsing and logical interpretation of the game rules. 
@@ -1177,7 +1185,7 @@ For future work, we would like to also measure the effect that the simultaneous 
 SM-MCTS variants. It would be interesting to measure the performance of SM-MCTS against well-known benchmark players, such as the ones described 
 in Goofspiel competitions~\cite{Dror13Repeated}.
 Also, we would like to try SM-MCTS variants in real-time games where a simultaneous move game can be used as a discretized approximation 
-of a real-time game. For example, SM-MCTS could be used as a high-level multistage planner in real-time strategy games by treating the action of each agent
+of a real-time game. For example, SM-MCTS could be used as a high-level multistage planner in real-time strategy games by treating the move of each agent
 as long-term scripts, extending related previous work in this area \cite{Sailor07adversarial}. 
 Finally, we would like to extend our SM-MCTS variants to games with more than two players, for example as a strategic reasoner 
 module in the seven-player simultaneous move game Diplomacy~\cite{Fabregues11DipGame}. 
