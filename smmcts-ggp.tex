@@ -84,6 +84,7 @@
 \usepackage{pgfplots}
 \usepackage{caption}
 \usepackage{subcaption}
+\usepackage{xspace}
 
 \usepackage[algo2e, noend, noline, linesnumbered]{algorithm2e}
 \DontPrintSemicolon
@@ -128,6 +129,7 @@
 \newcommand{\cZ}{\mathcal{Z}}
 \newcommand{\eg}{{\it e.g.,}~}
 \newcommand{\ie}{{\it i.e.,}~}
+\newcommand{\Cadiaplayer}{{\sc CadiaPlayer}\xspace}
 
 
 % Some very useful LaTeX packages include:
@@ -470,12 +472,12 @@
 
 \begin{abstract}
 %\boldmath
-Monte Carlo Tree Search (MCTS) is a widely-used technique for game-tree search in sequential turn-taking games. 
+Monte Carlo Tree Search (MCTS) is a widely-used technique for game-tree search in sequential turn-based games. 
 The extension to simultaneous move games, where all player choose moves simultaneously each turn, 
 is non-trivial due to the complexity of this class of games. In this paper, we describe simultaneous move MCTS 
-and analyze its application in general, over nine different simultaneous move games. We use several possible 
+and analyze its application in over a set of nine disparate simultaneous move games. We use several possible 
 variants, Decoupled UCT, Sequential UCT, Exp3, and Regret Matching. These variants include both 
-deterministic and stochastic selection strategies and we characterize the practical performance of each one. 
+deterministic and stochastic selection strategies and we characterize the game-play performance of each one. 
 The results indicate that the relative performance of 
 each variant depends strongly on the game and the opponent, and that parameter tuning can also not be as 
 straightforward as the purely sequential case. Overall, Decoupled UCT performs best in these games, despite its 
@@ -506,7 +508,7 @@ theoretical shortcomings.
 \section{Introduction}
 
 Monte Carlo Tree Search (MCTS)~\cite{Coulom06Efficient,Kocsis06Bandit} is a popular search technique 
-that has demonstrated initial success in sequential turn-taking games such as Go~\cite{Gelly12}, Hex~\cite{Arneson10Hex},
+that has demonstrated initial success in sequential turn-based games such as Go~\cite{Gelly12}, Hex~\cite{Arneson10Hex},
 and Lines of Action~\cite{Winands10MCTS-LOA}. MCTS has also been applied with practical success in general game playing 
 (GGP)~\cite{Bjornsson09CadiaPlayer} and other complex settings such as real-time 
 games~\cite{Balla09UCT,Pepels14Monte} 
@@ -524,7 +526,7 @@ The most popular MCTS algorithm is Upper Confidence Bounds for Trees (UCT)~\cite
 Upper Confidence Bounds~\cite{Auer02Finite}. Since UCT was original~\cite{Shafiei09}. 
 designed for strictly sequential turn-taking games, its theoretical guarantees (such as eventual convergence to the optimal 
 strategy) do not apply in simultaneous move games~\cite{Shafiei09}. The standard application of UCT to simultaneous move games, 
-first used in general game-playing~\cite{Finnsson08}, is a variant we call {\it Decoupled UCT} (DUCT), where each player uses UCB to select 
+first used in general game-playing~\cite{Cadiaplayer}, is a variant we call {\it Decoupled UCT} (DUCT), where each player uses UCB to select 
 their own moves independent of how the opponent's (simultaneously chosen) move on the same turn can affect the outcome. 
 This variant has been shown to not converge to an optimal strategy, even in a game with a single state~\cite{Shafiei09}.
 
@@ -552,7 +554,7 @@ The results show that the expected performance, and hence choice of variant, can
 
 The structure for the rest the paper is as follows. In Section~\ref{sec:background}, we describe the background necessary to 
 express our technique. In Section~\ref{sec:smmcts} we describe simultaneous move MCTS. In Section \ref{sec:exp}, we present 
-the empirical results and discuss them further. Finally, in Section~\ref{sec:conc} we conclude. 
+the empirical results and discuss them further. Finally, in Section~\ref{sec:conc} we conclude and indicate potential future research.
 
 \section{Background}
 \label{sec:background}
@@ -563,7 +565,7 @@ We also describe the terminology required to formalize the techniques.
 \subsection{Monte Carlo Tree Search}
 
 Monte Carlo Tree Search (MCTS)~\cite{Coulom06Efficient,Kocsis06Bandit} is a simulation-based search algorithm often 
-used in game trees. The main idea is to iteratively run simulations from the root of the search tree to a terminal 
+used in games. The main idea is to iteratively run simulations from the root of the search tree to a terminal 
 game state, incrementally growing a tree rooted at the current state of the actual played game. 
 
 MCTS consists of four strategic steps. (1) The \textit{selection step} determines how to traverse the tree from the 
@@ -600,14 +602,16 @@ An example of a simultaneous move game is depicted in Figure~\ref{fig:example}.
 \includegraphics[width=6.0cm]{figures/tree2}\\
 \end{subfigure}
 \caption{An example of a two-player simultaneous game which has Matching Pennies as a subgame. Each node represents a state of 
-the game. Four nodes are shown, and at each node, each player has two individual moves (for the row player: top, bottom) and 
-(column player: left, right), leading to four joint moves per node.
+the game. Four nodes are shown, and at each node, each player has two individual moves, for the row player: top $t$ and bottom ($b$), 
+and for the column player: left ($l$) and right ($r$), leading to four joint moves per node.
 \label{fig:example}}
 \end{figure}
 
 A {\it matrix game} is a single step simultaneous move game with legal move sets $\cA_1$ and $\cA_2$. 
-Each entry in the matrix $A_{rc}$ where $(r,c) \in A_1 \times A_2$ corresponds to a payoff (to player 1) if row $r$ is chosen by player 1 and column $c$ by player 2. 
-For example, in Matching Pennies, each player has two moves (heads or tails). The row player receives a payoff of 1 if both players choose the same move and 0 if they do not match. 
+Each entry in the matrix $A_{rc}$ where $(r,c) \in A_1 \times A_2$ corresponds to a payoff (to player 1) if row $r$ is chosen by 
+player 1 (Max) and column $c$ by player 2 (Min). 
+For example, in Matching Pennies, each player has two moves. The row player receives a payoff of 1 if both 
+players choose the same move and 0 if they do not match. 
 Two-player simultaneous move games are sometimes called {\it stacked matrix games} because at every state 
 $s$ there is a joint move set $\cA_1(s) \times \cA_2(s)$ that either leads to a terminal state or to a subgame which 
 is itself another stacked matrix game. 
@@ -625,20 +629,20 @@ V^* = \max_{\sigma_1 \in \Sigma_1} \min_{\sigma_2 \in \Sigma_2} \bE_{z \sim \sig
 \end{equation}
 In other words, neither player can improve their utility by deviating unilaterally. 
 For example, the Matching Pennies matrix game has a single state and the only equilibrium strategy is to mix equally between both moves, \ie play with a {\it mixed strategy} (distribution) of $(0.5, 0.5)$ giving an expected payoff of $V^* = 0.5$. 
-If the strategies also optimize Equation \ref{eq:ne} in each subgame starting in an arbitrary state, the equilibrium strategy is termed subgame perfect.
+If the strategies also optimize Equation \ref{eq:ne} in each subgame starting in an arbitrary state, the equilibrium strategy is subgame perfect.
 
 In two-player constant-sum games a Nash equilibrium strategy is optimal in the minimax sense. It guarantees the payoff of at least $V^*$ against any opponent. Any 
-non-equilibrium strategy has a best response, which will make it win less than $V^*$ in expectation. Moreover, subgame perfect NE strategy can earn more 
+non-equilibrium strategy has a best response, which will make it win less than $V^*$ in expectation. Moreover, a subgame perfect NE strategy can earn more 
 than $V^*$ against weak opponents. After the opponent makes a sub-optimal move, the strategy will never allow it to gain the loss back. 
 The value $V^*$ is known as the minimax-optimal value of the game and is the same for every equilibrium profile by von Neumann's minimax theorem.
 
-Two-player constant-sum simultaneous move games can be solved (\ie Nash equilibrium strategies can be computed) using backward 
+Two-player constant-sum simultaneous move games can be solved (\ie Nash equilibrium strategies computed) using backward 
 induction~\cite{Ross71Goofspiel,Buro03OshiZumo,Rhoads12Computer}. The main idea is to start from the 
-endgame positions and individually compute the values of the subgames and work back to the root state. 
+endgame positions and individually compute the $V^*$ of each subgame, by solving a linear program at each state, and working back up to the root state.
 For the example in Figure 1, the value of the matrix game on the bottom-left is $3$ (if the row player is maximizing) because each player has a 
 strategy that is strictly dominated, and the 
-value of Matching Pennies is $0.5$. These values represent the correct game-theoretic value for a joint move in the parent node.
-In MCTS, these values are approximated using Monte Carlo sampling, and the variants will the estimates when selecting moves.
+value of Matching Pennies is $0.5$. These values represent the unique game-theoretic values for a joint moves $\{ (l,t), (l,b) \}$ in the parent node.
+In MCTS, these values are approximated using Monte Carlo sampling, and the variants use the estimates when selecting moves.
 As in purely sequential games, search techniques approximate these underlying game-theoretic algorithms, but  
 the connection is not as straightforward since the optimal strategies can be mixed and $V^*$ can be anything 
 in the range of $[v_{\min}, v_{\max}]$.
@@ -728,8 +732,8 @@ Each variant below will describe a different way to select a joint move and upda
 
 We focus on a number of SM-MCTS variants. The most popular one is straightforward adaption of UCT. 
 Though it has been shown to not converge to a Nash equilibrium even in a one-shot single-state 
-game, it has nonetheless been popular and successful in general game playing. 
-The second one is Exp3, first introduced as an adversarial bandit algorithm that can be applied to learning in 
+game, it has nonetheless been popular and successful in general game playing~\cite{Shafiei09}. 
+The second is Exp3, an regret minimization algorithm that can be used to learn in unknown games
 games~\cite{Exp3}, was also applied successfully to the popular online card game Urban Rivals~\cite{Teytaud11Upper,StPierre12Online}. 
 The third is Regret Matching, which was recently shown to perform particularly well in Goofspiel~\cite{Lanctot13Goofspiel}.
 The latter two were also used in a recent theoretical analysis of the convergence of SM-MCTS~\cite{Lisy13Computing}.
@@ -754,7 +758,7 @@ In DUCT, \Update~simply increments the decoupled values for each player $i$: $X^
 and $n_{s,a_i} \leftarrow n_{s,a_i} + 1$. 
 
 As an example, consider the game in Figure~\ref{fig:example}, with player set $\cN = \{\Max,\Min\}$, root node $s$,
-and move sets $\cA_{\Max}(s) = \{t,b\}, \cA_{\Min}(s) = \{l,r\}$ representing top, bottom, left, and right. 
+and move sets $\cA_{\Max}(s) = \{t,b\}, \cA_{\Min}(s) = \{l,r\}$.  
 Suppose four simulations are run, and rewards received are $u_\Max = 3$ for $(t,l)$, $2$ for $(t,r)$, $1$ for $(b,l)$, 
 and $0$ for $(b,r)$. The tree would contain exactly five states: $s$, and each child of $s$. On the fifth simulation, 
 \Max~chooses among $t$ and $b$ and \Min~chooses among $r$ and $l$, both by using Equation~\ref{eq:duct}. 
@@ -768,7 +772,7 @@ with the highest estimated reward $\max_{a \in \cA_i(s)} \bar{X}^i_{s,a}$.
 
 In Exp3~\cite{Exp3}, each player maintains an estimate of the sum of rewards, denoted $\hat{x}^i_{s,a}$, and visit 
 counts $n^i_{s,a}$ for each of their own moves. In the case of Exp3, however, $\hat{x}^i_{s,a}$ represents a cumulative 
-{\it weighted} reward, where each value gets scaled by the the probability of it having been sampled. 
+{\it weighted} reward, where each value gets scaled by the probability of it having been sampled. 
 These values and strategies are maintained separately for each player, so Exp3 is decoupled in the same sense as DUCT. 
 
 The joint move selected on line \ref{alg:select} is composed of moves independently selected for each player 
@@ -922,7 +926,8 @@ Pawn Whopping has slightly different movement and is simultaneous.
 \textit{Tron} is a two-player game played on discrete two-dimensional grid possibly obstructed by walls. At each
 step in Tron both players move to adjacent cells, and a wall is placed in the cells that the player started on that turn. 
 The game is won if the opponent crashes into a wall or moves off the board. If both players crash at the same turn 
-into a wall, the game ends in a draw.
+into a wall, the game ends in a draw. The initial position is a 13 $\times$ 13 square field walled ``box'' in the 
+center (board (a) from \cite{Lanctot13Tron}). 
 
 \subsection{Test Environment}
 
@@ -939,10 +944,10 @@ significant.
 DUCT, SUCT, Exp3, and RM are pair wise compared in each of the nine games. The time setting is 2.5 seconds per move and 
 each combination of one variant versus another in a particular game consists of 500 games.  
 
-In GGP, all utilities are non-negative, so without loss of generality, $v_{\min} = 0$. 
+In GGP, all utilities are non-negative, so without loss of generality, $u_1, u_2 \ge 0$.  
 Also, games may not be constant-sum. In our implementation, we ensure that all payoffs 
 are appropriately scaled to ensure that they are $k$-sum, with $k > 0$, by using 
-a similar transformation previously used in Cadiaplayer~\cite{Finnsson12}:
+a similar transformation previously used in \Cadiaplayer~\cite{Finnsson12}:
 \[ \text{\sc Scale}(u_1, u_2) = \left( \frac{u_1 - u_2 + k}{2}, \frac{u_2 - u_1 + k}{2} \right). \]
 
 \subsection{Parameter Tuning}
@@ -964,13 +969,20 @@ Runners           & $C=0.8$ & $C=1.8$ & $\gamma = 0.3$ & $\gamma = 0.50$ \\
 Tron              & $C=1.8$ & $C=2.0$ & $\gamma = 0.3$ & $\gamma = 0.30$ \\
  \hline
 \end{tabular}
-\caption{Parameters values. \label{table:parameters}}
+\caption{Parameters values. \label{tbl:parameters}}
 \end{table}
 
 
-Before the different algorithms are compared, their parameters are tuned by self play where different parameter values are compared against a reference parameter. In DUCT, and SUCT the default parameter is $C=1.4$. The reference parameters for Exp3 and RM are set to $\gamma = 0.2$ and $\gamma = 0.025$, respectively, because they are the optimal parameters in Goofspiel \cite{Lanctot13Goofspiel}. The tuned parameter values are shown in Table \ref{table:parameters}. 
+Before the different algorithms are compared, their parameters are tuned by self-play where different parameter 
+values are compared against a reference parameter. In DUCT, and SUCT the default parameter is $C=1.4$. The reference
+parameters for Exp3 and RM are set to $\gamma = 0.2$ and $\gamma = 0.025$, respectively, because they are the optimal 
+parameters in Goofspiel \cite{Lanctot13Goofspiel}. The tuned parameter values are shown in Table \ref{tbl:parameters}. 
 
-The table shows that the optimal parameter value depends on the game. As it is difficult to choose one parameter value for each algorithm that works well in all games, we choose to use a different parameter value for each game separately. In this way, we can see how well each of the algorithms can perform under optimal conditions.
+The table shows that the optimal parameter value depends on the game. As it is difficult to choose one parameter value 
+for each algorithm that works well in all games, we choose to use a different parameter value for each game separately. 
+In this way, we can see how well each of the algorithms can perform under optimal conditions. In the GGP context 
+this is difficult, because the game playing agents often have severely restricted time to interpret the 
+rules before play starts. 
 
 \begin{figure*}[t!]
 \centering
@@ -989,90 +1001,22 @@ In this subsection, we present and discuss the results of our experiments.
 
 \subsubsection{Parameter Landscape}
 
-
-Figure \ref{fig:tuning1} shows the win rate of Regret Matching depending on $\gamma$ against the reference parameter $\gamma = 0.025$ and it shows the win rate of Decoupled UCT depending on $C$ against the reference parameter $C=1.4$. The figure highlights two important results. First, it is not possible to choose a parameter value that performs well in all games. Second, the performance of Regret Matching and Decoupled UCT can depend heavily on the corresponding parameter value. 
+Figure \ref{fig:tuning1} shows the win rate of Decoupled UCT depending on $C$ against the reference parameter $C=1.4$ and 
+shows the win rate of Regret Matching depending on $\gamma$ against the reference parameter $\gamma = 0.025$. The figure 
+highlights two important results. First, it is not possible to choose a parameter value that performs well in all games. 
+Second, the performance of Regret Matching and Decoupled UCT can depend heavily on the corresponding parameter value. 
 
 We notice that the win rates of DUCT vary quite sensitively in BiddingTicTacToe, Oshi-Zumo, and Chinook, and even more so when $C < 1.2$. 
 For Regret Matching, generally interval $\gamma \in [0.2,0.5]$ seems to be save but the optimal parameter varies significantly across game types.
 
-This kind of behavior also holds for the other algorithms. Therefore, this figure supports choosing a separate parameter value for each game and algorithm.
+This kind of behavior also holds for the other algorithms. Therefore, this figure supports choosing a separate parameter value 
+for each game and algorithm. See Table~\ref{tbl:parameters} for the chosen parameter values.
 
 % MarcL, Mar. 27th: I took this out of the intro as it was too specific. Maybe we can discuss it here at some point.
 %Unlike in \cite{Samothrakis10Tron}, they found that {\it UCB1-Tuned} was the most successful in Tron, 
 %which was also confirmed by a more recent study~\cite{Lanctot13Tron}.
 
 \subsubsection{Performance Comparisons}
-
-Tables \ref{tbl:vsduct}, \ref{tbl:summary}, and \ref{tbl:cross} show our performance results for each variant in the games we have tried. 
-Tables report win percentage with 95\% confidence intervals. Draws counts as a half win and half loss. 
-
-Table \ref{tbl:vsduct} shows the win rate of the algorithms against DUCT. This table is important, because DUCT is the standard benchmark often used
-in the GGP competitions. Therefore, it is interesting to investigate whether the alternatives are preferred. Based on the results in Table \ref{tbl:vsduct}
-it seems that DUCT indeed performs well in almost most games. This is consistent with the existing successes in general game playing. 
-
-However, in Goofspiel and Oshi-Zumo, Regret Matching performs significantly better than DUCT. Exp3 also outperforms DUCT in Goofspiel. 
-Again, this is consistent with previous results in Goofspiel~\cite{Lanctot13Goofspiel}. Both Goofspiel and Oshi-Zumo have been 
-solved~\cite{Buro03OshiZumo,Rhoads12Computer} and their optimal strategies are mixed distributions. In Goofspiel, the importance of mixing
-has been justified previously, any deterministic strategy has a best response that exploit it by a lot. So, these stochastic selection strategies, 
-which converge to mixed distributions, are likely to be more effective in games where the optimal strategy requires mixing. 
-In the case of Goofspiel, RM wins an outstanding 95.1\% of games against DUCT. This show that the performance of these variants can vary 
-significantly depending on the game type. 
-
-We also notice that SUCT outperforms DUCT in Tron. This is unsurprising, as we have discovered in previous work that mistakes in Tron are
-unforgiving~\cite{Lanctot13Tron}. Because SUCT plays defensively avoiding mistakes that could lead to opponent best responses, this could 
-have a positive effect in a game like Tron. DUCT does seem to filter out clearly bad moves in practice, but since the estimates are based on 
-joint selections, it is possible that the opponent does not ``cooperate'' in helping identify the bad moves which are then not filtered out 
-as effectively as in SUCT where the opponent is given knowledge of the acting player's move. 
-Also, what we have noticed specifically in Tron is that the results are significantly different when 
-using a random playout policy versus a well-informed playout policy. For instance, the UCB1-Tuned selection variant seemed to do particularly 
-well in Tron~\cite{Perick12Comparison,Lanctot13Tron}. However, we were unable to reproduce these gains in this general context when using random
-playout policies. In our case, DUCT and DUCB1T seemed on to be equally strong.  
-
-A surprising result is that the performance results are not always transitive. For example, in Goofspiel, DUCT beats SUCT, but loses from RM. 
-However, SUCT beats RM in Goofspiel. We suspect the reason for this surprising result is that the algorithms in simultaneous move games are 
-very sensitive to the parameters. As these parameters are tuned in self play, it could be that we were overfitting the parameters, because 
-the optimal parameter value for a certain algorithm also depends on the algorithm used by the opponent. Also, due to the importance of mixing 
-in some of the games, it is possible that there could be a ``Rock-Paper-Scissors''-like effect of one variant acting as a best response to 
-the other. Therefore, care must be taken when deciding on which variant and which parameter set to use when deciding on the search variant to 
-use. These results suggest that systematic testing against several different variants is prudent in determining robust parameter settings. 
-
-\begin{table}
-\begin{center}
-\begin{tabular}{|c|rrr|}
-\hline
- Game $\backslash$ Variant    & Exp3		 & RM		 & SUCT		\\ 
-\hline
-                   Battle     & 25.10 ($\pm$ 2.19)	& 25.70 ($\pm$ 2.24)	& 44.60 ($\pm$ 2.99)	\\ 
-         BiddingTicTacToe     & 35.90 ($\pm$ 4.06)	& 48.20 ($\pm$ 4.29)	& 46.20 ($\pm$ 4.16)	\\ 
-                  Chinook     & 7.10 ($\pm$ 2.23)	  & 0.20 ($\pm$ 0.39)	  & 31.50 ($\pm$ 4.04)	\\ 
-                Goofspiel     & {\bf 54.00} ($\pm$ 3.61)	& {\bf 95.10} ($\pm$ 1.88)	& 24.90 ($\pm$ 3.37)	\\ 
-                 OshiZumo     & 18.50 ($\pm$ 2.65)	& {\bf 69.40} ($\pm$ 3.74)	& 20.30 ($\pm$ 2.72)	\\ 
-             PawnWhopping     & 27.40 ($\pm$ 3.01)	& 2.10 ($\pm$ 1.11)	& 38.80 ($\pm$ 3.36)	\\ 
-        RacetrackCorridor     & 39.60 ($\pm$ 1.93)	& 1.60 ($\pm$ 0.77)	& 50.10 ($\pm$ 0.65)	\\ 
-                  Runners     & 10.70 ($\pm$ 1.84)	& 20.90 ($\pm$ 3.11)	& 48.90 ($\pm$ 4.32)	\\ 
-                     Tron     & 42.00 ($\pm$ 3.73)	& 20.00 ($\pm$ 3.16)	& {\bf 54.00} ($\pm$ 3.39)	\\ 
-\hline
-\end{tabular}
-\end{center}
-\caption{Performance playing against DUCT in each game. \label{tbl:vsduct}}
-\end{table}
-
-
-\begin{table}
-\begin{center}
-\begin{tabular}{|c|r|}
-\hline
-Variant     & Win Rate \\
-\hline
-      DUCT  &   66.56 ($\pm$ 0.68) \\
-      SUCT  &   59.79 ($\pm$ 0.72) \\
-      Exp3  &   41.66 ($\pm$ 0.71) \\
-        RM  &   31.99 ($\pm$ 0.72) \\
-\hline
-\end{tabular}
-\end{center}
-\caption{Win rate summary, over all games played. \label{tbl:summary}}
-\end{table}
 
 \begin{table}
 \begin{center}
@@ -1147,21 +1091,94 @@ R.C.   &       DUCT   &       Exp3   &         RM   &       SUCT   \\
            DUCT    &          & 58.00 ($\pm$ 3.73)   & 80.00 ($\pm$ 3.16)   & 46.00 ($\pm$ 3.39)   \\
            Exp3    & 42.00 ($\pm$ 3.73)   &          & 75.40 ($\pm$ 3.38)   & 41.90 ($\pm$ 3.74)   \\
              RM    & 20.00 ($\pm$ 3.16)   & 24.60 ($\pm$ 3.38)   &          & 18.50 ($\pm$ 3.08)   \\
-           UCT    & 54.00 ($\pm$ 3.39)   & 58.10 ($\pm$ 3.74)   & 81.50 ($\pm$ 3.08)   &          \\
+           SUCT    & 54.00 ($\pm$ 3.39)   & 58.10 ($\pm$ 3.74)   & 81.50 ($\pm$ 3.08)   &          \\
 \hline
 \end{tabular}
 \end{center}
 \caption{Performance of each variant vs. each variant in every game. Win rate is for the variant in the listed row. \label{tbl:cross}}
 \end{table}
 
+Tables \ref{tbl:cross}, \ref{tbl:vsduct}, \ref{tbl:summary} show the performance results for each variant in the games we have tried. 
+Tables report win percentage with 95\% confidence intervals. Draws counts as a half win and half loss. 
+
 Table~\ref{tbl:cross} shows the full results of every variant against every other variant in each game. One thing that is clear is that 
 Regret Matching is preferred over all other variants in Oshi-Zumo. However, Regret Matching seems to lose quite significantly to all the 
 other variants in Battle, Chinook, PawnWhopping, RacetrackCorridor, and Tron, making it a polar choice. Exp3 seems to suffer less in this
 regard and in some cases (Chinook, PawnWhopping, RacetrackCorridor, and Tron) beats Regret Matching quite significantly, but generally loses
-against both DUCT and SUCT in most games. Overall, if these nine games form a good representation of the type of games to be played, and there 
-is no domain knowledge, then DUCT seems to be a particularly safe choice, winning 66.56\% of games overall. However, Sequential UCT winning 59.79\% 
-of games, is not too far behind, can often be easier to implement, and does seem to do fairly well against Regret Matching in games where mixing
-is important such as Goofspiel.  
+against both DUCT and SUCT in most games. 
+
+We also notice that SUCT is significantly better than DUCT in Tron. We have discovered in previous work that mistakes in
+Tron are unforgiving~\cite{Lanctot13Tron}, 
+so it is possible that the overly defensive play of SUCT more efficiently avoids mistakes that could lead to strong best responses from the opponent.
+Also, what we have noticed specifically in Tron is that the results are significantly different when 
+using a random playout policy versus a well-informed playout policy. For instance, the UCB1-Tuned selection variant seemed to do particularly 
+well in Tron~\cite{Perick12Comparison,Lanctot13Tron}. However, when we tested it in this general context, it was clear that DUCT and DUCB1T were 
+equally strong when using random playout policies, which is similar to the observations in the original Tron work~\cite{Samothrakis10Tron}.
+
+Interestingly, in Goofspiel and Oshi-Zumo, Regret Matching performs significantly better than DUCT. Exp3 also outperforms DUCT in Goofspiel. 
+Again, this is consistent with previous results in Goofspiel~\cite{Lanctot13Goofspiel}. Both Goofspiel and Oshi-Zumo have been 
+solved~\cite{Buro03OshiZumo,Rhoads12Computer} and their optimal strategies are mixed distributions. In Goofspiel, any deterministic strategy 
+has a best response that exploits it by a lot, so mixing is important. These stochastic selection strategies, 
+which converge to mixed distributions, are likely to be more effective in games where the optimal strategy requires mixing. 
+In the case of Goofspiel, RM wins an outstanding 95.1\% of games against DUCT. This show that the performance of these variants can vary 
+significantly depending on the game type. 
+
+A surprising result is that the performance results are not always transitive. For example, in Goofspiel, DUCT beats SUCT, but loses from RM. 
+However, SUCT beats RM in Goofspiel. We believe this effect could be due to algorithms in simultaneous move games being
+sensitive to the parameters. As these parameters are tuned in self play, it could be that we were overfitting the parameters, because 
+the optimal parameter value for a certain algorithm also depends on the algorithm used by the opponent. Also, due to the importance of mixing 
+in some of the games, it is possible that there could be a ``Rock-Paper-Scissors''-like effect of one variant acting as a best response to 
+the other. Therefore, care must be taken when deciding on which variant and which parameter set to use when deciding on the search variant to 
+use. These results suggest that systematic testing against several different variants is prudent in determining robust parameter settings. 
+
+Table \ref{tbl:vsduct} shows the summary of the win rates of alternative algorithms against DUCT. This table is important, because DUCT is the 
+standard technique often used in the GGP competitions. Based on these results in Table \ref{tbl:vsduct} it seems that DUCT indeed performs 
+well in almost most games. This is consistent with the existing successes in general game playing. 
+
+A summary of the results of each algorithm is given in Table~\ref{tbl:summary}. If these nine games form a good representation of the type 
+of games to be played, and there is no domain knowledge, then DUCT seems to be a particularly safe choice, winning 66.56\% of games overall. 
+However, Sequential UCT winning 59.79\% of games, is not too far behind, can often be easier to implement, and does seem to do fairly well
+against Regret Matching in games where mixing is important such as Goofspiel.  
+
+
+\begin{table}
+\begin{center}
+\begin{tabular}{|c|rrr|}
+\hline
+ Game $\backslash$ Variant    & Exp3		 & RM		 & SUCT		\\ 
+\hline
+                   Battle     & 25.10 ($\pm$ 2.19)	& 25.70 ($\pm$ 2.24)	& 44.60 ($\pm$ 2.99)	\\ 
+         BiddingTicTacToe     & 35.90 ($\pm$ 4.06)	& 48.20 ($\pm$ 4.29)	& 46.20 ($\pm$ 4.16)	\\ 
+                  Chinook     & 7.10 ($\pm$ 2.23)	  & 0.20 ($\pm$ 0.39)	  & 31.50 ($\pm$ 4.04)	\\ 
+                Goofspiel     & {\bf 54.00} ($\pm$ 3.61)	& {\bf 95.10} ($\pm$ 1.88)	& 24.90 ($\pm$ 3.37)	\\ 
+                 OshiZumo     & 18.50 ($\pm$ 2.65)	& {\bf 69.40} ($\pm$ 3.74)	& 20.30 ($\pm$ 2.72)	\\ 
+             PawnWhopping     & 27.40 ($\pm$ 3.01)	& 2.10 ($\pm$ 1.11)	& 38.80 ($\pm$ 3.36)	\\ 
+        RacetrackCorridor     & 39.60 ($\pm$ 1.93)	& 1.60 ($\pm$ 0.77)	& 50.10 ($\pm$ 0.65)	\\ 
+                  Runners     & 10.70 ($\pm$ 1.84)	& 20.90 ($\pm$ 3.11)	& 48.90 ($\pm$ 4.32)	\\ 
+                     Tron     & 42.00 ($\pm$ 3.73)	& 20.00 ($\pm$ 3.16)	& {\bf 54.00} ($\pm$ 3.39)	\\ 
+\hline
+\end{tabular}
+\end{center}
+\caption{Performance playing against DUCT in each game. \label{tbl:vsduct}}
+\end{table}
+
+
+\begin{table}
+\begin{center}
+\begin{tabular}{|c|r|}
+\hline
+Variant     & Win Rate \\
+\hline
+      DUCT  &   66.56 ($\pm$ 0.68) \\
+      SUCT  &   59.79 ($\pm$ 0.72) \\
+      Exp3  &   41.66 ($\pm$ 0.71) \\
+        RM  &   31.99 ($\pm$ 0.72) \\
+\hline
+\end{tabular}
+\end{center}
+\caption{Win rate summary, over all games played. \label{tbl:summary}}
+\end{table}
+
 
 \section{Conclusion and Future Work}
 \label{sec:conc}
@@ -1189,6 +1206,10 @@ of a real-time game. For example, SM-MCTS could be used as a high-level multista
 as long-term scripts, extending related previous work in this area \cite{Sailor07adversarial}. 
 Finally, we would like to extend our SM-MCTS variants to games with more than two players, for example as a strategic reasoner 
 module in the seven-player simultaneous move game Diplomacy~\cite{Fabregues11DipGame}. 
+
+{\bf Acknowledgements.} {\small This work is partially funded by the Netherlands Organisation for
+Scientific Research (NWO) in the framework of the projects Go4Nature and GoGeneral, grant numbers 
+612.000.938 and 612.001.121.}
 
 % An example of a floating figure using the graphicx package.
 % Note that \label must occur AFTER (or within) \caption.
