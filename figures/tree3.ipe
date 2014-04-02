@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70005" creator="Ipe 7.1.3">
-<info created="D:20140330195453" modified="D:20140402092315"/>
+<info created="D:20140330195453" modified="D:20140402110104"/>
 <ipestyle name="basic">
 <symbol name="arrow/arc(spx)">
 <path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
@@ -368,7 +368,6 @@ h
 <text matrix="1 0 0 1 -162.657 16.8002" transformations="translations" pos="398.461 737.288" stroke="black" type="label" width="31.198" height="6.425" depth="1.49" valign="baseline">$n_{s&apos;}=1$</text>
 <text matrix="1 0 0 1 67.8471 -28.1962" transformations="translations" pos="212.456 802.173" stroke="black" type="label" width="30.684" height="6.918" depth="0" valign="baseline">Node $s$</text>
 <text matrix="1 0 0 1 101.036 -5.58049" transformations="translations" pos="84.0544 769.87" stroke="black" type="label" width="3.598" height="6.128" depth="0" valign="baseline">$t$</text>
-<text matrix="1 0 0 1 131.288 -50.5182" transformations="translations" pos="53.8023 774.276" stroke="black" type="label" width="3.169" height="6.918" depth="0" valign="baseline">$l$</text>
 <text matrix="1 0 0 1 139.219 -4.99307" transformations="translations" pos="72.306 791.017" stroke="black" type="label" width="3.169" height="6.918" depth="0" valign="baseline">$l$</text>
 <text matrix="1 0 0 1 142.449 6.75533" transformations="translations" pos="108.432 779.856" stroke="black" type="label" width="4.771" height="4.289" depth="0" valign="baseline">$r$</text>
 <text matrix="1 0 0 1 30.7801 17.8841" transformations="translations" pos="20.3962 492.891" stroke="black" type="label" width="35.866" height="6.926" depth="1.93" valign="baseline">Player 1</text>
@@ -393,5 +392,6 @@ h
 427.073 503.455
 409.921 479.963 s
 </path>
+<text matrix="1 0 0 1 144.49 -63.5123" transformations="translations" pos="39.6799 788.362" stroke="black" type="label" width="4.276" height="6.918" depth="0" valign="baseline">$b$</text>
 </page>
 </ipe>
