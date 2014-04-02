@@ -757,13 +757,24 @@ a_i = \argmax_{a \in \cA_i(s)}{ \left\{ \bar{X}^i_{s,a} + C \sqrt{\frac{\ln n_s}
 In DUCT, \Update~simply increments the decoupled values for each player $i$: $X^i_{s,a_i} \leftarrow X^i_{s,a_i} + u_i$,
 and $n_{s,a_i} \leftarrow n_{s,a_i} + 1$. 
 
-As an example, consider the game in Figure~\ref{fig:example}, with player set $\cN = \{\Max,\Min\}$, root node $s$,
-and move sets $\cA_{\Max}(s) = \{t,b\}, \cA_{\Min}(s) = \{l,r\}$.  
-Suppose four simulations are run, and rewards received are $u_\Max = 3$ for $(t,l)$, $2$ for $(t,r)$, $1$ for $(b,l)$, 
-and $0$ for $(b,r)$. The tree would contain exactly five states: $s$, and each child of $s$. On the fifth simulation, 
+\begin{figure}[t!]
+\centering
+\begin{subfigure}{8cm}
+\centering
+\includegraphics[width=8.0cm]{figures/tree3}\\
+\end{subfigure}
+\caption{A detailed example of Decoupled UCT. All payoffs are show in view of Player 1 (Max).\label{fig:example2}}
+\end{figure}
+
+Consider again the game from Figure~\ref{fig:example}, with player set $\cN = \{\Max,\Min\}$, root node $s$,
+and move sets $\cA_{\Max}(s) = \{t,b\}, \cA_{\Min}(s) = \{l,r\}$, $v_{\min} = 0$, and $v_{\max} = 4$. 
+An example of DUCT run for 5 simulations is 
+given in Figure~\ref{fig:example2}.
+Suppose four simulations are run, $n_s = 4$ and rewards received are $u_\Max = 3$ for $(t,l)$, $2$ for $(t,r)$, $1$ for $(b,l)$, 
+and $0$ for $(b,r)$. The tree contains exactly five states: $s$, and each child of $s$. On the fifth simulation, 
 \Max~chooses among $t$ and $b$ and \Min~chooses among $r$ and $l$, both by using Equation~\ref{eq:duct}. 
 In this case, $\bar{X}_{s,t}^\Max = (3 + 2) / 2 = 2.5$ and $\bar{X}_{s,b}^\Max = (1 + 0) / 2 = 0.5$. 
-Supposing $v_{\max} = 4$, then $\bar{X}_{s,l}^\Min = (1 + 3) / 2 = 2$ and $\bar{X}^\Min_{s,r} = (2 + 4) / 2 = 3$. 
+Then $\bar{X}_{s,l}^\Min = 4 - ((3 + 1) / 2) = 2$ and $\bar{X}^\Min_{s,r} = 4 - ((2 + 0) / 2) = 3$. 
 
 In DUCT, after all the simulations have been performed, each player $i$ chooses separately their own final move 
 with the highest estimated reward $\max_{a \in \cA_i(s)} \bar{X}^i_{s,a}$. 
@@ -843,21 +854,30 @@ normalizing the values in $\bar{\sigma}_s^i$.
 
 \subsection{Sequential UCT}
 
+\begin{figure}[b!]
+\centering
+\begin{subfigure}{5cm}
+\centering
+\includegraphics[width=5.0cm]{figures/tree4}\\
+\end{subfigure}
+\caption{A Sequential UCT tree after six simulations, with Player 1 as the search player. The root $s$ with the four 
+leaf nodes correspond to the five nodes shown in Figures \ref{fig:example} and \ref{fig:example2}. In SUCT, Player 2 has two intermediate 
+response nodes. \label{fig:example3}}
+\end{figure}
+
 Sequential UCT (SUCT) performs regular UCT on a {\it serialized} game tree, \ie one that is turned into a 
 purely sequential game. 
+In the running example in the simultaneous game, the first simulation is $(t,l) \rightarrow (b,l) \rightarrow 3$. 
+In Sequential UCT, this would be four steps: $t \rightarrow l \rightarrow b \rightarrow l \rightarrow 3$. 
 
-Recall again the simultaneous move game from Figure~\ref{fig:example}. If the row 
-player always chooses ``top'' $(t)$ and the column player always chooses ``left'' $(l)$, then in the simultaneous 
-move MCTS, the simulation would consist of two joint moves, $(t,l) \rightarrow (t,l) \rightarrow 2$. However, 
-in SUCT, this simulation would be four steps. First, the searching player chooses $t$, then it becomes the opponent's
-turn and responds with $l$, then the player plays $t$ again, and the opponent again responds with $l$.  
-
-Therefore, In SUCT a different tree is built, one where a player chooses a move and the opponent is 
-allowed to know which move the player chose and can respond accordingly. The motivation for this is that if a player
+In SUCT a different tree is built, one where a player chooses a move and the opponent is 
+allowed to know which move the player chose and can respond accordingly. 
+The motivation for this is that if a player
 announces his move to the opponent and the opponent is allowed to choose a 1-ply best response, then the searching player
 will learn to play the move that has the least chances of being penalized by an opponent. In fact, in the classic 
 minimax setting, the values returned by a search of the serialized game tree are indeed bounds on the actual true 
 minimax value of the node~\cite[Corollary 4.2]{Bosansky13Using}, so it seems reasonable in the SM-MCTS setting as well. 
+A portion of the serialized tree for the running example game is given in Figure~\ref{fig:example3}. 
 
 In this paper, we assume that the searching player always moves first and then the opponent responds, leading to 
 defensive play. However, in general this could be could be reversed for aggressive play, or even randomized as was 
@@ -866,6 +886,7 @@ done in $\alpha\beta$ search for abstract combat games~\cite{Kovarsky05RAB}.
 %\section{Application to General Game-Playing}
 %\label{sec:appggp}
 %\subsection{Using N-Grams for Dynamic Playout Policies}
+
 
 \section{Empirical Evaluation}
 \label{sec:exp}
