@@ -1,0 +1,127 @@
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,Directory on gogeneral:,Java/SimultaneousMoveGames/FinalExperiments/RandomUCT/RealExperiments1000games,,,,,,,,Battle,,,,
+,,version:,GGP_MCTS46,,,,,,,,Results in point of view of Exp3:,,,Results in point of view of SeqUCTDefensive,
+,,Thinking time per move:,2.5s,,,,,,,,,,,,
+,,gogeneral,,,,,,,,,28/03/2014_02.30,,,28/03/2014_02.30,
+,,,,,,,,,,, Games played,1000,, Games played,1000
+,,,,,,,,,,, Mean,0.2505,, Mean,0.7495
+,,,,,,,,,,, Wins,0,, Wins,499
+,,,,,,,,,,, Draws,501,, Draws,501
+,,,,,,,,,,, Losses,499,, Losses,0
+,,,,,,,,,,, Conf. interval binomial formula based,0.0268562737,, Conf. interval binomial formula based,0.0268562737
+,,,,,,,,,,, Conf.interval 95% with n,0.0154951295,, Conf.interval 95% with n,0.0154951295
+,,,,,,,,,,, Conf.interval 95% with n-1,0.0155028829,, Conf.interval 95% with n-1,0.0155028829
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,BiddingTicTacToe,,,,
+,,,,,,,,,,,Results in point of view of Exp3:,,,Results in point of view of SeqUCTDefensive,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,27/03/2014_17.45,,,27/03/2014_17.45,
+,,,,,,,,,,, Games played,1000,, Games played,1000
+,,,,,,,,,,, Mean,0.4115,, Mean,0.5885
+,,,,,,,,,,, Wins,377,, Wins,554
+,,,,,,,,,,, Draws,69,, Draws,69
+,,,,,,,,,,, Losses,554,, Losses,377
+,,,,,,,,,,, Conf. interval binomial formula based,0.0305010103,, Conf. interval binomial formula based,0.0305010103
+,,,,,,,,,,, Conf.interval 95% with n,0.0293946258,, Conf.interval 95% with n,0.0293946258
+,,,,,,,,,,, Conf.interval 95% with n-1,0.0294093342,, Conf.interval 95% with n-1,0.0294093342
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,Chinook,,,,
+,,,,,,,,,,,Results in point of view of Exp3:,,,Results in point of view of SeqUCTDefensive,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,28/03/2014_02.43,,,28/03/2014_02.43,
+,,,,,,,,,,, Games played,1000,, Games played,1000
+,,,,,,,,,,, Mean,0.1795,, Mean,0.8205
+,,,,,,,,,,, Wins,177,, Wins,818
+,,,,,,,,,,, Draws,5,, Draws,5
+,,,,,,,,,,, Losses,818,, Losses,177
+,,,,,,,,,,, Conf. interval binomial formula based,0.0237863383,, Conf. interval binomial formula based,0.0237863383
+,,,,,,,,,,, Conf.interval 95% with n,0.0236851829,, Conf.interval 95% with n,0.0236851829
+,,,,,,,,,,, Conf.interval 95% with n-1,0.0236970344,, Conf.interval 95% with n-1,0.0236970344
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,Goofspiel,,,,
+,,,,,,,,,,,Results in point of view of Exp3:,,,Results in point of view of SeqUCTDefensive,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,27/03/2014_18.52,,,27/03/2014_18.52,
+,,,,,,,,,,, Games played,1000,, Games played,1000
+,,,,,,,,,,, Mean,0.5845,, Mean,0.4155
+,,,,,,,,,,, Wins,511,, Wins,342
+,,,,,,,,,,, Draws,147,, Draws,147
+,,,,,,,,,,, Losses,342,, Losses,511
+,,,,,,,,,,, Conf. interval binomial formula based,0.0305445579,, Conf. interval binomial formula based,0.0305445579
+,,,,,,,,,,, Conf.interval 95% with n,0.0281387849,, Conf.interval 95% with n,0.0281387849
+,,,,,,,,,,, Conf.interval 95% with n-1,0.0281528649,, Conf.interval 95% with n-1,0.0281528649
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,OshiZumo,,,,
+,,,,,,,,,,,Results in point of view of Exp3:,,,Results in point of view of SeqUCTDefensive,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,27/03/2014_18.35,,,27/03/2014_18.35,
+,,,,,,,,,,, Games played,1000,, Games played,1000
+,,,,,,,,,,, Mean,0.37,, Mean,0.63
+,,,,,,,,,,, Wins,220,, Wins,480
+,,,,,,,,,,, Draws,300,, Draws,300
+,,,,,,,,,,, Losses,480,, Losses,220
+,,,,,,,,,,, Conf. interval binomial formula based,0.029924521,, Conf. interval binomial formula based,0.029924521
+,,,,,,,,,,, Conf.interval 95% with n,0.0246446132,, Conf.interval 95% with n,0.0246446132
+,,,,,,,,,,, Conf.interval 95% with n-1,0.0246569448,, Conf.interval 95% with n-1,0.0246569448
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,PawnWhopping,,,,
+,,,,,,,,,,,Results in point of view of Exp3:,,,Results in point of view of SeqUCTDefensive,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,27/03/2014_19.55,,,27/03/2014_19.55,
+,,,,,,,,,,, Games played,1000,, Games played,1000
+,,,,,,,,,,, Mean,0.464,, Mean,0.536
+,,,,,,,,,,, Wins,357,, Wins,429
+,,,,,,,,,,, Draws,214,, Draws,214
+,,,,,,,,,,, Losses,429,, Losses,357
+,,,,,,,,,,, Conf. interval binomial formula based,0.0309098898,, Conf. interval binomial formula based,0.0309098898
+,,,,,,,,,,, Conf.interval 95% with n,0.0273842233,, Conf.interval 95% with n,0.0273842233
+,,,,,,,,,,, Conf.interval 95% with n-1,0.0273979257,, Conf.interval 95% with n-1,0.0273979257
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,RacetrackCorridor,,,,
+,,,,,,,,,,,Results in point of view of Exp3:,,,Results in point of view of SeqUCTDefensive,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,27/03/2014_13.54,,,27/03/2014_13.54,
+,,,,,,,,,,, Games played,1000,, Games played,1000
+,,,,,,,,,,, Mean,0.382,, Mean,0.618
+,,,,,,,,,,, Wins,8,, Wins,244
+,,,,,,,,,,, Draws,748,, Draws,748
+,,,,,,,,,,, Losses,244,, Losses,8
+,,,,,,,,,,, Conf. interval binomial formula based,0.0301149392,, Conf. interval binomial formula based,0.0301149392
+,,,,,,,,,,, Conf.interval 95% with n,0.0137306359,, Conf.interval 95% with n,0.0137306359
+,,,,,,,,,,, Conf.interval 95% with n-1,0.0137375063,, Conf.interval 95% with n-1,0.0137375063
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,Runners,,,,
+,,,,,,,,,,,Results in point of view of Exp3:,,,Results in point of view of SeqUCTDefensive,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,28/03/2014_10.06,,,28/03/2014_10.06,
+,,,,,,,,,,, Games played,1000,, Games played,1000
+,,,,,,,,,,, Mean,0.103,, Mean,0.897
+,,,,,,,,,,, Wins,7,, Wins,801
+,,,,,,,,,,, Draws,192,, Draws,192
+,,,,,,,,,,, Losses,801,, Losses,7
+,,,,,,,,,,, Conf. interval binomial formula based,0.0188395665,, Conf. interval binomial formula based,0.0188395665
+,,,,,,,,,,, Conf.interval 95% with n,0.013058808,, Conf.interval 95% with n,0.013058808
+,,,,,,,,,,, Conf.interval 95% with n-1,0.0130653423,, Conf.interval 95% with n-1,0.0130653423
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,Tron,,,,
+,,,,,,,,,,,Results in point of view of Exp3:,,,Results in point of view of SeqUCTDefensive,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,29/03/2014_02.28,,,29/03/2014_02.28,
+,,,,,,,,,,, Games played,1000,, Games played,1000
+,,,,,,,,,,, Mean,0.4185,, Mean,0.5815
+,,,,,,,,,,, Wins,288,, Wins,451
+,,,,,,,,,,, Draws,261,, Draws,261
+,,,,,,,,,,, Losses,451,, Losses,288
+,,,,,,,,,,, Conf. interval binomial formula based,0.0305758587,, Conf. interval binomial formula based,0.0305758587
+,,,,,,,,,,, Conf.interval 95% with n,0.026157575,, Conf.interval 95% with n,0.026157575
+,,,,,,,,,,, Conf.interval 95% with n-1,0.0261706637,, Conf.interval 95% with n-1,0.0261706637

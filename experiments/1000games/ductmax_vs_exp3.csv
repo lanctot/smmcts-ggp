@@ -1,0 +1,126 @@
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,Directory on gogeneral:,Java/SimultaneousMoveGames/FinalExperiments/RandomUCT/RealExperiments1000games,,,,,,Battle,,,,
+,version:,GGP_MCTS46,,,,,,Results in point of view of DuctMax:,,,Results in point of view of Exp3:,
+,Thinking time per move:,2.5s,,,,,,,,,,
+,gogeneral,,,,,,,26/03/2014_04.44,,,26/03/2014_04.44,
+,,,,,,,, Games played,1000,, Games played,1000
+,,,,,,,, Mean,0.7495,, Mean,0.2505
+,,,,,,,, Wins,499,, Wins,0
+,,,,,,,, Draws,501,, Draws,501
+,,,,,,,, Losses,0,, Losses,499
+,,,,,,,, Conf. interval binomial formula based,0.0268562737,, Conf. interval binomial formula based,0.0268562737
+,,,,,,,, Conf.interval 95% with n,0.0154951295,, Conf.interval 95% with n,0.0154951295
+,,,,,,,, Conf.interval 95% with n-1,0.0155028829,, Conf.interval 95% with n-1,0.0155028829
+,,,,,,,,,,,,
+,,,,,,,,BiddingTicTacToe,,,,
+,,,,,,,,Results in point of view of DuctMax:,,,Results in point of view of Exp3:,
+,,,,,,,,,,,,
+,,,,,,,,25/03/2014_17.29,,,25/03/2014_17.29,
+,,,,,,,, Games played,1000,, Games played,1000
+,,,,,,,, Mean,0.6145,, Mean,0.3855
+,,,,,,,, Wins,579,, Wins,350
+,,,,,,,, Draws,71,, Draws,71
+,,,,,,,, Losses,350,, Losses,579
+,,,,,,,, Conf. interval binomial formula based,0.0301667974,, Conf. interval binomial formula based,0.0301667974
+,,,,,,,, Conf.interval 95% with n,0.0290146043,, Conf.interval 95% with n,0.0290146043
+,,,,,,,, Conf.interval 95% with n-1,0.0290291225,, Conf.interval 95% with n-1,0.0290291225
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,Chinook,,,,
+,,,,,,,,Results in point of view of DuctMax:,,,Results in point of view of Exp3:,
+,,,,,,,,,,,,
+,,,,,,,,26/03/2014_02.11,,,26/03/2014_02.11,
+,,,,,,,, Games played,1000,, Games played,1000
+,,,,,,,, Mean,0.9175,, Mean,0.0825
+,,,,,,,, Wins,913,, Wins,78
+,,,,,,,, Draws,9,, Draws,9
+,,,,,,,, Losses,78,, Losses,913
+,,,,,,,, Conf. interval binomial formula based,0.0170524224,, Conf. interval binomial formula based,0.0170524224
+,,,,,,,, Conf.interval 95% with n,0.0167970685,, Conf.interval 95% with n,0.0167970685
+,,,,,,,, Conf.interval 95% with n-1,0.0168054733,, Conf.interval 95% with n-1,0.0168054733
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,Goofspiel,,,,
+,,,,,,,,Results in point of view of DuctMax:,,,Results in point of view of Exp3:,
+,,,,,,,,,,,,
+,,,,,,,,25/03/2014_18.56,,,25/03/2014_18.56,
+,,,,,,,, Games played,1000,, Games played,1000
+,,,,,,,, Mean,0.5015,, Mean,0.4985
+,,,,,,,, Wins,336,, Wins,333
+,,,,,,,, Draws,331,, Draws,331
+,,,,,,,, Losses,333,, Losses,336
+,,,,,,,, Conf. interval binomial formula based,0.0309901816,, Conf. interval binomial formula based,0.0309901816
+,,,,,,,, Conf.interval 95% with n,0.0253475631,, Conf.interval 95% with n,0.0253475631
+,,,,,,,, Conf.interval 95% with n-1,0.0253602464,, Conf.interval 95% with n-1,0.0253602464
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,OshiZumo,,,,
+,,,,,,,,Results in point of view of DuctMax:,,,Results in point of view of Exp3:,
+,,,,,,,,,,,,
+,,,,,,,,25/03/2014_18.51,,,25/03/2014_18.51,
+,,,,,,,, Games played,1000,, Games played,1000
+,,,,,,,, Mean,0.8135,, Mean,0.1865
+,,,,,,,, Wins,690,, Wins,63
+,,,,,,,, Draws,247,, Draws,247
+,,,,,,,, Losses,63,, Losses,690
+,,,,,,,, Conf. interval binomial formula based,0.0241420568,, Conf. interval binomial formula based,0.0241420568
+,,,,,,,, Conf.interval 95% with n,0.0185908609,, Conf.interval 95% with n,0.0185908609
+,,,,,,,, Conf.interval 95% with n-1,0.0186001633,, Conf.interval 95% with n-1,0.0186001633
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,PawnWhopping,,,,
+,,,,,,,,Results in point of view of DuctMax:,,,Results in point of view of Exp3:,
+,,,,,,,,,,,,
+,,,,,,,,25/03/2014_21.07,,,25/03/2014_21.07,
+,,,,,,,, Games played,1000,, Games played,1000
+,,,,,,,, Mean,0.7265,, Mean,0.2735
+,,,,,,,, Wins,572,, Wins,119
+,,,,,,,, Draws,309,, Draws,309
+,,,,,,,, Losses,119,, Losses,572
+,,,,,,,, Conf. interval binomial formula based,0.0276281971,, Conf. interval binomial formula based,0.0276281971
+,,,,,,,, Conf.interval 95% with n,0.0215998536,, Conf.interval 95% with n,0.0215998536
+,,,,,,,, Conf.interval 95% with n-1,0.0216106617,, Conf.interval 95% with n-1,0.0216106617
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,RacetrackCorridor,,,,
+,,,,,,,,Results in point of view of DuctMax:,,,Results in point of view of Exp3:,
+,,,,,,,,,,,,
+,,,,,,,,25/03/2014_13.55,,,25/03/2014_13.55,
+,,,,,,,, Games played,1000,, Games played,1000
+,,,,,,,, Mean,0.6135,, Mean,0.3865
+,,,,,,,, Wins,242,, Wins,15
+,,,,,,,, Draws,743,, Draws,743
+,,,,,,,, Losses,15,, Losses,242
+,,,,,,,, Conf. interval binomial formula based,0.0301813112,, Conf. interval binomial formula based,0.0301813112
+,,,,,,,, Conf.interval 95% with n,0.0140475745,, Conf.interval 95% with n,0.0140475745
+,,,,,,,, Conf.interval 95% with n-1,0.0140546035,, Conf.interval 95% with n-1,0.0140546035
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,Runners,,,,
+,,,,,,,,Results in point of view of DuctMax:,,,Results in point of view of Exp3:,
+,,,,,,,,,,,,
+,,,,,,,,26/03/2014_09.14,,,26/03/2014_09.14,
+,,,,,,,, Games played,1000,, Games played,1000
+,,,,,,,, Mean,0.911,, Mean,0.089
+,,,,,,,, Wins,832,, Wins,10
+,,,,,,,, Draws,158,, Draws,158
+,,,,,,,, Losses,10,, Losses,832
+,,,,,,,, Conf. interval binomial formula based,0.0176486001,, Conf. interval binomial formula based,0.0176486001
+,,,,,,,, Conf.interval 95% with n,0.012638429,, Conf.interval 95% with n,0.012638429
+,,,,,,,, Conf.interval 95% with n-1,0.0126447529,, Conf.interval 95% with n-1,0.0126447529
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,Tron,,,,
+,,,,,,,,Results in point of view of DuctMax:,,,Results in point of view of Exp3:,
+,,,,,,,,,,,,
+,,,,,,,,27/03/2014_01.51,,,27/03/2014_01.51,
+,,,,,,,, Games played,1000,, Games played,1000
+,,,,,,,, Mean,0.598,, Mean,0.402
+,,,,,,,, Wins,454,, Wins,258
+,,,,,,,, Draws,288,, Draws,288
+,,,,,,,, Losses,258,, Losses,454
+,,,,,,,, Conf. interval binomial formula based,0.0303892296,, Conf. interval binomial formula based,0.0303892296
+,,,,,,,, Conf.interval 95% with n,0.0254344269,, Conf.interval 95% with n,0.0254344269
+,,,,,,,, Conf.interval 95% with n-1,0.0254471537,, Conf.interval 95% with n-1,0.0254471537

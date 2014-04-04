@@ -20,7 +20,7 @@ my @games = ( "Battle", "BiddingTicTacToe", "Chinook", "Goofspiel", "OshiZumo", 
 my @csvfiles = ("ductmax_vs_exp3.csv", "ductmax_vs_rm.csv", "ductmax_vs_suctmax.csv", 
   "exp3_vs_suctmax.csv", "exp3_vs_rm.csv", "rm_vs_suctmax.csv", ); 
 
-my $NGAMES = 500;
+my $NGAMES = 1000;
 
 my %hash = (); 
 
