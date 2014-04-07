@@ -480,7 +480,7 @@ variants, Decoupled UCT, Sequential UCT, Exp3, and Regret Matching. These varian
 deterministic and stochastic selection strategies and we characterize the game-play performance of each one. 
 The results indicate that the relative performance of 
 each variant depends strongly on the game and the opponent, and that parameter tuning can also not be as 
-straightforward as the purely sequential case. Overall, Decoupled UCT performs best in these games, despite its 
+straightforward as the purely sequential case. Overall, Decoupled UCT performs best despite its 
 theoretical shortcomings. 
 \end{abstract}
 % IEEEtran.cls defaults to using nonbold math in the Abstract.
@@ -508,12 +508,11 @@ theoretical shortcomings.
 \section{Introduction}
 
 Monte Carlo Tree Search (MCTS)~\cite{Coulom06Efficient,Kocsis06Bandit} is a popular search technique 
-that has demonstrated initial success in sequential turn-based games such as Go~\cite{Gelly12}, Hex~\cite{Arneson10Hex},
-and Lines of Action~\cite{Winands10MCTS-LOA}. MCTS has also been applied with practical success in general game playing 
-(GGP)~\cite{Bjornsson09CadiaPlayer} and other complex settings such as real-time 
-games~\cite{Balla09UCT,Pepels14Monte} 
+that has demonstrated initial success in sequential turn-based games such as Go~\cite{Gelly12} and Hex~\cite{Arneson10Hex}.
+ MCTS has also been applied with practical success in general game playing (GGP)~\cite{Bjornsson09CadiaPlayer} and other 
+complex settings~\cite{Browne12MCTSSurvey}. 
 %and imperfect information games~\cite{Buro09Improving,Cowling12MTG,Cowling12ISMCTS,Whitehouse13Integrating}. 
-and imperfect information games~\cite{Buro09Improving,Cowling12ISMCTS}.
+%and imperfect information games~\cite{Buro09Improving,Cowling12ISMCTS}.
 
 Simultaneous move games are turn-based games where on each turn all the players choose their moves simultaneously.
 Then, the state of the game in the following turn depends on the collection of moves chosen by all players. 
@@ -559,13 +558,12 @@ the empirical results and discuss them further. Finally, in Section~\ref{sec:con
 \section{Background}
 \label{sec:background}
 
-In this section, we describe the foundation upon which our algorithms are based. 
-We also describe the terminology required to formalize the techniques. 
+In this section, we describe the foundation and terminology upon which our algorithms are based. 
 
 \subsection{Monte Carlo Tree Search}
 
-Monte Carlo Tree Search (MCTS)~\cite{Coulom06Efficient,Kocsis06Bandit} is a simulation-based search algorithm often 
-used in games. The main idea is to iteratively run simulations from the root of the search tree to a terminal 
+Monte Carlo Tree Search (MCTS)~\cite{Coulom06Efficient,Kocsis06Bandit} is a simulation-based 
+search algorithm often used in games. The main idea is to iteratively run simulations from the root of the search tree to a terminal 
 game state, incrementally growing a tree rooted at the current state of the actual played game. 
 
 MCTS consists of four strategic steps. (1) The \textit{selection step} determines how to traverse the tree from the 
@@ -573,11 +571,10 @@ root node to a leaf node of the tree \textit{L}. It should balance the exploitat
 exploration of new moves. (2) In the \textit{playout step}, a random game is simulated from leaf node of the tree 
 \textit{L} until the end of the game.  (3) In the \textit{expansion step}, one or more children of \textit{L} are 
 added. (4) In the \textit{back-propagation step}, the reward \textit{R} obtained is back-propagated through the tree 
-from \textit{L} to the root node.
+from \textit{L} to the root node. Examples and pseudo-code can be found in the MCTS survey article~\cite{Browne12MCTSSurvey}.
 
-Several examples for standard MCTS, including diagrams and pseudo-code, can be found in~\cite{Browne12MCTSSurvey}.
-In the case of simultaneous move games, the overall process for MCTS is the same, but additional challenges are 
-introduced due to the players choosing their moves simultaneously.
+%Several examples for standard MCTS, including diagrams and pseudo-code, can be found in~\cite{Browne12MCTSSurvey}.
+In simultaneous move games, the process is similar, but simultaneous move selection introduces additional challenges.
 
 \subsection{Simultaneous Move Games}
 
@@ -601,7 +598,7 @@ An example of a simultaneous move game is depicted in Figure~\ref{fig:example}.
 \centering
 \includegraphics[width=6.0cm]{figures/tree2}\\
 \end{subfigure}
-\caption{An example of a two-player simultaneous game which has Matching Pennies as a subgame. Each node represents a state of 
+\caption{An example of a two-player simultaneous game. Each node represents a state of 
 the game. Four nodes are shown, and at each node, each player has two individual moves, for the row player: top $t$ and bottom ($b$), 
 and for the column player: left ($l$) and right ($r$), leading to four joint moves per node.
 \label{fig:example}}
@@ -616,20 +613,19 @@ Two-player simultaneous move games are sometimes called {\it stacked matrix game
 $s$ there is a joint move set $\cA_1(s) \times \cA_2(s)$ that either leads to a terminal state or to a subgame which 
 is itself another stacked matrix game. 
 
-A {\it behavioral strategy} for player $i$ is a mapping from states $s \in \cS$
-to a probability distribution over the moves $\cA_i(s)$, denoted $\sigma_i(s)$. 
+%A {\it behavioral strategy} for player $i$ is a mapping from states $s \in \cS$
+%to a probability distribution over the moves $\cA_i(s)$, denoted $\sigma_i(s)$. 
 %Given a profile $\sigma = (\sigma_1, \sigma_2)$, define the probability of reaching a terminal state $z$ under $\sigma$ as 
 %$\pi^\sigma(z) = \pi_1(z) \pi_2(z) \pi_c(z)$, where each $\pi_i(z)$ is a product of probabilities of the actions taken 
 %by player $i$ along the path to $z$ ($c$ being chance's probabilities). 
-Define $\Sigma_i$ to be the set of behavioral 
-strategies for player $i$. A Nash equilibrium profile in this case is a pair of behavioral strategies optimizing
-\begin{equation}\label{eq:ne}
-V^* = \max_{\sigma_1 \in \Sigma_1} \min_{\sigma_2 \in \Sigma_2} \bE_{z \sim \sigma}[u_1(z)].
+Define $\Sigma_i$ to be the set of {\it behavioral strategies} (where each strategy is a mapping from each state to 
+a probability distribution over actions at that state) for player $i$. A Nash equilibrium profile in this case is a pair of 
+behavioral strategies optimizing $V^* = \max_{\sigma_1 \in \Sigma_1} \min_{\sigma_2 \in \Sigma_2} \bE_{z \sim \sigma}[u_1(z)].$
 %   = \max_{\sigma_1 \in \Sigma_1} \min_{\sigma_2 \in \Sigma_2} \sum_{z \in Z} \pi^\sigma(z) u_1(z).
-\end{equation}
+%\end{equation}
 In other words, neither player can improve their utility by deviating unilaterally. 
-For example, the Matching Pennies matrix game has a single state and the only equilibrium strategy is to mix equally between both moves, \ie play with a {\it mixed strategy} (distribution) of $(0.5, 0.5)$ giving an expected payoff of $V^* = 0.5$. 
-If the strategies also optimize Equation \ref{eq:ne} in each subgame starting in an arbitrary state, the equilibrium strategy is subgame perfect.
+For example, the Matching Pennies matrix game has a single state and the only equilibrium strategy is to mix equally between both moves, \ie play with a {\it mixed strategy} (distribution) of $(0.5, 0.5)$ giving expected payoff $V^* = 0.5$. 
+%If the strategies also optimize Equation \ref{eq:ne} in each subgame starting in an arbitrary state, the equilibrium strategy is subgame perfect.
 
 In two-player constant-sum games a Nash equilibrium strategy is optimal in the minimax sense. It guarantees the payoff of at least $V^*$ against any opponent. Any 
 non-equilibrium strategy has a best response, which will make it win less than $V^*$ in expectation. Moreover, a subgame perfect NE strategy can earn more 
@@ -652,9 +648,8 @@ in the range of $[v_{\min}, v_{\max}]$.
 %to act at $I$ cannot distinguish which of these states the game is currently in. Any simultaneous move game can be modeled 
 %using an information set to represent a half-completed transition, \ie $\cT(s, a_1, ?)$ or $\cT(s, ?, a_2)$. 
 
-
-The model described above is similar to a two-player finite horizon Markov Game~\cite{Littman94markovgames}.
-The model can be easily extended to include chance events~\cite{Lanctot13Goofspiel}. 
+%The model described above is similar to a two-player finite horizon Markov Game~\cite{Littman94markovgames}.
+This model can be easily extended to include chance elements~\cite{Lanctot13Goofspiel}. 
 
 \section{Simultaneous Move MCTS}
 \label{sec:smmcts}
@@ -712,11 +707,10 @@ Note that Algorithm~\ref{alg:sm-mcts} explicitly stores the rewards and estimate
 hence the $u_1$ notation, and the opponent's reward is obtained as $u_2 = k - u_1$ as necessary. 
 As seen in Figure~\ref{fig:example}, a matrix of references to the children is maintained at each state. 
 
-At node $s$, the estimated values $\bar{X}_{s'}$ of the children nodes $s' = \cT(s,a_1,a_2)$ over all 
-joint moves form an estimated payoff matrix for node $s$. 
-The critical parts of the algorithm are the updates on lines \ref{alg:update1} and \ref{alg:update2}, and the selection 
-on line \ref{alg:select}. 
-Each variant below will describe a different way to select a joint move and update a node. 
+At node $s$, the estimated values $\bar{X}_{s'}$ of the children nodes $s' = \cT(s,a_1,a_2)$ 
+form an estimated payoff matrix for node $s$. 
+Each variant below will describe a different way to select a joint 
+move (line \ref{alg:select}) and update a node (lines \ref{alg:update1} and \ref{alg:update2}). 
 
 % MarcL, Mar27: Removed since we're not including any of these 
 %In practice, there are several optimizations to the base algorithm that might be desirable.
@@ -879,8 +873,8 @@ minimax setting, the values returned by a search of the serialized game tree are
 minimax value of the node~\cite[Corollary 4.2]{Bosansky13Using}, so it seems reasonable in the SM-MCTS setting as well. 
 A portion of the serialized tree for the running example game is given in Figure~\ref{fig:example3}. 
 
-In this paper, we assume that the searching player always moves first and then the opponent responds, leading to 
-defensive play. However, in general this could be could be reversed for aggressive play, or even randomized as was 
+We assume that the search player moves and then the opponent responds, leading to 
+defensive play. However, this could be reversed for aggressive play, or even randomized as was 
 done in $\alpha\beta$ search for abstract combat games~\cite{Kovarsky05RAB}.
 
 %\section{Application to General Game-Playing}
@@ -919,13 +913,12 @@ standard Tic-Tac-Toe.
 One game on the white squares and another one on the black squares. Black and White move their pieces simultaneously 
 like Checkers pawns. As in Breakthrough, the first player that reaches the opposite side of the board wins the game. 
 
-\textit{Goofspiel}$(N)$ is a card game where each player gets $N$ cards marked 1-$N$, and there is a central pile, 
-shuffled and face down called the point-card deck (also 1-$N$). Every turn, the top card of this point card deck flips, 
-it is called the {\it upcard}. Then, players choose a {\it bid} card from their hand and reveal it simultaneously. 
-The player with the higher bid card obtains a number of points equal to the value of the upcard. The bid cards and 
-upcard are then discarded and a new round starts. At the end of $N$ rounds, the player with the highest number of 
-points wins. If the number of points are tied, the game ends in a draw. The standard game of Goofspiel has 
-$N = 13$. In this paper, we assume that the point cards have a fixed order. 
+\textit{Goofspiel} is a card game where each player gets 13 cards marked 1-13, and there is a face down 
+point-card stack (also 1-13). Every turn, the {\it upcard} (top card of the point-card stack is turned face up, 
+Each player chooses a {\it bid} card their hand simultaneously. 
+The player with the higher bid takes the upcard. The bid cards are then discarded and a new round starts. 
+At the end of 13 rounds, the player with the highest number of points wins, a tie ends in a draw.
+In this paper, we assume that the point cards have a fixed (decreasing) order. 
 
 In \textit{Runners} each turn both players decide how many steps they want to move forward or backward. The aim 
 is to reach the goal location before the opponent does.
@@ -969,7 +962,7 @@ In GGP, all utilities are non-negative, so without loss of generality, $u_1, u_2
 Also, games may not be constant-sum. In our implementation, we ensure that all payoffs 
 are appropriately scaled to ensure that they are $k$-sum, with $k > 0$, by using 
 a similar transformation previously used in \Cadiaplayer~\cite{Finnsson12}:
-\[ \text{\sc Scale}(u_1, u_2) = \left( \frac{u_1 - u_2 + k}{2}, \frac{u_2 - u_1 + k}{2} \right). \]
+$\text{\sc Scale}(u_1, u_2) = (\frac{u_1 - u_2 + k}{2}, \frac{u_2 - u_1 + k}{2}).$
 
 \subsection{Parameter Tuning}
 
@@ -1018,7 +1011,7 @@ rules before play starts.
 \subsection{Experimental Results}
 \label{subsec:results}
 
-In this subsection, we present and discuss the results of our experiments. 
+We now present and discuss the experimental results. 
 
 \subsubsection{Parameter Landscape}
 
@@ -1220,18 +1213,20 @@ effort than in purely sequential games. Finally, overall Decoupled UCT does seem
 justifying its success in general game playing. 
 
 For future work, we would like to also measure the effect that the simultaneous move MCTS-Solver~\cite[Chapter 6]{Finnsson12} has on these 
-SM-MCTS variants. It would be interesting to measure the performance of SM-MCTS against well-known benchmark players, such as the ones described 
+SM-MCTS variants. 
+We want to test the performance of the different SM-MCTS variants under different circumstances. For example, by changing the time settings or 
+using a fixed parameter value per variant. 
+It would be interesting to measure the performance of SM-MCTS against well-known benchmark players, such as the ones described 
 in Goofspiel competitions~\cite{Dror13Repeated}.
 Also, we would like to try SM-MCTS variants in real-time games where a simultaneous move game can be used as a discretized approximation 
 of a real-time game. For example, SM-MCTS could be used as a high-level multistage planner in real-time strategy games by treating the move of each agent
 as long-term scripts, extending related previous work in this area \cite{Sailor07adversarial}. 
 Furthermore, we would like to extend our SM-MCTS variants to games with more than two players, for example as a strategic reasoner 
 module in the seven-player simultaneous move game Diplomacy~\cite{Fabregues11DipGame}.
-Finally, we want to test the performance of the different SM-MCTS variants under different circumstances. For example, by changing the time settings or using a fixed parameter value per variant. 
 
 {\bf Acknowledgements.} {\small This work is partially funded by the Netherlands Organisation for
 Scientific Research (NWO) in the framework of the projects Go4Nature and GoGeneral, grant numbers 
-612.000.938 and 612.001.121. Furthermore, we want to thank Hilmar Finnsson for answering our questions regarding the programming of the MCTS test environment.}
+612.000.938 and 612.001.121. Furthermore, we want to thank Hilmar Finnsson for answering our questions about MCTS and GGP.}
 
 % An example of a floating figure using the graphicx package.
 % Note that \label must occur AFTER (or within) \caption.
