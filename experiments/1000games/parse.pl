@@ -9,16 +9,17 @@ use warnings;
 my %bigHash = (); 
 
 #my @algorithms = ("ductmax", "ducb1t", "exp3", "rm", "suctmax"); 
-my @algorithms = ("ductmax", "exp3", "rm", "suctmax"); 
+#my @algorithms = ("ductmax", "exp3", "rm", "suctmax"); 
+my @algorithms = ("ductmax", "ducb1t", "exp3", "rm", "suctmax"); 
 
 my @games = ( "Battle", "BiddingTicTacToe", "Chinook", "Goofspiel", "OshiZumo", "PawnWhopping", "RacetrackCorridor", "Runners", "Tron"); 
 
-#my @csvfiles = ("ductmax_vs_ducb1t.csv", "ductmax_vs_exp3.csv", "ductmax_vs_rm.csv", "ductmax_vs_suctmax.csv", 
-#  "ducb1t_vs_exp3.csv", "ducb1t_vs_rm.csv", "ducb1t_vs_suctmax.csv", "exp3_cs_suctmax.csv", "exp3_vs_rm.csv", 
-#  "rm_cs_suctmax.csv", ); 
+my @csvfiles = ("ductmax_vs_ducb1t.csv", "ductmax_vs_exp3.csv", "ductmax_vs_rm.csv", "ductmax_vs_suctmax.csv", 
+  "ducb1t_vs_exp3.csv", "ducb1t_vs_rm.csv", "ducb1t_vs_suctmax.csv", "exp3_vs_suctmax.csv", "exp3_vs_rm.csv", 
+  "rm_vs_suctmax.csv", ); 
 
-my @csvfiles = ("ductmax_vs_exp3.csv", "ductmax_vs_rm.csv", "ductmax_vs_suctmax.csv", 
-  "exp3_vs_suctmax.csv", "exp3_vs_rm.csv", "rm_vs_suctmax.csv", ); 
+#my @csvfiles = ("ductmax_vs_exp3.csv", "ductmax_vs_rm.csv", "ductmax_vs_suctmax.csv", 
+#  "exp3_vs_suctmax.csv", "exp3_vs_rm.csv", "rm_vs_suctmax.csv", ); 
 
 my $NGAMES = 1000;
 
@@ -344,7 +345,10 @@ sub print_tablesC {
 
   print "Tables C\n\n";
 
-  for (my $g = 0; $g < scalar(@games); $g += 1) { 
+  for (my $g = 0; $g < scalar(@games); $g += 1) {
+    print "\\hline\n";
+    print "\\hline\n";
+
     my $game = $games[$g]; 
 
     printf("%15s   ", $game);
@@ -356,6 +360,7 @@ sub print_tablesC {
     } 
 
     print "\\\\\n";
+    print "\\hline\n";
     my $hashref = $bigHash{$game};
 
     for (my $a1 = 0; $a1 < scalar(@algorithms); $a1 += 1) { 
@@ -368,7 +373,7 @@ sub print_tablesC {
         #if ($alg2 eq "ductmax") { next; }
 
         if ($alg2 eq $alg1) { 
-          printf("\& %10s   ", "\$--\$"); 
+          printf("\& %10s   ", "    "); 
           next;
         }
 
@@ -390,7 +395,7 @@ sub print_tablesC {
       print "\\\\\n";
     }
 
-    print "\n";
+    #print "\n";
   }
 }
 

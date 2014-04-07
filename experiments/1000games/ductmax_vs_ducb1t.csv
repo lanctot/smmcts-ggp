@@ -1,0 +1,126 @@
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,Directory on gogeneral:,Java/SimultaneousMoveGames/FinalExperiments/RandomUCT/RealExperiments1000games,,,,,,,,,,Battle,,,,
+,,version:,GGP_MCTS47,,,,,,,,,,Results in point of view of DuctMax:,,,Results in point of view of DUCB1T:,
+,,Thinking time per move:,2.5s,,,,,,,,,,,,,,
+,,gogeneral,,,,,,,,,,,05/04/2014_06.05,,,05/04/2014_06.05,
+,,,,,,,,,,,,, Games played,1000,, Games played,1000
+,,,,,,,,,,,,, Mean,0.486,, Mean,0.514
+,,,,,,,,,,,,, Wins,210,, Wins,238
+,,,,,,,,,,,,, Draws,552,, Draws,552
+,,,,,,,,,,,,, Losses,238,, Losses,210
+,,,,,,,,,,,,, Conf. interval binomial formula based,0.0309781705,, Conf. interval binomial formula based,0.0309781705
+,,,,,,,,,,,,, Conf.interval 95% with n,0.0207245325,, Conf.interval 95% with n,0.0207245325
+,,,,,,,,,,,,, Conf.interval 95% with n-1,0.0207349025,, Conf.interval 95% with n-1,0.0207349025
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,BiddingTicTacToe,,,,
+,,,,,,,,,,,,,Results in point of view of DuctMax:,,,Results in point of view of DUCB1T:,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,06/04/2014_05.06,,,06/04/2014_05.06,
+,,,,,,,,,,,,, Games played,1000,, Games played,1000
+,,,,,,,,,,,,, Mean,0.4875,, Mean,0.5125
+,,,,,,,,,,,,, Wins,427,, Wins,452
+,,,,,,,,,,,,, Draws,121,, Draws,121
+,,,,,,,,,,,,, Losses,452,, Losses,427
+,,,,,,,,,,,,, Conf. interval binomial formula based,0.0309806351,, Conf. interval binomial formula based,0.0309806351
+,,,,,,,,,,,,, Conf.interval 95% with n,0.0290446441,, Conf.interval 95% with n,0.0290446441
+,,,,,,,,,,,,, Conf.interval 95% with n-1,0.0290591773,, Conf.interval 95% with n-1,0.0290591773
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,Chinook,,,,
+,,,,,,,,,,,,,Results in point of view of DuctMax:,,,Results in point of view of DUCB1T:,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,06/04/2014_16.54,,,06/04/2014_16.54,
+,,,,,,,,,,,,, Games played,1000,, Games played,1000
+,,,,,,,,,,,,, Mean,0.457,, Mean,0.543
+,,,,,,,,,,,,, Wins,445,, Wins,531
+,,,,,,,,,,,,, Draws,24,, Draws,24
+,,,,,,,,,,,,, Losses,531,, Losses,445
+,,,,,,,,,,,,, Conf. interval binomial formula based,0.0308755062,, Conf. interval binomial formula based,0.0308755062
+,,,,,,,,,,,,, Conf.interval 95% with n,0.0304999554,, Conf.interval 95% with n,0.0304999554
+,,,,,,,,,,,,, Conf.interval 95% with n-1,0.0305152169,, Conf.interval 95% with n-1,0.0305152169
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,Goofspiel,,,,
+,,,,,,,,,,,,,Results in point of view of DuctMax:,,,Results in point of view of DUCB1T:,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,06/04/2014_06.28,,,06/04/2014_06.28,
+,,,,,,,,,,,,, Games played,1000,, Games played,1000
+,,,,,,,,,,,,, Mean,0.5045,, Mean,0.4955
+,,,,,,,,,,,,, Wins,198,, Wins,189
+,,,,,,,,,,,,, Draws,613,, Draws,613
+,,,,,,,,,,,,, Losses,189,, Losses,198
+,,,,,,,,,,,,, Conf. interval binomial formula based,0.0309890659,, Conf. interval binomial formula based,0.0309890659
+,,,,,,,,,,,,, Conf.interval 95% with n,0.0192768516,, Conf.interval 95% with n,0.0192768516
+,,,,,,,,,,,,, Conf.interval 95% with n-1,0.0192864973,, Conf.interval 95% with n-1,0.0192864973
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,OshiZumo,,,,
+,,,,,,,,,,,,,Results in point of view of DuctMax:,,,Results in point of view of DUCB1T:,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,06/04/2014_06.59,,,06/04/2014_06.59,
+,,,,,,,,,,,,, Games played,1000,, Games played,1000
+,,,,,,,,,,,,, Mean,0.508,, Mean,0.492
+,,,,,,,,,,,,, Wins,250,, Wins,234
+,,,,,,,,,,,,, Draws,516,, Draws,516
+,,,,,,,,,,,,, Losses,234,, Losses,250
+,,,,,,,,,,,,, Conf. interval binomial formula based,0.0309863541,, Conf. interval binomial formula based,0.0309863541
+,,,,,,,,,,,,, Conf.interval 95% with n,0.0215542974,, Conf.interval 95% with n,0.0215542974
+,,,,,,,,,,,,, Conf.interval 95% with n-1,0.0215650827,, Conf.interval 95% with n-1,0.0215650827
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,PawnWhopping,,,,
+,,,,,,,,,,,,,Results in point of view of DuctMax:,,,Results in point of view of DUCB1T:,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,06/04/2014_10.03,,,06/04/2014_10.03,
+,,,,,,,,,,,,, Games played,1000,, Games played,1000
+,,,,,,,,,,,,, Mean,0.487,, Mean,0.513
+,,,,,,,,,,,,, Wins,203,, Wins,229
+,,,,,,,,,,,,, Draws,568,, Draws,568
+,,,,,,,,,,,,, Losses,229,, Losses,203
+,,,,,,,,,,,,, Conf. interval binomial formula based,0.0309798446,, Conf. interval binomial formula based,0.0309798446
+,,,,,,,,,,,,, Conf.interval 95% with n,0.0203529745,, Conf.interval 95% with n,0.0203529745
+,,,,,,,,,,,,, Conf.interval 95% with n-1,0.0203631586,, Conf.interval 95% with n-1,0.0203631586
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,RacetrackCorridor,,,,
+,,,,,,,,,,,,,Results in point of view of DuctMax:,,,Results in point of view of DUCB1T:,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,06/04/2014_01.30,,,06/04/2014_01.30,
+,,,,,,,,,,,,, Games played,1000,, Games played,1000
+,,,,,,,,,,,,, Mean,0.509,, Mean,0.491
+,,,,,,,,,,,,, Wins,28,, Wins,10
+,,,,,,,,,,,,, Draws,962,, Draws,962
+,,,,,,,,,,,,, Losses,10,, Losses,28
+,,,,,,,,,,,,, Conf. interval binomial formula based,0.0309853002,, Conf. interval binomial formula based,0.0309853002
+,,,,,,,,,,,,, Conf.interval 95% with n,0.0060153163,, Conf.interval 95% with n,0.0060153163
+,,,,,,,,,,,,, Conf.interval 95% with n-1,0.0060183262,, Conf.interval 95% with n-1,0.0060183262
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,Runners,,,,
+,,,,,,,,,,,,,Results in point of view of DuctMax:,,,Results in point of view of DUCB1T:,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,05/04/2014_07.41,,,05/04/2014_07.41,
+,,,,,,,,,,,,, Games played,1000,, Games played,1000
+,,,,,,,,,,,,, Mean,0.5275,, Mean,0.4725
+,,,,,,,,,,,,, Wins,512,, Wins,457
+,,,,,,,,,,,,, Draws,31,, Draws,31
+,,,,,,,,,,,,, Losses,457,, Losses,512
+,,,,,,,,,,,,, Conf. interval binomial formula based,0.0309434127,, Conf. interval binomial formula based,0.0309434127
+,,,,,,,,,,,,, Conf.interval 95% with n,0.0304585356,, Conf.interval 95% with n,0.0304585356
+,,,,,,,,,,,,, Conf.interval 95% with n-1,0.0304737763,, Conf.interval 95% with n-1,0.0304737763
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,Tron,,,,
+,,,,,,,,,,,,,Results in point of view of DuctMax:,,,Results in point of view of DUCB1T:,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,06/04/2014_03.17,,,06/04/2014_03.17,
+,,,,,,,,,,,,, Games played,1000,, Games played,1000
+,,,,,,,,,,,,, Mean,0.471,, Mean,0.529
+,,,,,,,,,,,,, Wins,260,, Wins,318
+,,,,,,,,,,,,, Draws,422,, Draws,422
+,,,,,,,,,,,,, Losses,318,, Losses,260
+,,,,,,,,,,,,, Conf. interval binomial formula based,0.0309381514,, Conf. interval binomial formula based,0.0309381514
+,,,,,,,,,,,,, Conf.interval 95% with n,0.0234921352,, Conf.interval 95% with n,0.0234921352
+,,,,,,,,,,,,, Conf.interval 95% with n-1,0.02350389,, Conf.interval 95% with n-1,0.02350389
