@@ -475,7 +475,7 @@
 Monte Carlo Tree Search (MCTS) is a widely-used technique for game-tree search in sequential turn-based games. 
 The extension to simultaneous move games, where all player choose moves simultaneously each turn, 
 is non-trivial due to the complexity of this class of games. In this paper, we describe simultaneous move MCTS 
-and analyze its application in over a set of nine disparate simultaneous move games. We use several possible 
+and analyze its application in a set of nine disparate simultaneous move games. We use several possible 
 variants, Decoupled UCT, Sequential UCT, Exp3, and Regret Matching. These variants include both 
 deterministic and stochastic selection strategies and we characterize the game-play performance of each one. 
 The results indicate that the relative performance of 
@@ -963,7 +963,7 @@ the experiments much faster and generate far more games to ensure the assessment
 significant. 
 
 DUCT, SUCT, Exp3, and RM are pair wise compared in each of the nine games. The time setting is 2.5 seconds per move and 
-each combination of one variant versus another in a particular game consists of 500 games.  
+each combination of one variant versus another in a particular game consists of 1000 games.  
 
 In GGP, all utilities are non-negative, so without loss of generality, $u_1, u_2 \ge 0$.  
 Also, games may not be constant-sum. In our implementation, we ensure that all payoffs 
@@ -984,7 +984,7 @@ BiddingTicTacToe  & $C=0.0$ & $C=0.0$ & $\gamma = 0.9$ & $\gamma = 0.15$   \\
 Chinook           & $C=0.4$ & $C=0.4$ & $\gamma = 0.2$ & $\gamma = 0.30$ \\ 
 Goofspiel         & $C=0.4$ & $C=0.8$ & $\gamma = 0.1$ & $\gamma = 0.20$ \\ 
 Oshi-Zumo         & $C=0.4$ & $C=1.8$ & $\gamma = 0.6$ & $\gamma = 0.75$ \\ 
-PawnWhopping      & $C=0.0$ & $C=0.4$ & $\gamma = 0.4$ & $\gamma = 0.75$  \\ 
+PawnWhopping      & $C=0.4$ & $C=0.4$ & $\gamma = 0.4$ & $\gamma = 0.75$  \\ 
 RacetrackCorridor & $C=1.2$ & $C=0.8$ & $\gamma = 0.4$ & $\gamma = 0.15$\\ 
 Runners           & $C=0.8$ & $C=1.8$ & $\gamma = 0.3$ & $\gamma = 0.50$ \\
 Tron              & $C=1.8$ & $C=2.0$ & $\gamma = 0.3$ & $\gamma = 0.30$ \\
@@ -1100,6 +1100,7 @@ R.C.   &       DUCT   &       Exp3   &         RM   &       SUCT   \\
 \hline
 \hline
         Runners   &       DUCT   &       Exp3   &         RM   &       SUCT   \\
+\hline
            DUCT    &          & 91.10 ($\pm$ 1.26)   & 79.80 ($\pm$ 2.13)   & 51.45 ($\pm$ 3.06)   \\
            Exp3    & 8.90 ($\pm$ 1.26)   &          & 38.30 ($\pm$ 1.39)   & 10.30 ($\pm$ 1.31)   \\
              RM    & 20.20 ($\pm$ 2.13)   & 61.70 ($\pm$ 1.39)   &          & 20.45 ($\pm$ 2.14)   \\
@@ -1224,12 +1225,13 @@ in Goofspiel competitions~\cite{Dror13Repeated}.
 Also, we would like to try SM-MCTS variants in real-time games where a simultaneous move game can be used as a discretized approximation 
 of a real-time game. For example, SM-MCTS could be used as a high-level multistage planner in real-time strategy games by treating the move of each agent
 as long-term scripts, extending related previous work in this area \cite{Sailor07adversarial}. 
-Finally, we would like to extend our SM-MCTS variants to games with more than two players, for example as a strategic reasoner 
-module in the seven-player simultaneous move game Diplomacy~\cite{Fabregues11DipGame}. 
+Furthermore, we would like to extend our SM-MCTS variants to games with more than two players, for example as a strategic reasoner 
+module in the seven-player simultaneous move game Diplomacy~\cite{Fabregues11DipGame}.
+Finally, we want to test the performance of the different SM-MCTS variants under different circumstances. For example, by changing the time settings or using a fixed parameter value per variant. 
 
 {\bf Acknowledgements.} {\small This work is partially funded by the Netherlands Organisation for
 Scientific Research (NWO) in the framework of the projects Go4Nature and GoGeneral, grant numbers 
-612.000.938 and 612.001.121.}
+612.000.938 and 612.001.121. Furthermore, we want to thank Hilmar Finnsson for answering our questions regarding the programming of the MCTS test environment.}
 
 % An example of a floating figure using the graphicx package.
 % Note that \label must occur AFTER (or within) \caption.
