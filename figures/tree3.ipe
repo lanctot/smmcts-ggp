@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70005" creator="Ipe 7.1.3">
-<info created="D:20140330195453" modified="D:20140402110104"/>
+<info created="D:20140330195453" modified="D:20140411115750"/>
 <ipestyle name="basic">
 <symbol name="arrow/arc(spx)">
 <path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
@@ -318,7 +318,6 @@ h
 <text matrix="1 0 0 1 -29.671 -132.412" transformations="translations" pos="66.1083 731.07" stroke="black" type="label" width="32" height="5.444" depth="1.74" valign="baseline" size="footnote">$X_{s&apos;}=3$
 </text>
 <text matrix="1 0 0 1 -22.1426 -172.269" transformations="translations" pos="59.9084 759.855" stroke="black" type="label" width="27.35" height="5.134" depth="1.74" valign="baseline" size="footnote">$n_{s&apos;}=1$</text>
-<text matrix="1 0 0 1 3.09996 99.6415" transformations="translations" pos="144.05 539.315" stroke="black" type="label" width="29.177" height="5.444" depth="1.74" valign="baseline" size="footnote">$X_{s&apos;}=1$</text>
 <text matrix="1 0 0 1 55.3564 63.7706" transformations="translations" pos="93.1222 561.458" stroke="black" type="label" width="27.35" height="5.134" depth="1.74" valign="baseline" size="footnote">$n_{s&apos;}=1$</text>
 <text matrix="1 0 0 1 156.326 95.6558" transformations="translations" pos="137.85 544.186" stroke="black" type="label" width="29.177" height="5.444" depth="1.74" valign="baseline" size="footnote">$X_{s&apos;}=0$</text>
 <text matrix="1 0 0 1 106.284 69.5276" transformations="translations" pos="189.221 557.472" stroke="black" type="label" width="27.35" height="5.134" depth="1.74" valign="baseline" size="footnote">$n_{s&apos;}=1$</text>
@@ -345,7 +344,6 @@ h
 130.22 595.487
 131.923 553.587 s
 </path>
-<text matrix="1 0 0 1 -41.9005 -14.6482" transformations="translations" pos="171.098 558.697" stroke="black" type="label" width="4.981" height="6.42" depth="0" valign="baseline">1</text>
 <path stroke="black">
 272.238 763.696 m
 355.052 743.768
@@ -360,7 +358,6 @@ h
 <text matrix="1 0 0 1 23.3623 93.2738" transformations="translations" pos="383.346 376.874" stroke="black" type="label" width="4.981" height="6.42" depth="0" valign="baseline">2</text>
 <text matrix="1 0 0 1 -197.403 -4.58188" transformations="translations" pos="393.88 771.652" stroke="black" type="label" width="33.472" height="6.812" depth="1.49" valign="baseline">$X_{s&apos;}=3$</text>
 <text matrix="1 0 0 1 -203.512 -3.43641" transformations="translations" pos="400.752 757.525" stroke="black" type="label" width="31.198" height="6.425" depth="1.49" valign="baseline">$n_{s&apos;}=1$</text>
-<text matrix="1 0 0 1 -192.821 -42.7642" transformations="translations" pos="388.916 770.125" stroke="black" type="label" width="33.472" height="6.812" depth="1.49" valign="baseline">$X_{s&apos;}=1$</text>
 <text matrix="1 0 0 1 -196.639 -40.8551" transformations="translations" pos="393.498 754.089" stroke="black" type="label" width="31.198" height="6.425" depth="1.49" valign="baseline">$n_{s&apos;}=1$</text>
 <text matrix="1 0 0 1 -152.347 -26.3458" transformations="translations" pos="387.389 753.707" stroke="black" type="label" width="33.472" height="6.812" depth="1.49" valign="baseline">$X_{s&apos;}=0$</text>
 <text matrix="1 0 0 1 -174.875 -44.2915" transformations="translations" pos="410.298 757.907" stroke="black" type="label" width="31.198" height="6.425" depth="1.49" valign="baseline">$n_{s&apos;}=1$</text>
@@ -372,10 +369,8 @@ h
 <text matrix="1 0 0 1 142.449 6.75533" transformations="translations" pos="108.432 779.856" stroke="black" type="label" width="4.771" height="4.289" depth="0" valign="baseline">$r$</text>
 <text matrix="1 0 0 1 30.7801 17.8841" transformations="translations" pos="20.3962 492.891" stroke="black" type="label" width="35.866" height="6.926" depth="1.93" valign="baseline">Player 1</text>
 <text matrix="1 0 0 1 40.6752 102.844" transformations="translations" pos="72.0614 415.393" stroke="black" type="label" width="36.153" height="6.808" depth="2.85" valign="baseline">$X_{s,t}=5$</text>
-<text matrix="1 0 0 1 80.5393 125.513" transformations="translations" pos="85.2413 393.251" stroke="black" type="label" width="36.647" height="6.808" depth="2.85" valign="baseline">$X_{s,b}=1$</text>
 <text matrix="1 0 0 1 41.2429 145.06" transformations="translations" pos="73.643 358.456" stroke="black" type="label" width="33.879" height="6.421" depth="2.85" valign="baseline">$n_{s,t}=2$</text>
 <text matrix="1 0 0 1 12.0038 45.8255" transformations="translations" pos="38.3208 433.318" stroke="black" type="label" width="35.866" height="6.926" depth="1.93" valign="baseline">Player 2</text>
-<text matrix="1 0 0 1 -32.4429 153.293" transformations="translations" pos="145.342 333.15" stroke="black" type="label" width="35.703" height="6.808" depth="2.85" valign="baseline">$X_{s,l}=4$</text>
 <text matrix="1 0 0 1 6.08303 92.0565" transformations="translations" pos="108.438 379.016" stroke="black" type="label" width="33.429" height="6.421" depth="2.85" valign="baseline">$n_{s,l}=2$</text>
 <text matrix="1 0 0 1 105.48 111.806" transformations="translations" pos="59.9359 374.272" stroke="black" type="label" width="37.057" height="6.808" depth="2.85" valign="baseline">$X_{s,r}=2$</text>
 <text matrix="1 0 0 1 149.764 73.3208" transformations="translations" pos="17.7602 396.941" stroke="black" type="label" width="34.783" height="6.421" depth="2.85" valign="baseline">$n_{s,r}=2$</text>
@@ -393,5 +388,10 @@ h
 409.921 479.963 s
 </path>
 <text matrix="1 0 0 1 144.49 -63.5123" transformations="translations" pos="39.6799 788.362" stroke="black" type="label" width="4.276" height="6.918" depth="0" valign="baseline">$b$</text>
+<text matrix="1 0 0 1 -205.833 -2.61021" transformations="translations" pos="401.931 730.368" stroke="black" type="label" width="33.472" height="6.812" depth="1.49" valign="baseline">$X_{s&apos;}=4$</text>
+<text matrix="1 0 0 1 -261.021 -81.2893" transformations="translations" pos="408.27 719.181" stroke="black" type="label" width="31.194" height="6.132" depth="1.39" valign="baseline" size="small">$X_{s&apos;}=4$</text>
+<text matrix="1 0 0 1 -276.309 2.42376" transformations="translations" pos="442.664 516.223" stroke="black" type="label" width="36.647" height="6.808" depth="2.85" valign="baseline">$X_{s,b}=4$</text>
+<text matrix="1 0 0 1 -381.016 -161.423" transformations="translations" pos="494.048 647.106" stroke="black" type="label" width="35.703" height="6.808" depth="2.85" valign="baseline">$X_{s,l}=7$</text>
+<text matrix="1 0 0 1 -94.4897 -5.67749" transformations="translations" pos="224.474 549.242" stroke="black" type="label" width="4.981" height="6.42" depth="0" valign="baseline">4</text>
 </page>
 </ipe>
