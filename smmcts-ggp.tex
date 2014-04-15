@@ -423,7 +423,7 @@
 %\author{Author1 Author2 Author3 Author4}
 
 \author{\IEEEauthorblockN{Mandy J.~W. Tak, Marc Lanctot, and Mark H.~M.~Winands}
-\IEEEauthorblockA{Department of Knowledge Engineering, Maastricht University\\
+\IEEEauthorblockA{Games \& AI Group, Department of Knowledge Engineering, Maastricht University\\
 %P.O. Box 616, 6200 MD Maastricht, The Netherlands,\\
 \{mandy.tak,marc.lanctot,m.winands\}@maastrichtuniversity.nl\\
 }
@@ -554,7 +554,7 @@ First, we describe a general simultaneous move MCTS framework along with several
 elaborate analysis of these variants over nine different games chosen from previous work and GGP competitions. 
 The results show that the expected performance, and hence choice of variant, can vary significantly based on the game and opponent. 
 
-The structure for the rest the paper is as follows. In Section~\ref{sec:background}, we describe the background necessary to 
+The structure for the rest of the paper is as follows. In Section~\ref{sec:background}, we describe the background necessary to 
 express our technique. In Section~\ref{sec:smmcts} we describe simultaneous move MCTS. In Section \ref{sec:exp}, we present 
 the empirical results and discuss them further. Finally, in Section~\ref{sec:conc} we conclude and indicate potential future research.
 
@@ -583,7 +583,7 @@ In simultaneous move games, the process is similar, but simultaneous move select
 
 A finite game with simultaneous moves can be described by a tuple 
 $(\cN, \cS = \cD \cup \cZ, \cA, \cT, u_i, s_0)$. The player set $\cN = \{ 1, 2 \}$ contains player 
-labels, and by convention a player is denoted $i \in \cN$.
+labels, and by convention a player is denoted by $i \in \cN$.
 $\cS$ is a set of states, with $\cZ$ denoting the terminal states, and $\cD$ the states where players make decisions.
 $\cA = \cA_1 \times \cA_2$ is the set of joint moves of individual players. We denote $\cA_i(s)$ the moves available 
 to player $i$ in state $s \in \cS$. The 
@@ -601,8 +601,8 @@ An example of a constant-sum simultaneous move game with $k=4$ is depicted in Fi
 \centering
 \includegraphics[width=6.0cm]{figures/tree2}\\
 \end{subfigure}
-\caption{An example of a two-player simultaneous game. Each node represents a state of 
-the game. Four nodes are shown, and at each node, each player has two individual moves, for the row player: top ($t$) and bottom ($b$), 
+\caption{An example of a two-player simultaneous move game. Each node represents a state of 
+the game. Five nodes are shown, and at each node, each player has two individual moves, for the row player: top ($t$) and bottom ($b$), 
 and for the column player: left ($l$) and right ($r$), leading to four joint moves per node.
 Payoffs shown are for Player 1, and since $k = 4$, Player 2's payoffs are $u_2 = 4 - u_1$. 
 \label{fig:example}}
@@ -642,7 +642,7 @@ Two-player constant-sum simultaneous move games can be solved (\ie Nash equilibr
 induction~\cite{Ross71Goofspiel,Buro03OshiZumo,Rhoads12Computer}. The main idea is to start from the 
 endgame positions and individually compute the $V^*$ of each subgame, by solving a linear program at each state, and working back up to the root state.
 For the example in Figure 1, the value $V^*$ of the matrix game on the bottom-left is $3$ (if the row player is maximizing) because each player has a 
-strategy that is strictly dominated, and $V^*$ of other game is $2$. These values represent the unique game-theoretic 
+strategy that is strictly dominated, and $V^*$ of the other game is $2$. These values represent the unique game-theoretic 
 values for a joint moves $\{ (l,t), (l,b) \}$ in the parent node.
 In MCTS, these values are approximated using Monte Carlo sampling, and the variants use the estimates when selecting moves.
 As in purely sequential games, search techniques approximate these underlying game-theoretic algorithms, but  
@@ -926,7 +926,7 @@ The player with the higher bid takes the upcard. The bid cards are then discarde
 At the end of 13 rounds, the player with the highest number of points wins, a tie ends in a draw.
 In this paper, we assume that the point cards have a fixed (decreasing) order. 
 
-In \textit{Runners} each turn both players decide how many steps they want to move forward or backward, with a maximum of three steps per turn. The aim is to reach the goal location before the opponent does.
+In \textit{Runners} each turn both players decide how many steps they want to move forward or backward, with a maximum of three steps per turn. The aim is to move 50 steps forward.
 
 \textit{Oshi-Zumo}$(N,K,M)$ is a wrestling simulation game played on a discrete single-dimensional grid with 
 $2K+1$ positions, where each player starts with $N$ coins~\cite{Buro03OshiZumo}. A wrestler token begins in the middle 
@@ -936,7 +936,7 @@ wrestler one position closer to the goal for that player.
 
 \textit{Pawn Whopping} is a simultaneous move version of Breakthrough, played on an 8 $\times$ 8 board. Each player has 
 16 pawns starting on one side of the board and the goal is to move one of their pieces to the other side of the board. 
-Pawns can capture diagonally and only move forward one cell straight or diagonally.
+Pawns can capture diagonally and only move forward one cell straight.
 If opposing pawns try to capture each other or move to the same square, no change is made. 
 %Pawn Whopping has slightly different movement and is simultaneous.
 
@@ -977,17 +977,17 @@ $\text{\sc Scale}(u_1, u_2) = (\frac{u_1 - u_2 + k}{2}, \frac{u_2 - u_1 + k}{2})
                   & DUCT    & SUCT    & Exp3           & RM  \\
 \hline
 Battle            & $C=0.0$ & $C=0.4$ & $\gamma = 0.8$ & $\gamma = 0.10$  \\ 
-BiddingTicTacToe  & $C=0.0$ & $C=0.0$ & $\gamma = 0.9$ & $\gamma = 0.15$   \\ 
+Bidding Tic-Tac-Toe  & $C=0.0$ & $C=0.0$ & $\gamma = 0.9$ & $\gamma = 0.15$   \\ 
 Chinook           & $C=0.4$ & $C=0.4$ & $\gamma = 0.2$ & $\gamma = 0.30$ \\ 
 Goofspiel         & $C=0.4$ & $C=0.8$ & $\gamma = 0.1$ & $\gamma = 0.20$ \\ 
 Oshi-Zumo         & $C=0.4$ & $C=1.8$ & $\gamma = 0.6$ & $\gamma = 0.75$ \\ 
-PawnWhopping      & $C=0.4$ & $C=0.4$ & $\gamma = 0.4$ & $\gamma = 0.75$  \\ 
-RacetrackCorridor & $C=1.2$ & $C=0.8$ & $\gamma = 0.4$ & $\gamma = 0.15$\\ 
+Pawn Whopping      & $C=0.4$ & $C=0.4$ & $\gamma = 0.4$ & $\gamma = 0.75$  \\ 
+Racetrack Corridor & $C=1.2$ & $C=0.8$ & $\gamma = 0.4$ & $\gamma = 0.15$\\ 
 Runners           & $C=0.8$ & $C=1.8$ & $\gamma = 0.3$ & $\gamma = 0.50$ \\
 Tron              & $C=1.8$ & $C=2.0$ & $\gamma = 0.3$ & $\gamma = 0.30$ \\
  \hline
 \end{tabular}
-\caption{Parameters values. \label{tbl:parameters}}
+\caption{Parameter values. \label{tbl:parameters}}
 \vspace{-1cm}
 \end{table}
 
@@ -1026,7 +1026,7 @@ shows the win rate of Regret Matching depending on $\gamma$ against the referenc
 highlights two important results. First, it is not possible to choose a parameter value that performs well in all games. 
 Second, the performance of Regret Matching and Decoupled UCT can depend heavily on the parameter value. 
 
-We notice that the win rates of DUCT vary quite sensitively in BiddingTicTacToe, Oshi-Zumo, and Chinook, and even more so when $C < 1.2$. 
+We notice that the win rates of DUCT vary quite sensitively in Bidding Tic-Tac-Toe, Oshi-Zumo, and Chinook, and even more so when $C < 1.2$. 
 For Regret Matching, generally interval $\gamma \in [0.2,0.5]$ seems to be save but the optimal parameter varies significantly across game types.
 
 The behavior of SUCT is similar to that of DUCT. The behavior of Exp3 is more regular than that of the other variants. 
@@ -1126,8 +1126,8 @@ Tables report win percentage with 95\% confidence intervals. Draws counts as a h
 
 Table~\ref{tbl:cross} shows the full results of every variant against every other variant in each game. One thing that is clear is that 
 Regret Matching is preferred over all other variants in Oshi-Zumo. However, Regret Matching seems to lose quite significantly to all the 
-other variants in Battle, Chinook, PawnWhopping, RacetrackCorridor, and Tron, making it a polar choice. Exp3 seems to suffer less in this
-regard and in some cases (Chinook, PawnWhopping, RacetrackCorridor, and Tron) beats Regret Matching quite significantly, but generally loses
+other variants in Battle, Chinook, Pawn Whopping, Racetrack Corridor, and Tron, making it a polar choice. Exp3 seems to suffer less in this
+regard and in some cases (Chinook, Pawn Whopping, Racetrack Corridor, and Tron) beats Regret Matching quite significantly, but generally loses
 against both DUCT and SUCT in most games. 
 
 
@@ -1166,12 +1166,12 @@ use. These results suggest that systematic testing against several different var
  Game $\backslash$ Variant    & Exp3		 & RM		 & SUCT		\\ 
 \hline
                    Battle     & 25.05 ($\pm$ 1.55)	& 25.90 ($\pm$ 1.60)	      & 43.20 ($\pm$ 2.09)	\\ 
-         BiddingTicTacToe     & 38.55 ($\pm$ 2.90)	& 47.85 ($\pm$ 3.01)	      & 49.00 ($\pm$ 2.92)	\\ 
+         Bidding Tic-Tac-Toe     & 38.55 ($\pm$ 2.90)	& 47.85 ($\pm$ 3.01)	      & 49.00 ($\pm$ 2.92)	\\ 
                   Chinook     & 8.25 ($\pm$ 1.68)	  & 0.60 ($\pm$ 0.48)	        & 32.00 ($\pm$ 2.87)	\\ 
                 Goofspiel     & 49.85 ($\pm$ 2.54)	& {\bf 95.00} ($\pm$ 1.34)	& 26.15 ($\pm$ 2.40)	\\ 
                  OshiZumo     & 18.65 ($\pm$ 1.86)	& {\bf 70.60} ($\pm$ 2.58)	& 17.95 ($\pm$ 1.86)	\\ 
-             PawnWhopping     & 27.35 ($\pm$ 2.16)	& 3.70 ($\pm$ 1.07)	        & 37.55 ($\pm$ 2.31)	\\ 
-        RacetrackCorridor     & 38.65 ($\pm$ 1.41)	& 1.10 ($\pm$ 0.45)       	& 50.05 ($\pm$ 0.22)	\\ 
+             Pawn Whopping     & 27.35 ($\pm$ 2.16)	& 3.70 ($\pm$ 1.07)	        & 37.55 ($\pm$ 2.31)	\\ 
+        Racetrack Corridor     & 38.65 ($\pm$ 1.41)	& 1.10 ($\pm$ 0.45)       	& 50.05 ($\pm$ 0.22)	\\ 
                   Runners     & 8.90 ($\pm$ 1.26)	  & 20.20 ($\pm$ 2.13)	      & 48.55 ($\pm$ 3.06)	\\ 
                      Tron     & 40.20 ($\pm$ 2.54)	& 22.05 ($\pm$ 2.31)	      & {\bf 53.50} ($\pm$ 2.40)	\\ 
 \hline
