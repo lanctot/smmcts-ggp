@@ -641,9 +641,8 @@ The value $V^*$ is known as the minimax-optimal value of the game and is the sam
 Two-player constant-sum simultaneous move games can be solved (\ie Nash equilibrium strategies computed) using backward 
 induction~\cite{Ross71Goofspiel,Buro03OshiZumo,Rhoads12Computer}. The main idea is to start from the 
 endgame positions and individually compute the $V^*$ of each subgame, by solving a linear program at each state, and working back up to the root state.
-For the example in Figure 1, the value $V^*$ of the matrix game on the bottom-left is $3$ (if the row player is maximizing) because each player has a 
-strategy that is strictly dominated, and $V^*$ of the other game is $2$. These values represent the unique game-theoretic 
-values for a joint moves $\{ (l,t), (l,b) \}$ in the parent node.
+For the example in Figure 1, the value $V^*$ of the matrix game on the bottom-left is $3$ (if the row player is maximizing) because each player has a (iteratively) strictly dominated strategy, and $V^*$ of the other game is $2$. 
+These are the unique game-theoretic values for a joint moves $\{ (l,t), (l,b) \}$ in the parent node.
 In MCTS, these values are approximated using Monte Carlo sampling, and the variants use the estimates when selecting moves.
 As in purely sequential games, search techniques approximate these underlying game-theoretic algorithms, but  
 the connection is not as straightforward since the optimal strategies can be mixed and $V^*$ can be any value 
@@ -682,17 +681,17 @@ to nodes that were visited during the simulation.
     \ElseIf{$s \in T$ {\bf and} \ExpReq$(s)$}{  \label{alg:expand}
       Choose a previously unselected $(a_1,a_2)$ \\
       $s' \gets \cT(s,a_1,a_2)$ \label{alg:choose-expand} \\
-      Add $s'$ to $T$\\
-      $u_1 \gets$ \Playout($s'$)\\
-      $X_{s'} \gets X_{s'} + u_1$ \\    
-      $n_{s'} \gets n_{s'} + 1$  \\     \label{alg:increment2}
-      \Update$(s, a_1, a_2, u_1)$\\                     \label{alg:update1}
+      Add $s'$ to $T$ \\
+      $u_1 \gets$ \Playout($s'$) \\
+      $X_{s'} \gets X_{s'} + u_1$ \label{alg:increment1} \\   
+      $n_{s'} \gets n_{s'} + 1$   \label{alg:increment2} \\
+      \Update$(s, a_1, a_2, u_1)$ \label{alg:update1} \\
       {\bf return} $u_1$\\
     }                                       
-    $(a_1, a_2) \gets $  \Select$(s)$\\        \label{alg:select}
-    $s' \gets \cT(s, a_1, a_2)$\\
-    $u_1 \gets $ \SMMCTS($s'$)\\                \label{alg:reccall}
-    \Update$(s, a_1, a_2, u_1)$ \\                      \label{alg:update2}
+    $(a_1, a_2) \gets $  \Select$(s)$        \label{alg:select} \\
+    $s' \gets \cT(s, a_1, a_2)$   \\
+    $u_1 \gets $ \SMMCTS($s'$)     \label{alg:reccall} \\
+    \Update$(s, a_1, a_2, u_1)$    \label{alg:update2} \\
     {\bf return} $u_1$\\
   \popline
   \vspace{0.1cm}
@@ -707,8 +706,10 @@ as in purely sequential games.
 Algorithm~\ref{alg:sm-mcts} describes a single simulation of SM-MCTS. 
 $T$ represents the MCTS tree in which each state is represented by one node. Every node $s$ maintains a 
 cumulative reward sum over all simulations through it, $X_s$, and a visit count $n_s$, both initially set to 0. 
-As with standard MCTS, when a state is visited these values are incremented on line \ref{alg:increment2}, and in the node 
-updates on lines \ref{alg:update1} and \ref{alg:update2}. 
+As with standard MCTS, when a state is visited these values are incremented on lines \ref{alg:increment1} and \ref{alg:increment2}, 
+and in the node updates on lines 10 and 15. 
+% TODO: fix by camera ready
+%and in the node updates on lines \ref{alg:update1} and \ref{alg:update2}. 
 Note that Algorithm~\ref{alg:sm-mcts} explicitly stores the rewards and estimates only in view of player one, 
 hence the $u_1$ notation, and the opponent's reward is obtained as $u_2 = k - u_1$ as necessary. 
 As seen in Figure~\ref{fig:example}, a matrix of references to the children is maintained at each state. 
@@ -716,7 +717,9 @@ As seen in Figure~\ref{fig:example}, a matrix of references to the children is m
 At node $s$, the estimated values $\bar{X}_{s'}$ of the children nodes $s' = \cT(s,a_1,a_2)$ 
 form an estimated payoff matrix for node $s$. 
 Each variant below will describe a different way to select a joint 
-move (line \ref{alg:select}) and update a node (lines \ref{alg:update1} and \ref{alg:update2}). 
+move (line \ref{alg:select}) and update a node (lines 10 and 15). 
+% TODO for camera-ready: fix references
+%move (line \ref{alg:select}) and update a node (lines \ref{alg:update1} and \ref{alg:update2}). 
 
 % MarcL, Mar27: Removed since we're not including any of these 
 %In practice, there are several optimizations to the base algorithm that might be desirable.
@@ -836,7 +839,9 @@ having not taken them over the long-term.
 To ensure exploration, a $\gamma$-on-policy sampling procedure similar to Equation~\ref{eq:exp3select} is used 
 choosing move $a$ with probability $\gamma/|\cA(s)| + (1-\gamma) \sigma^t_i(s,a)$. 
 
-The updates on line \ref{alg:update1} and \ref{alg:update2} add regret accumulated at the iteration to  
+%TODO: fix references by camera-ready
+%The updates on line \ref{alg:update1} and \ref{alg:update2} add regret accumulated at the iteration to  
+The updates on line 10 and 15 add regret accumulated at the iteration to  
 the regret tables $r^i_s$ and the average strategy $\bar{\sigma}^i_s[a]$. 
 Suppose joint move $(a_1,a_2)$ is 
 sampled from the selection policy and utility $u_i$ is returned from the recursive call on line~\ref{alg:reccall}. 
