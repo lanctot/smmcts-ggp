@@ -818,10 +818,6 @@ For final move selection, a move is chosen by sampling according to a distributi
 \subsection{Regret Matching}
 
 This variant applies regret matching \cite{Hart00} to the current estimated matrix game at each stage. 
-This application of regret matching differs from Monte Carlo Counterfactual Regret 
-Minimization (MCCFR)~\cite{Lanctot09mccfr} in that the regret is not counterfactual and the means of
-child nodes are used to estimate expected values of the subtrees.
-
 Suppose iterations are numbered from $t \in \{ 1, 2, 3, \cdots \}$ and at each iteration and each node $s$ 
 there is a mixed strategy $\sigma_i^t(s)$ used by each player $i$ for each node $s$ in the tree, initially set to 
 uniform random: $\sigma^0_i(s,a) = 1 / |\cA(s)|$. 
@@ -862,6 +858,12 @@ for each player. Here, $u_1$ is the reward for player one and recall that the re
 
 The final move for the root $s$ is chosen by sampling over the strategy obtained by 
 normalizing the values in $\bar{\sigma}_s^i$.  
+
+This application of regret matching is similar to Monte Carlo Counterfactual Regret 
+Minimization (MCCFR)~\cite{Lanctot09mccfr}, except the regret is not counterfactual and the means of
+child nodes are used to estimate expected values of the subtrees. Convergence to an equilibrium can be guaranteed
+by backpropagating each node's estimated value but the standard method in Algorithm~\ref{alg:sm-mcts} has been 
+shown to work better in practice~\cite{Lisy13Computing}. 
 
 \subsection{Sequential UCT}
 
@@ -1262,7 +1264,8 @@ Also, SM-MCTS could be used as a high-level multistage planner in real-time stra
 as long-term scripts, extending related previous work in this area \cite{Sailor07adversarial}. 
 Furthermore, we would like to extend our SM-MCTS variants to games with more than two players, for example as a strategic reasoner 
 module in the seven-player simultaneous move game Diplomacy~\cite{Fabregues11DipGame}.
-Moreover, it would be interesting to investigate how the performance of the methods depends on game complexity. 
+Moreover, it would be interesting to investigate how the performance of the methods depends on game complexity, using a synthetic game tree 
+analysis similar to~\cite{Lisy13Computing}. 
 In addition, we could compare the algorithms on different time settings against optimal players in games that can be solved.
 
 
