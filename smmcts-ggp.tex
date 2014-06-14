@@ -524,8 +524,8 @@ and wins and losses are determined by the combination of moves chosen by both pl
 Another example is the classic board game Diplomacy by Avalon Hill, where each turn consists of players submitting 
 lists of orders for each of their units, and the outcome of each order depends on the orders of units in surrounding regions. 
 
-The most popular MCTS algorithm is Upper Confidence Bounds for Trees (UCT)~\cite{Kocsis06Bandit} based on a bandit algorithm 
-Upper Confidence Bounds~\cite{Auer02Finite}. Since UCT was original~\cite{Shafiei09} 
+The most popular MCTS algorithm is Upper Confidence Bounds for Trees (UCT)~\cite{Kocsis06Bandit} based on the bandit algorithm 
+Upper Confidence Bounds (UCB)~\cite{Auer02Finite}. Since UCT was originally~\cite{Shafiei09} 
 designed for strictly sequential turn-taking games, its theoretical guarantees (such as eventual convergence to the optimal 
 strategy) do not apply in simultaneous move games~\cite{Shafiei09}. The standard application of UCT to simultaneous move games, 
 first used in general game-playing~\cite{Cadiaplayer}, is a variant we call {\it Decoupled UCT} (DUCT), where each player uses UCB to select 
@@ -535,8 +535,8 @@ This variant has been shown to not converge to an optimal strategy, even in a ga
 A popular choice for a simultaneous move game among researchers and enthusiasts has been Tron, a game played on a discrete 
 grid inspired by the 1982 movie.
 In Tron, Samothrakis et al.~\cite{Samothrakis10Tron} propose a purely sequential version which we call {\it Sequential UCT}. 
-Den Teuling and Winands improved Sequential UCT in Tron by suggesting several heuristic improvements and handling some of the 
-important simultaneous move situations~\cite{DenTeuling12Tron}. Perick et al.~\cite{Perick12Comparison} proposed several new 
+In~\cite{DenTeuling12Tron} Sequential UCT in Tron is improved by suggesting several heuristic improvements and handling some of the 
+important simultaneous move situations. Perick et al.~\cite{Perick12Comparison} proposed several new 
 search variants, including stochastic selection strategies, and compared their success in Tron. 
 
 Several new selection strategies for simultaneous move MCTS were also proposed for Goofspiel, 
@@ -604,7 +604,7 @@ An example of a constant-sum simultaneous move game with $k=4$ is depicted in Fi
 \caption{An example of a two-player simultaneous move game. Each node represents a state of 
 the game. Five nodes are shown, and at each node, each player has two individual moves, for the row player: top ($t$) and bottom ($b$), 
 and for the column player: left ($l$) and right ($r$), leading to four joint moves per node.
-Payoffs shown are for Player 1, and since $k = 4$, Player 2's payoffs are $u_2 = 4 - u_1$. 
+Payoffs ($u_1$) shown are for Player 1, and since $k = 4$, Player 2's payoffs are $u_2 = 4 - u_1$. 
 \label{fig:example}}
 \end{figure}
 
@@ -677,7 +677,9 @@ to nodes that were visited during the simulation.
 \begin{algorithm2e}[t!]
   \SMMCTS$($node $s$)\\                         \label{alg:function}
   \pushline
-    \lIf{$s$ is a terminal state ($s \in \cZ$)}{\Return{$u_1(s)$}}  
+    \If{$s$ is a terminal state ($s \in \cZ$)}{
+    	\Return{$u_1(s)$} \\
+    } 
     \ElseIf{$s \in T$ {\bf and} \ExpReq$(s)$}{  \label{alg:expand}
       Choose a previously unselected $(a_1,a_2)$ \\
       $s' \gets \cT(s,a_1,a_2)$ \label{alg:choose-expand} \\
@@ -707,7 +709,7 @@ Algorithm~\ref{alg:sm-mcts} describes a single simulation of SM-MCTS.
 $T$ represents the MCTS tree in which each state is represented by one node. Every node $s$ maintains a 
 cumulative reward sum over all simulations through it, $X_s$, and a visit count $n_s$, both initially set to 0. 
 As with standard MCTS, when a state is visited these values are incremented on lines \ref{alg:increment1} and \ref{alg:increment2}, 
-and in the node updates on lines 10 and 15. 
+and in the node updates on lines 11 and 16. 
 % TODO: fix by camera ready
 %and in the node updates on lines \ref{alg:update1} and \ref{alg:update2}. 
 Note that Algorithm~\ref{alg:sm-mcts} explicitly stores the rewards and estimates only in view of player one, 
@@ -717,7 +719,7 @@ As seen in Figure~\ref{fig:example}, a matrix of references to the children is m
 At node $s$, the estimated values $\bar{X}_{s'}$ of the children nodes $s' = \cT(s,a_1,a_2)$ 
 form an estimated payoff matrix for node $s$. 
 Each variant below will describe a different way to select a joint 
-move (line \ref{alg:select}) and update a node (lines 10 and 15). 
+move (line \ref{alg:select}) and update a node (lines 11 and 16). 
 % TODO for camera-ready: fix references
 %move (line \ref{alg:select}) and update a node (lines \ref{alg:update1} and \ref{alg:update2}). 
 
@@ -736,7 +738,7 @@ move (line \ref{alg:select}) and update a node (lines 10 and 15).
 We focus on a number of SM-MCTS variants. The most popular one is straightforward adaption of UCT. 
 Though it has been shown to not converge to a Nash equilibrium even in a one-shot single-state 
 game~\cite{Shafiei09}, it has nonetheless been popular and successful in general game playing. 
-The second is Exp3~\cite{Exp3}, was also applied successfully to the popular online card game 
+The second is Exp3~\cite{Exp3}, which was also applied successfully to the popular online card game 
 Urban Rivals~\cite{Teytaud11Upper,StPierre12Online}. 
 Regret Matching, was recently shown to perform well in Goofspiel~\cite{Lanctot13Goofspiel}.
 The latter two were also used in a recent theoretical analysis of the convergence of SM-MCTS~\cite{Lisy13Computing}.
@@ -747,7 +749,7 @@ Finally, we also try Sequential UCT, which has been previously used in Tron~\cit
 In Decoupled UCT (DUCT), each player $i$ maintains for every state $s$ separate reward sums $X^i_{s,a}$ and 
 visit counts $n^i_{s,a}$ for their own move set $a \in \cA_i(s)$. 
 In essence, each player {\it decouples} the matrix in each state and applies UCB over the cumulative rewards for 
-each of their own move as if there was no joint dependency on these rewards.
+each of their own moves as if there was no joint dependency on these rewards.
 When a joint move needs to be selected on line 
 \ref{alg:select}, each player selects a move that maximizes the decoupled UCB value over their reward estimates 
 independently:
@@ -816,6 +818,10 @@ For final move selection, a move is chosen by sampling according to a distributi
 \subsection{Regret Matching}
 
 This variant applies regret matching \cite{Hart00} to the current estimated matrix game at each stage. 
+This application of regret matching differs from Monte Carlo Counterfactual Regret 
+Minimization (MCCFR)~\cite{Lanctot09mccfr} in that the regret is not counterfactual and the means of
+child nodes are used to estimate expected values of the subtrees.
+
 Suppose iterations are numbered from $t \in \{ 1, 2, 3, \cdots \}$ and at each iteration and each node $s$ 
 there is a mixed strategy $\sigma_i^t(s)$ used by each player $i$ for each node $s$ in the tree, initially set to 
 uniform random: $\sigma^0_i(s,a) = 1 / |\cA(s)|$. 
@@ -841,7 +847,7 @@ choosing move $a$ with probability $\gamma/|\cA(s)| + (1-\gamma) \sigma^t_i(s,a)
 
 %TODO: fix references by camera-ready
 %The updates on line \ref{alg:update1} and \ref{alg:update2} add regret accumulated at the iteration to  
-The updates on line 10 and 15 add regret accumulated at the iteration to  
+The updates on line 11 and 16 add regret accumulated at the iteration to  
 the regret tables $r^i_s$ and the average strategy $\bar{\sigma}^i_s[a]$. 
 Suppose joint move $(a_1,a_2)$ is 
 sampled from the selection policy and utility $u_i$ is returned from the recursive call on line~\ref{alg:reccall}. 
@@ -855,7 +861,7 @@ $(i,j) \not= (a_1,a_2)$, or $u_i$ otherwise. The updates to the regret are:
 for each player. Here, $u_1$ is the reward for player one and recall that the reward for the other player $u_2 = k - u_1$.
 
 The final move for the root $s$ is chosen by sampling over the strategy obtained by 
-normalizing the values in $\bar{\sigma}_s^i$. 
+normalizing the values in $\bar{\sigma}_s^i$.  
 
 \subsection{Sequential UCT}
 
@@ -879,14 +885,16 @@ In SUCT a different tree is built, one where a player chooses a move and the opp
 allowed to know which move the player chose and can respond accordingly. 
 The motivation for this is that if a player
 announces his move to the opponent and the opponent is allowed to choose a 1-ply best response, then the searching player
-will learn to play the move that has the least chances of being penalized by an opponent. In fact, in the classic 
-minimax setting, the values returned by a search of the serialized game tree are indeed bounds on the actual true 
-minimax value of the node~\cite[Corollary 4.2]{Bosansky13Using}, so it seems reasonable in the SM-MCTS setting as well. 
+will learn to play the move that has the least chances of being penalized by an opponent. 
+%In fact, in the classic 
+%minimax setting, the values returned by a search of the serialized game tree are indeed bounds on the actual true 
+%minimax value of the node~\cite[Corollary 4.2]{Bosansky13Using}, so it seems reasonable in the SM-MCTS setting as well. 
 A portion of the serialized tree for the running example game is given in Figure~\ref{fig:example3}. 
 
-We assume that the search player moves and then the opponent responds, leading to 
-defensive play. However, this could be reversed for aggressive play, or even randomized as was 
-done in $\alpha\beta$ search for abstract combat games~\cite{Kovarsky05RAB}.
+This serialized tree approach can provide bounds the true minimax value of the root node in the simultaneous move game,
+and has been applied to RTS combat scenarios~\cite{Churchill2012Fast} and equilibrium computation algorithms~\cite{Bosansky13Using}. 
+In this paper, we assume that the search player moves and then the opponent responds, leading to defensive play. However, this could be 
+reversed for aggressive play, or even randomized as was done in $\alpha\beta$ search for abstract combat games~\cite{Kovarsky05RAB}. 
 
 %\section{Application to General Game-Playing}
 %\label{sec:appggp}
@@ -913,7 +921,7 @@ capture an opponent square next to them. Instead of a move, the player can choos
 piece. If an attacker attacks such a defended square, the attacker will be captured. The goal is to be the first player 
 to capture 10 opponent disks. 
 
-\textit{Bidding Tic-Tac-Toe} is a variation of normal Tic-Tac-Toe where there is a bidding round between 
+\textit{Bidding Tic-Tac-Toe} is a variation of normal Tic-Tac-Toe with a bidding round between 
 normal play that decides who gets to place a marker on the board. Each player begins with three coins, and the 
 \textsc{x} player has an additional tiebreaker token. When a player wins a bidding round, allowing that player to 
 place a marker, the coins used to bid are given to the opponent. The tiebreaker token can optionally be used to break 
@@ -937,7 +945,7 @@ In \textit{Runners} each turn both players decide how many steps they want to mo
 $2K+1$ positions, where each player starts with $N$ coins~\cite{Buro03OshiZumo}. A wrestler token begins in the middle 
 position. Every turn, 
 each player bids $b \ge M$ coins. The coins bid are then discarded and the player bidding the most coins pushes the 
-wrestler one position closer to the goal for that player. 
+wrestler one position closer to the goal for that player. The parameters used in our experiments are $(50,3,0)$.
 
 \textit{Pawn Whopping} is a simultaneous move version of Breakthrough, played on an 8 $\times$ 8 board. Each player has 
 16 pawns starting on one side of the board and the goal is to move one of their pieces to the other side of the board. 
@@ -945,7 +953,7 @@ Pawns can capture diagonally and only move forward one cell straight.
 If opposing pawns try to capture each other or move to the same square, no change is made. 
 %Pawn Whopping has slightly different movement and is simultaneous.
 
-\textit{Racetrack Corridor} is played on a board with length 5 cells and width 3 cells. Each player starts at the top of the board and the aim is to reach the other side of the board before the opponent does. Each move, the player can decide to move forward, sideways or place a wall on the board of the opponent which spans two thirds of the width of the board.
+\textit{Racetrack Corridor} is played on a board with length 5 cells and width 3 cells. Each player starts at the top of the board and the aim is to reach the other side of the board before the opponent does. Each move, the player can decide to move forward, sideways or place a wall on the board of the opponent, which spans two thirds of the width of the board.
 
 \textit{Tron} is a two-player game played on discrete grid possibly obstructed by walls. At each
 step in Tron both players move to adjacent cells, and a wall is placed in the cells the players started on that turn. 
@@ -964,8 +972,9 @@ In this way, we still mimic GGP, but this setup allows to perform
 the experiments much faster and generate far more games to ensure the assessments are based on data that is statistically
 significant. 
 
-DUCT, SUCT, Exp3, and RM are pair wise compared in each of the nine games. The time setting is 2.5 seconds per move and 
-each combination of one variant versus another in a particular game consists of 1000 games.  
+DUCT, SUCT, Exp3, and RM are pair wise compared in each of the nine games. The time setting is 2.5 seconds per move 
+(the number of simulations per second varies between 2222 and 27664). Each combination of one variant versus another 
+in a particular game consists of 1000 games.  
 
 In GGP, all utilities are non-negative, so without loss of generality, $u_1, u_2 \ge 0$.  
 Also, games may not be constant-sum. In our implementation, we ensure that all payoffs 
@@ -981,22 +990,20 @@ $\text{\sc Scale}(u_1, u_2) = (\frac{u_1 - u_2 + k}{2}, \frac{u_2 - u_1 + k}{2})
 \hline
                   & DUCT    & SUCT    & Exp3           & RM  \\
 \hline
-Battle            & $C=0.0$ & $C=0.4$ & $\gamma = 0.8$ & $\gamma = 0.10$  \\ 
-Bidding Tic-Tac-Toe  & $C=0.0$ & $C=0.0$ & $\gamma = 0.9$ & $\gamma = 0.15$   \\ 
-Chinook           & $C=0.4$ & $C=0.4$ & $\gamma = 0.2$ & $\gamma = 0.30$ \\ 
-Goofspiel         & $C=0.4$ & $C=0.8$ & $\gamma = 0.1$ & $\gamma = 0.20$ \\ 
-Oshi-Zumo         & $C=0.4$ & $C=1.8$ & $\gamma = 0.6$ & $\gamma = 0.75$ \\ 
-Pawn Whopping      & $C=0.4$ & $C=0.4$ & $\gamma = 0.4$ & $\gamma = 0.75$  \\ 
-Racetrack Corridor & $C=1.2$ & $C=0.8$ & $\gamma = 0.4$ & $\gamma = 0.15$\\ 
-Runners           & $C=0.8$ & $C=1.8$ & $\gamma = 0.3$ & $\gamma = 0.50$ \\
-Tron              & $C=1.8$ & $C=2.0$ & $\gamma = 0.3$ & $\gamma = 0.30$ \\
+Battle            & $C=0.4$ & $C=0.4$ & $\gamma = 0.8$ & $\gamma = 0.025$  \\ 
+Bidding Tic-Tac-Toe  & $C=0.0$ & $C=0.0$ & $\gamma = 0.9$ & $\gamma = 0.150$   \\ 
+Chinook           & $C=0.4$ & $C=0.4$ & $\gamma = 0.2$ & $\gamma = 0.300$ \\ 
+Goofspiel         & $C=0.4$ & $C=0.8$ & $\gamma = 0.1$ & $\gamma = 0.200$ \\ 
+Oshi-Zumo         & $C=0.4$ & $C=1.8$ & $\gamma = 0.6$ & $\gamma = 0.750$ \\ 
+Pawn Whopping      & $C=1.4$ & $C=1.4$ & $\gamma = 0.4$ & $\gamma = 0.500$  \\ 
+Racetrack Corridor & $C=1.2$ & $C=0.8$ & $\gamma = 0.4$ & $\gamma = 0.150$\\ 
+Runners           & $C=0.8$ & $C=1.8$ & $\gamma = 0.3$ & $\gamma = 0.500$ \\
+Tron              & $C=1.8$ & $C=2.0$ & $\gamma = 0.3$ & $\gamma = 0.300$ \\
  \hline
 \end{tabular}
 \caption{Parameter values. \label{tbl:parameters}}
 \vspace{-1cm}
 \end{table}
-
-
 Before the different algorithms are compared, their parameters are tuned by self-play where different parameter 
 values are compared against a reference parameter. In DUCT, and SUCT the default parameter is $C=1.4$. The reference
 parameters for Exp3 and RM are set to $\gamma = 0.2$ and $\gamma = 0.025$, respectively, because they are the optimal 
@@ -1011,8 +1018,8 @@ rules before play starts.
 \begin{figure*}[t!]
 \centering
 \begin{tabular}{ccc}
-\hspace{-0.8cm}\includegraphics[scale=0.35]{figures/duct1} & ~ & \includegraphics[scale=0.35]{figures/duct2}\\
-\hspace{-0.8cm}\includegraphics[scale=0.35]{figures/regretmatching1} & ~ & \includegraphics[scale=0.35]{figures/regretmatching2}\\
+\hspace{-0.8cm}\includegraphics[scale=0.3]{figures/duct1} & ~~~ & \includegraphics[scale=0.3]{figures/duct2}\\
+\hspace{-0.8cm}\includegraphics[scale=0.3]{figures/regretmatching1} & ~~~ & \includegraphics[scale=0.3]{figures/regretmatching2}\\
 \end{tabular}
 \caption{Tuning Regret Matching and Decoupled UCT}
 \label{fig:tuning1}
@@ -1032,7 +1039,7 @@ highlights two important results. First, it is not possible to choose a paramete
 Second, the performance of Regret Matching and Decoupled UCT can depend heavily on the parameter value. 
 
 We notice that the win rates of DUCT vary quite sensitively in Bidding Tic-Tac-Toe, Oshi-Zumo, and Chinook, and even more so when $C < 1.2$. 
-For Regret Matching, generally interval $\gamma \in [0.2,0.5]$ seems to be save but the optimal parameter varies significantly across game types.
+For Regret Matching, generally interval $\gamma \in [0.2,0.5]$ seems to be safe but the optimal parameter varies significantly across game types.
 
 The behavior of SUCT is similar to that of DUCT. The behavior of Exp3 is more regular than that of the other variants. 
 Still, optimal parameters varies significantly across game types. Therefore, a separate parameter value is chosen 
@@ -1046,84 +1053,90 @@ for each game and variant. See Table~\ref{tbl:parameters} for the chosen paramet
 
 \begin{table}
 \begin{center}
+{\setlength{\tabcolsep}{0.62em}
 \begin{tabular}{|c|rrrr|}
 \hline
          Battle   &       DUCT   &       Exp3   &         RM   &       SUCT   \\
 \hline
-           DUCT    &          & 74.95 ($\pm$ 1.55)   & 74.10 ($\pm$ 1.60)   & 56.80 ($\pm$ 2.09)   \\
-           Exp3    & 25.05 ($\pm$ 1.55)   &          & 45.25 ($\pm$ 1.99)   & 25.05 ($\pm$ 1.55)   \\
-             RM    & 25.90 ($\pm$ 1.60)   & 54.75 ($\pm$ 1.99)   &          & 25.00 ($\pm$ 1.55)   \\
-           SUCT    & 43.20 ($\pm$ 2.09)   & 74.95 ($\pm$ 1.55)   & 75.00 ($\pm$ 1.55)   &          \\
+           DUCT    &              & 100.00 ($\pm$ 0.00)   & 100.00 ($\pm$ 0.00)   & 59.90 ($\pm$ 2.38)   \\
+           Exp3    & 0.00 ($\pm$ 0.00)   &              & 42.25 ($\pm$ 2.79)   & 0.00 ($\pm$ 0.00)   \\
+             RM    & 0.00 ($\pm$ 0.00)   & 57.75 ($\pm$ 2.79)   &              & 0.00 ($\pm$ 0.00)   \\
+           SUCT    & 40.10 ($\pm$ 2.38)   & 100.00 ($\pm$ 0.00)   & 100.00 ($\pm$ 0.00)   &              \\
+
 \hline
 \hline
 B.T.T.T.   &       DUCT   &       Exp3   &         RM   &       SUCT   \\
 \hline
-           DUCT    &          & 61.45 ($\pm$ 2.90)   & 52.15 ($\pm$ 3.01)   & 51.00 ($\pm$ 2.92)   \\
-           Exp3    & 38.55 ($\pm$ 2.90)   &          & 45.65 ($\pm$ 3.04)   & 41.15 ($\pm$ 2.94)   \\
-             RM    & 47.85 ($\pm$ 3.01)   & 54.35 ($\pm$ 3.04)   &          & 43.85 ($\pm$ 3.01)   \\
-           SUCT    & 49.00 ($\pm$ 2.92)   & 58.85 ($\pm$ 2.94)   & 56.15 ($\pm$ 3.01)   &          \\
+
+           DUCT    &              & 61.45 ($\pm$ 2.90)   & 52.15 ($\pm$ 3.01)   & 51.00 ($\pm$ 2.92)   \\
+           Exp3    & 38.55 ($\pm$ 2.90)   &              & 45.65 ($\pm$ 3.04)   & 41.15 ($\pm$ 2.94)   \\
+             RM    & 47.85 ($\pm$ 3.01)   & 54.35 ($\pm$ 3.04)   &              & 43.85 ($\pm$ 3.01)   \\
+           SUCT    & 49.00 ($\pm$ 2.92)   & 58.85 ($\pm$ 2.94)   & 56.15 ($\pm$ 3.01)   &              \\
 \hline
 \hline
         Chinook   &       DUCT   &       Exp3   &         RM   &       SUCT   \\
 \hline
-           DUCT    &          & 91.75 ($\pm$ 1.68)   & 99.40 ($\pm$ 0.48)   & 68.00 ($\pm$ 2.87)   \\
-           Exp3    & 8.25 ($\pm$ 1.68)   &          & 89.45 ($\pm$ 1.90)   & 17.95 ($\pm$ 2.37)   \\
-             RM    & 0.60 ($\pm$ 0.48)   & 10.55 ($\pm$ 1.90)   &          & 0.65 ($\pm$ 0.49)   \\
-           SUCT    & 32.00 ($\pm$ 2.87)   & 82.05 ($\pm$ 2.37)   & 99.35 ($\pm$ 0.49)   &          \\
+           DUCT    &              & 91.75 ($\pm$ 1.68)   & 99.40 ($\pm$ 0.48)   & 68.00 ($\pm$ 2.87)   \\
+           Exp3    & 8.25 ($\pm$ 1.68)   &              & 89.45 ($\pm$ 1.90)   & 17.95 ($\pm$ 2.37)   \\
+             RM    & 0.60 ($\pm$ 0.48)   & 10.55 ($\pm$ 1.90)   &              & 0.65 ($\pm$ 0.49)   \\
+           SUCT    & 32.00 ($\pm$ 2.87)   & 82.05 ($\pm$ 2.37)   & 99.35 ($\pm$ 0.49)   &              \\
+
 \hline
 \hline
       Goofspiel   &       DUCT   &       Exp3   &         RM   &       SUCT   \\
 \hline
-           DUCT    &          & 50.15 ($\pm$ 2.54)   & 5.00 ($\pm$ 1.34)   & 73.85 ($\pm$ 2.40)   \\
-           Exp3    & 49.85 ($\pm$ 2.54)   &          & 37.80 ($\pm$ 2.98)   & 58.45 ($\pm$ 2.82)   \\
-             RM    & 95.00 ($\pm$ 1.34)   & 62.20 ($\pm$ 2.98)   &          & 30.75 ($\pm$ 2.83)   \\
-           SUCT    & 26.15 ($\pm$ 2.40)   & 41.55 ($\pm$ 2.82)   & 69.25 ($\pm$ 2.83)   &          \\
+           DUCT    &              & 50.15 ($\pm$ 2.54)   & 5.00 ($\pm$ 1.34)   & 73.85 ($\pm$ 2.40)   \\
+           Exp3    & 49.85 ($\pm$ 2.54)   &              & 37.80 ($\pm$ 2.98)   & 58.45 ($\pm$ 2.82)   \\
+             RM    & 95.00 ($\pm$ 1.34)   & 62.20 ($\pm$ 2.98)   &              & 30.75 ($\pm$ 2.83)   \\
+           SUCT    & 26.15 ($\pm$ 2.40)   & 41.55 ($\pm$ 2.82)   & 69.25 ($\pm$ 2.83)   &              \\
+
 \hline
 \hline
        O.Z.   &       DUCT   &       Exp3   &         RM   &       SUCT   \\
 \hline
-           DUCT    &          & 81.35 ($\pm$ 1.86)   & 29.40 ($\pm$ 2.58)   & 82.05 ($\pm$ 1.86)   \\
-           Exp3    & 18.65 ($\pm$ 1.86)   &          & 24.20 ($\pm$ 2.50)   & 37.00 ($\pm$ 2.47)   \\
-             RM    & 70.60 ($\pm$ 2.58)   & 75.80 ($\pm$ 2.50)   &          & 65.10 ($\pm$ 2.67)   \\
-           SUCT    & 17.95 ($\pm$ 1.86)   & 63.00 ($\pm$ 2.47)   & 34.90 ($\pm$ 2.67)   &          \\
+           DUCT    &              & 81.35 ($\pm$ 1.86)   & 29.40 ($\pm$ 2.58)   & 82.05 ($\pm$ 1.86)   \\
+           Exp3    & 18.65 ($\pm$ 1.86)   &              & 24.20 ($\pm$ 2.50)   & 37.00 ($\pm$ 2.47)   \\
+             RM    & 70.60 ($\pm$ 2.58)   & 75.80 ($\pm$ 2.50)   &              & 65.10 ($\pm$ 2.67)   \\
+           SUCT    & 17.95 ($\pm$ 1.86)   & 63.00 ($\pm$ 2.47)   & 34.90 ($\pm$ 2.67)   &              \\
 \hline
 \hline
    P.W.   &       DUCT   &       Exp3   &         RM   &       SUCT   \\
 \hline
-           DUCT    &          & 72.65 ($\pm$ 2.16)   & 96.30 ($\pm$ 1.07)   & 62.45 ($\pm$ 2.31)   \\
-           Exp3    & 27.35 ($\pm$ 2.16)   &          & 95.50 ($\pm$ 1.20)   & 46.40 ($\pm$ 2.74)   \\
-             RM    & 3.70 ($\pm$ 1.07)   & 4.50 ($\pm$ 1.20)   &          & 16.95 ($\pm$ 2.24)   \\
-           SUCT    & 37.55 ($\pm$ 2.31)   & 53.60 ($\pm$ 2.74)   & 83.05 ($\pm$ 2.24)   &          \\
+           DUCT    &              & 74.30 ($\pm$ 1.58)   & 98.60 ($\pm$ 0.53)   & 49.90 ($\pm$ 0.14)   \\
+           Exp3    & 25.70 ($\pm$ 1.58)   &              & 96.30 ($\pm$ 0.98)   & 29.00 ($\pm$ 1.53)   \\
+             RM    & 1.40 ($\pm$ 0.53)   & 3.70 ($\pm$ 0.98)   &              & 0.85 ($\pm$ 0.42)   \\
+           SUCT    & 50.10 ($\pm$ 0.14)   & 71.00 ($\pm$ 1.53)   & 99.15 ($\pm$ 0.42)   &              \\
 \hline
 \hline
 R.C.   &       DUCT   &       Exp3   &         RM   &       SUCT   \\
 \hline
-           DUCT    &          & 61.35 ($\pm$ 1.41)   & 98.90 ($\pm$ 0.45)   & 49.95 ($\pm$ 0.22)   \\
-           Exp3    & 38.65 ($\pm$ 1.41)   &          & 93.90 ($\pm$ 1.32)   & 38.20 ($\pm$ 1.37)   \\
-             RM    & 1.10 ($\pm$ 0.45)   & 6.10 ($\pm$ 1.32)   &          & 1.40 ($\pm$ 0.53)   \\
-           SUCT    & 50.05 ($\pm$ 0.22)   & 61.80 ($\pm$ 1.37)   & 98.60 ($\pm$ 0.53)   &          \\
+           DUCT    &              & 61.35 ($\pm$ 1.41)   & 98.90 ($\pm$ 0.45)   & 49.95 ($\pm$ 0.22)   \\
+           Exp3    & 38.65 ($\pm$ 1.41)   &              & 93.90 ($\pm$ 1.32)   & 38.20 ($\pm$ 1.37)   \\
+             RM    & 1.10 ($\pm$ 0.45)   & 6.10 ($\pm$ 1.32)   &              & 1.40 ($\pm$ 0.53)   \\
+           SUCT    & 50.05 ($\pm$ 0.22)   & 61.80 ($\pm$ 1.37)   & 98.60 ($\pm$ 0.53)   &              \\
 \hline
 \hline
         Runners   &       DUCT   &       Exp3   &         RM   &       SUCT   \\
 \hline
-           DUCT    &          & 91.10 ($\pm$ 1.26)   & 79.80 ($\pm$ 2.13)   & 51.45 ($\pm$ 3.06)   \\
-           Exp3    & 8.90 ($\pm$ 1.26)   &          & 38.30 ($\pm$ 1.39)   & 10.30 ($\pm$ 1.31)   \\
-             RM    & 20.20 ($\pm$ 2.13)   & 61.70 ($\pm$ 1.39)   &          & 20.45 ($\pm$ 2.14)   \\
-           SUCT    & 48.55 ($\pm$ 3.06)   & 89.70 ($\pm$ 1.31)   & 79.55 ($\pm$ 2.14)   &          \\
+
+           DUCT    &              & 91.10 ($\pm$ 1.26)   & 79.80 ($\pm$ 2.13)   & 51.45 ($\pm$ 3.06)   \\
+           Exp3    & 8.90 ($\pm$ 1.26)   &              & 38.30 ($\pm$ 1.39)   & 10.30 ($\pm$ 1.31)   \\
+             RM    & 20.20 ($\pm$ 2.13)   & 61.70 ($\pm$ 1.39)   &              & 20.45 ($\pm$ 2.14)   \\
+           SUCT    & 48.55 ($\pm$ 3.06)   & 89.70 ($\pm$ 1.31)   & 79.55 ($\pm$ 2.14)   &              \\
 \hline
 \hline
            Tron   &       DUCT   &       Exp3   &         RM   &       SUCT   \\
 \hline
-           DUCT    &          & 59.80 ($\pm$ 2.54)   & 77.95 ($\pm$ 2.31)   & 46.50 ($\pm$ 2.40)   \\
-           Exp3    & 40.20 ($\pm$ 2.54)   &          & 76.20 ($\pm$ 2.36)   & 41.85 ($\pm$ 2.62)   \\
-             RM    & 22.05 ($\pm$ 2.31)   & 23.80 ($\pm$ 2.36)   &          & 19.70 ($\pm$ 2.19)   \\
-           SUCT    & 53.50 ($\pm$ 2.40)   & 58.15 ($\pm$ 2.62)   & 80.30 ($\pm$ 2.19)   &          \\
+           DUCT    &              & 59.80 ($\pm$ 2.54)   & 77.95 ($\pm$ 2.31)   & 46.50 ($\pm$ 2.40)   \\
+           Exp3    & 40.20 ($\pm$ 2.54)   &              & 76.20 ($\pm$ 2.36)   & 41.85 ($\pm$ 2.62)   \\
+             RM    & 22.05 ($\pm$ 2.31)   & 23.80 ($\pm$ 2.36)   &              & 19.70 ($\pm$ 2.19)   \\
+           SUCT    & 53.50 ($\pm$ 2.40)   & 58.15 ($\pm$ 2.62)   & 80.30 ($\pm$ 2.19)   &              \\
 \hline
 \end{tabular}
+}
 \end{center}
 \caption{Performance of each variant vs. each variant in every game. Win rate is for the variant in the listed row. \label{tbl:cross}}
 \end{table}
-
 
 
 Tables \ref{tbl:cross}, \ref{tbl:vsduct}, \ref{tbl:summary} show the performance results for each variant in the games we have tried. 
@@ -1136,7 +1149,7 @@ regard and in some cases (Chinook, Pawn Whopping, Racetrack Corridor, and Tron) 
 against both DUCT and SUCT in most games. 
 
 
-We also tested another variant of DUCT, called UCB1-Tuned (DUCB1T)~\cite{Auer02Finite} which performs almost equally as DUCT. Therefore, the results are not included in the tables. In four games, there seems to be some performance differences between DUCT and DUCB1T. Namely, in Chinook and Tron, DUCB1T performs slightly better than DUCT with a win percentage of 54.30 ($\pm$ 3.05) and 52.90 ($\pm$ 2.35), respectively. Moreover, in Runners and Racetrack Corridor, DUCT seems to perform slightly better than DUCB1T with a win percentage of 52.75 ($\pm$ 3.05) and 50.90 ($\pm$ 0.60), respect
+We also tested another variant of DUCT, called UCB1-Tuned (DUCB1T)~\cite{Auer02Finite}, which performs almost equally as DUCT. Therefore, the results are not included in the tables. In four games, there seems to be some performance differences between DUCT and DUCB1T. Namely, in Chinook and Tron, DUCB1T performs slightly better than DUCT with a win percentage of 54.30 ($\pm$ 3.05) and 52.90 ($\pm$ 2.35), respectively. Moreover, in Runners and Racetrack Corridor, DUCT seems to perform slightly better than DUCB1T with a win percentage of 52.75 ($\pm$ 3.05) and 50.90 ($\pm$ 0.60), respectively.
 There were not significant differences between the performances of DUCT and DUCB1T against Exp3, RM, and SUCT over all games.
 
 We also notice that SUCT is significantly better than DUCT in Tron. We have discovered in previous work that mistakes in
@@ -1152,7 +1165,7 @@ Again, this is consistent with previous results in Goofspiel~\cite{Lanctot13Goof
 solved~\cite{Buro03OshiZumo,Rhoads12Computer} and their optimal strategies are mixed distributions. In Goofspiel, any deterministic strategy 
 has a best response that exploits it by a lot, so mixing is important. These stochastic selection strategies, 
 which converge to mixed distributions, are likely to be more effective in games where the optimal strategy requires mixing. 
-In the case of Goofspiel, RM wins an outstanding 95.0\% of games against DUCT. This show that the performance of these variants can vary 
+In the case of Goofspiel, RM wins an outstanding 95.0\% of games against DUCT. This shows that the performance of these variants can vary 
 significantly depending on the game type. 
 
 A surprising result is that the performance results are not always transitive. For example, in Goofspiel, DUCT beats SUCT, but loses from RM. 
@@ -1170,15 +1183,15 @@ use. These results suggest that systematic testing against several different var
 \hline
  Game $\backslash$ Variant    & Exp3		 & RM		 & SUCT		\\ 
 \hline
-                   Battle     & 25.05 ($\pm$ 1.55)	& 25.90 ($\pm$ 1.60)	      & 43.20 ($\pm$ 2.09)	\\ 
-         Bidding Tic-Tac-Toe     & 38.55 ($\pm$ 2.90)	& 47.85 ($\pm$ 3.01)	      & 49.00 ($\pm$ 2.92)	\\ 
-                  Chinook     & 8.25 ($\pm$ 1.68)	  & 0.60 ($\pm$ 0.48)	        & 32.00 ($\pm$ 2.87)	\\ 
-                Goofspiel     & 49.85 ($\pm$ 2.54)	& {\bf 95.00} ($\pm$ 1.34)	& 26.15 ($\pm$ 2.40)	\\ 
-                 OshiZumo     & 18.65 ($\pm$ 1.86)	& {\bf 70.60} ($\pm$ 2.58)	& 17.95 ($\pm$ 1.86)	\\ 
-             Pawn Whopping     & 27.35 ($\pm$ 2.16)	& 3.70 ($\pm$ 1.07)	        & 37.55 ($\pm$ 2.31)	\\ 
-        Racetrack Corridor     & 38.65 ($\pm$ 1.41)	& 1.10 ($\pm$ 0.45)       	& 50.05 ($\pm$ 0.22)	\\ 
-                  Runners     & 8.90 ($\pm$ 1.26)	  & 20.20 ($\pm$ 2.13)	      & 48.55 ($\pm$ 3.06)	\\ 
-                     Tron     & 40.20 ($\pm$ 2.54)	& 22.05 ($\pm$ 2.31)	      & {\bf 53.50} ($\pm$ 2.40)	\\ 
+		Battle				  & 0.00 ($\pm$ 0.00)        & 0.00 ($\pm$ 0.00)    & 40.10 ($\pm$ 2.38)  \\
+         BiddingTicTacToe     & 38.55 ($\pm$ 2.90)      & 47.85 ($\pm$ 3.01)    & 49.00 ($\pm$ 2.92)    \\
+                  Chinook     & 8.25 ($\pm$ 1.68)       & 0.60 ($\pm$ 0.48)     & 32.00 ($\pm$ 2.87)    \\
+                Goofspiel     & 49.85 ($\pm$ 2.54)      & \textbf{95.00} ($\pm$ 1.34)    & 26.15 ($\pm$ 2.40)    \\
+                 OshiZumo     & 18.65 ($\pm$ 1.86)      & \textbf{70.60} ($\pm$ 2.58)    & 17.95 ($\pm$ 1.86)    \\
+             PawnWhopping     & 25.70 ($\pm$ 1.58)      & 1.40 ($\pm$ 0.53)     & 50.10 ($\pm$ 0.14)    \\
+        RacetrackCorridor     & 38.65 ($\pm$ 1.41)      & 1.10 ($\pm$ 0.45)     & 50.05 ($\pm$ 0.22)    \\
+                  Runners     & 8.90 ($\pm$ 1.26)       & 20.20 ($\pm$ 2.13)    & 48.55 ($\pm$ 3.06)    \\
+                     Tron     & 40.20 ($\pm$ 2.54)      & 22.05 ($\pm$ 2.31)    & \textbf{53.50} ($\pm$ 2.40)    \\
 \hline
 \end{tabular}
 \end{center}
@@ -1190,23 +1203,26 @@ use. These results suggest that systematic testing against several different var
 
 Table \ref{tbl:vsduct} shows the summary of the win rates of alternative algorithms against DUCT. This table is important, because DUCT is the 
 standard technique often used in the GGP competitions. Based on these results in Table \ref{tbl:vsduct} it seems that DUCT indeed performs 
-well in almost most games. This is consistent with the existing successes in general game playing. 
+well in most games. This is consistent with the existing successes in general game playing. 
 
 A summary of the performance results is given in Table~\ref{tbl:summary}. DUCT seems to be a safe choice for these nine games, 
-winning 66.65\% of games overall. 
-However, Sequential UCT, winning 59.92\% of games, is not too far behind, can be easier to implement, and does seem to perform well 
+winning 68.34\% of games overall. 
+However, Sequential UCT, winning 63.36\% of games, is not too far behind, can be easier to implement, and does seem to perform well 
 against Regret Matching in mixing games such as Goofspiel.  
 
 \begin{table}
 \begin{center}
-\begin{tabular}{|c|r|}
+\begin{tabular}{|r|cccc|}
 \hline
-Variant     & Win Rate \\
+%Variant     & Win Rate \\
+%\hline
+%      DUCT  &   68.34 ($\pm$ 0.48) \\
+%      SUCT  &   63.36 ($\pm$ 0.50) \\
+%      Exp3  &   38.77 ($\pm$ 0.51) \\
+%      RM  &   	29.54 ($\pm$ 0.51) \\
+         & DUCT             & SUCT             & Exp3            & RM             \\
 \hline
-      DUCT  &   66.65 ($\pm$ 0.48) \\
-      SUCT  &   59.92 ($\pm$ 0.51) \\
-      Exp3  &   41.41 ($\pm$ 0.51) \\
-        RM  &   32.02 ($\pm$ 0.51) \\
+Win Rate & 68.34 $\pm$ 0.48   & 63.36 $\pm$ 0.50   & 38.77 $\pm$ 0.51  & 29.54 $\pm$ 0.51 \\
 \hline
 \end{tabular}
 \end{center}
@@ -1237,7 +1253,7 @@ justifying its success in general game playing.
 
 For future work, we would like to also measure the effect that the simultaneous move MCTS-Solver~\cite[Chapter 6]{Finnsson12} has on these 
 SM-MCTS variants, and test the performance of the different SM-MCTS variants under different circumstances. For example, by changing the time settings, 
-by using a fixed parameter value per variant or by using techniques from general game playing that improve the play outs \cite{Bjornsson09CadiaPlayer}.
+by using a fixed parameter value per variant or by using techniques from general game playing that improve the playouts \cite{Bjornsson09CadiaPlayer}.
 It could be interesting to compare performance of SM-MCTS against well-known benchmark players, such as Goofspiel competition 
 strategies~\cite{Dror13Repeated}.
 %Also, we would like to try SM-MCTS variants in real-time games where a simultaneous move game can be used as a discretized approximation 
@@ -1246,6 +1262,9 @@ Also, SM-MCTS could be used as a high-level multistage planner in real-time stra
 as long-term scripts, extending related previous work in this area \cite{Sailor07adversarial}. 
 Furthermore, we would like to extend our SM-MCTS variants to games with more than two players, for example as a strategic reasoner 
 module in the seven-player simultaneous move game Diplomacy~\cite{Fabregues11DipGame}.
+Moreover, it would be interesting to investigate how the performance of the methods depends on game complexity. 
+In addition, we could compare the algorithms on different time settings against optimal players in games that can be solved.
+
 
 {\bf Acknowledgements.} {\small This work is partially funded by the Netherlands Organisation for
 Scientific Research (NWO) in the framework of the projects Go4Nature and GoGeneral, grant numbers 
