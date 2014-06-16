@@ -525,7 +525,7 @@ Another example is the classic board game Diplomacy by Avalon Hill, where each t
 lists of orders for each of their units, and the outcome of each order depends on the orders of units in surrounding regions. 
 
 The most popular MCTS algorithm is Upper Confidence Bounds for Trees (UCT)~\cite{Kocsis06Bandit} based on the bandit algorithm 
-Upper Confidence Bounds (UCB)~\cite{Auer02Finite}. Since UCT was originally~\cite{Shafiei09} 
+Upper Confidence Bounds (UCB)~\cite{Auer02Finite}. Since UCT was originally
 designed for strictly sequential turn-taking games, its theoretical guarantees (such as eventual convergence to the optimal 
 strategy) do not apply in simultaneous move games~\cite{Shafiei09}. The standard application of UCT to simultaneous move games, 
 first used in general game-playing~\cite{Cadiaplayer}, is a variant we call {\it Decoupled UCT} (DUCT), where each player uses UCB to select 
@@ -534,10 +534,10 @@ This variant has been shown to not converge to an optimal strategy, even in a ga
 
 A popular choice for a simultaneous move game among researchers and enthusiasts has been Tron, a game played on a discrete 
 grid inspired by the 1982 movie.
-In Tron, Samothrakis et al.~\cite{Samothrakis10Tron} propose a purely sequential version which we call {\it Sequential UCT}. 
-In~\cite{DenTeuling12Tron} Sequential UCT in Tron is improved by suggesting several heuristic improvements and handling some of the 
-important simultaneous move situations. Perick et al.~\cite{Perick12Comparison} proposed several new 
-search variants, including stochastic selection strategies, and compared their success in Tron. 
+In Tron, \cite{Samothrakis10Tron} proposes a purely sequential version which we call {\it Sequential UCT}. 
+In~\cite{DenTeuling12Tron}, Sequential UCT in Tron is improved by suggesting several heuristic improvements and handling some of the 
+important simultaneous move situations. Later work proposed several new 
+search variants, including stochastic selection strategies, and compared their success in Tron~\cite{Perick12Comparison}.
 
 Several new selection strategies for simultaneous move MCTS were also proposed for Goofspiel, 
 a domain where playing with randomized (``mixed'') strategies is important~\cite{Lanctot13Goofspiel}.
@@ -633,7 +633,7 @@ equilibrium strategy which mixes equally between both moves, \ie play with a {\i
 of $(0.5, 0.5)$ giving expected payoff $V^* = 2$. 
 %If the strategies also optimize Equation \ref{eq:ne} in each subgame starting in an arbitrary state, the equilibrium strategy is subgame perfect.
 
-In two-player constant-sum games a Nash equilibrium strategy is optimal in the minimax sense. It guarantees the payoff of at least $V^*$ against any opponent. Any 
+In two-player constant-sum games, a Nash equilibrium strategy is optimal in the minimax sense. It guarantees the payoff of at least $V^*$ against any opponent. Any 
 non-equilibrium strategy has a best response, which will make it win less than $V^*$ in expectation. Moreover, a subgame perfect NE strategy can earn more 
 than $V^*$ against weak opponents. After the opponent makes a sub-optimal move, the strategy will never allow it to gain the loss back. 
 The value $V^*$ is known as the minimax-optimal value of the game and is the same for every equilibrium profile by von Neumann's minimax theorem.
@@ -883,11 +883,11 @@ purely sequential game.
 In the running example in the simultaneous game, the first simulation is $(t,l) \rightarrow (b,l) \rightarrow 3$. 
 In Sequential UCT, this would be four steps: $t \rightarrow l \rightarrow b \rightarrow l \rightarrow 3$. 
 
-In SUCT a different tree is built, one where a player chooses a move and the opponent is 
+In SUCT, a different tree is built, one where a player chooses a move and the opponent is 
 allowed to know which move the player chose and can respond accordingly. 
 The motivation for this is that if a player
 announces his move to the opponent and the opponent is allowed to choose a 1-ply best response, then the searching player
-will learn to play the move that has the least chances of being penalized by an opponent. 
+will learn to play the move that has the least chance of being penalized by an opponent. 
 %In fact, in the classic 
 %minimax setting, the values returned by a search of the serialized game tree are indeed bounds on the actual true 
 %minimax value of the node~\cite[Corollary 4.2]{Bosansky13Using}, so it seems reasonable in the SM-MCTS setting as well. 
@@ -895,8 +895,9 @@ A portion of the serialized tree for the running example game is given in Figure
 
 This serialized tree approach can provide bounds the true minimax value of the root node in the simultaneous move game,
 and has been applied to RTS combat scenarios~\cite{Churchill2012Fast} and equilibrium computation algorithms~\cite{Bosansky13Using}. 
-In this paper, we assume that the search player moves and then the opponent responds, leading to defensive play. However, this could be 
-reversed for aggressive play, or even randomized as was done in $\alpha\beta$ search for abstract combat games~\cite{Kovarsky05RAB}. 
+In this paper, we assume that the search player moves and then the opponent responds. This leads to defensive play as explained above.
+However, this order could be reversed for aggressive play, or even randomized as was done in $\alpha\beta$ search for 
+abstract combat games~\cite{Kovarsky05RAB}. 
 
 %\section{Application to General Game-Playing}
 %\label{sec:appggp}
@@ -968,14 +969,14 @@ Each of the games described above is implemented in Java. As we intend for our c
 influenced by those used in GGP competitions and research work, and our goals are to closely match the conditions of the 
 GGP settings. 
 The advantage is that we do not have to deal with a slow GDL reasoner. Therefore, we can use shorter time settings than 
-the longer time settings which are used more often in GGP, and still guarantee more simulations. Only the rules of the 
+the longer ones often used in GGP, and still guarantee more simulations. The rules of the 
 games are implemented without any domain knowledge. Therefore every variant uses a uniform random playout policy. 
-In this way, we still mimic GGP, but this setup allows to perform 
-the experiments much faster and generate far more games to ensure the assessments are based on data that is statistically
+In this way, we still mimic GGP, but %this setup allows to perform 
+the experiments are much faster and generate more games to ensure the assessments are based on data that is statistically
 significant. 
 
 DUCT, SUCT, Exp3, and RM are pair wise compared in each of the nine games. The time setting is 2.5 seconds per move 
-(the number of simulations per second varies between 2222 and 27664). Each combination of one variant versus another 
+(the number of simulations per second depends on the game and varies between 2222 and 27664). Each combination of one variant versus another 
 in a particular game consists of 1000 games.  
 
 In GGP, all utilities are non-negative, so without loss of generality, $u_1, u_2 \ge 0$.  
@@ -1172,11 +1173,11 @@ significantly depending on the game type.
 
 A surprising result is that the performance results are not always transitive. For example, in Goofspiel, DUCT beats SUCT, but loses from RM. 
 However, SUCT beats RM in Goofspiel. We believe this effect could be due to algorithms in simultaneous move games being
-sensitive to the parameters. As these parameters are tuned in self play, it could be that we were overfitting the parameters, because 
+sensitive to the parameters. As these parameters are tuned in self play, it could be that parameters were overfit, because 
 the optimal parameter value for a certain algorithm also depends on the algorithm used by the opponent. Also, due to the importance of mixing 
 in some of the games, it is possible that there could be a ``Rock-Paper-Scissors''-like effect of one variant acting as a best response to 
-the other. Therefore, care must be taken when deciding on which variant and which parameter set to use when deciding on the search variant to 
-use. These results suggest that systematic testing against several different variants is prudent in determining robust parameter settings. 
+the other. Therefore, care must be taken when determining which parameter set to use for each search variant.
+These results suggest that systematic testing against several different variants is prudent in determining robust parameter settings. 
 
 
 \begin{table}
