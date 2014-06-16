@@ -590,7 +590,7 @@ to player $i$ in state $s \in \cS$. The
 transition function $\cT : \cS \times \cA_1 \times \cA_2 \mapsto \cS$ defines the successor state given a current 
 state and moves for both players. The utility functions 
 $u_i : \cZ \mapsto [v_{\min}, v_{\max}] \subseteq \mathbb{R}$ gives the utility of player $i$, with 
-$v_{\min}$ and $v_{\max}$ denoting the minimum and maximum possible utility respectively. 
+$v_{\min}$ and $v_{\max}$ denoting the minimum and maximum possible utility, respectively. 
 The game begins in an initial state $s_0$. In our algorithms we assume constant-sum games, so
 $\forall z \in \cZ, u_1(z) + u_2(z) = k$. 
 An example of a constant-sum simultaneous move game with $k=4$ is depicted in Figure~\ref{fig:example}. 
@@ -648,6 +648,8 @@ As in purely sequential games, search techniques approximate these underlying ga
 the connection is not as straightforward since the optimal strategies can be mixed and $V^*$ can be any value 
 in the range of $[v_{\min}, v_{\max}]$.
 
+For an elaborate overview of simultaneous move games, including examples and recent work, see \cite[Chapter 5]{Saffidine13PhdThesis}.
+
 %A two-player simultaneous move game is a specific type of two-player imperfect information extensive-form 
 %game. In imperfect information games, states are grouped into {\it information sets}: two states $s, s' \in I$ if the player 
 %to act at $I$ cannot distinguish which of these states the game is currently in. Any simultaneous move game can be modeled 
@@ -668,11 +670,11 @@ in the range of $[v_{\min}, v_{\max}]$.
 \newcommand{\Min}{\text{Min}}
 
 
-In this section, we present a generalized description of Monte Carlo Tree Search for simultaneous move games. This 
-description is based on the one used in Tron~\cite{Perick12Comparison}. First, we describe the overall process. 
+In this section, we present a generalized description of MCTS based on the one used in Tron~\cite{Perick12Comparison}. 
 Each specific step (\Select, \Update, and final move selection) depends on the chosen variant described in the 
-appropriate subsection. The \Update~function is what ensures that rewards are appropriately back-propagated 
-to nodes that were visited during the simulation. 
+appropriate subsection. 
+%\Update ensures that rewards are appropriately back-propagated to nodes that were visited 
+%during the simulation. 
 
 \begin{algorithm2e}[t!]
   \SMMCTS$($node $s$)\\                         \label{alg:function}
@@ -976,7 +978,7 @@ the experiments are much faster and generate more games to ensure the assessment
 significant. 
 
 DUCT, SUCT, Exp3, and RM are pair wise compared in each of the nine games. The time setting is 2.5 seconds per move 
-(the number of simulations per second depends on the game and varies between 2222 and 27664). Each combination of one variant versus another 
+(the number of simulations per second depends on the game and varies between 2200 and 28000). Each combination of one variant versus another 
 in a particular game consists of 1000 games.  
 
 In GGP, all utilities are non-negative, so without loss of generality, $u_1, u_2 \ge 0$.  
@@ -1152,8 +1154,9 @@ regard and in some cases (Chinook, Pawn Whopping, Racetrack Corridor, and Tron) 
 against both DUCT and SUCT in most games. 
 
 
-We also tested another variant of DUCT, called UCB1-Tuned (DUCB1T)~\cite{Auer02Finite}, which performs almost equally as DUCT. Therefore, the results are not included in the tables. In four games, there seems to be some performance differences between DUCT and DUCB1T. Namely, in Chinook and Tron, DUCB1T performs slightly better than DUCT with a win percentage of 54.30 ($\pm$ 3.05) and 52.90 ($\pm$ 2.35), respectively. Moreover, in Runners and Racetrack Corridor, DUCT seems to perform slightly better than DUCB1T with a win percentage of 52.75 ($\pm$ 3.05) and 50.90 ($\pm$ 0.60), respectively.
-There were not significant differences between the performances of DUCT and DUCB1T against Exp3, RM, and SUCT over all games.
+We also tested another variant of DUCT, called UCB1-Tuned (DUCB1T)~\cite{Auer02Finite}, which performs almost equally as DUCT. Therefore, the results are not included in the tables. In four games, there seems to be some performance differences between DUCT and DUCB1T. Namely, in Chinook and Tron, DUCB1T performs slightly better than DUCT with a win percentage of 54.30 ($\pm$ 3.05) and 52.90 ($\pm$ 2.35), respectively. 
+%Moreover, in Runners and Racetrack Corridor, DUCT seems to perform slightly better than DUCB1T with a win percentage of 52.75 ($\pm$ 3.05) and 50.90 ($\pm$ 0.60), respectively.
+There were no significant differences between the performances of DUCT and DUCB1T against Exp3, RM, and SUCT over all games.
 
 We also notice that SUCT is significantly better than DUCT in Tron. We have discovered in previous work that mistakes in
 Tron are unforgiving~\cite{Lanctot13Tron}, 
@@ -1244,7 +1247,7 @@ In this paper, we presented simultaneous move MCTS and several variants, evaluat
 We investigate several variants: Decoupled UCT, Sequential UCT, Exp3, and Regret Matching. The performance of each variant is evaluated in nine 
 games used in the general game playing literature.
 
-This work leads to several important conclusions. 
+This work leads to three main conclusions. 
 First, the expected behavior of each variant varies with respect to parameter values in simultaneous move MCTS.
 Finding the correct parameters seems to depend on the game and variant being used, and can vary 
 significantly even against a fixed opponent. This could be explained by the different nature of simultaneous move games and techniques used 
@@ -1261,7 +1264,7 @@ It could be interesting to compare performance of SM-MCTS against well-known ben
 strategies~\cite{Dror13Repeated}.
 %Also, we would like to try SM-MCTS variants in real-time games where a simultaneous move game can be used as a discretized approximation 
 %of a real-time game.
-Also, SM-MCTS could be used as a high-level multistage planner in real-time strategy games by treating the move of each agent
+Also, SM-MCTS could be used as a high-level multi-stage planner in real-time strategy games by treating the move of each agent
 as long-term scripts, extending related previous work in this area \cite{Sailor07adversarial}. 
 Furthermore, we would like to extend our SM-MCTS variants to games with more than two players, for example as a strategic reasoner 
 module in the seven-player simultaneous move game Diplomacy~\cite{Fabregues11DipGame}.
