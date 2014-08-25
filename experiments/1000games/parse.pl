@@ -333,6 +333,7 @@ sub print_tableD {
       
     my $w = $wins{$alg}; 
     my $d = $draws{$alg}; 
+    #my $d = 0;
     my $l = $losses{$alg}; 
       
     my @statslist = (); 
